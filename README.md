@@ -1,2 +1,0 @@
-# creditos
-Modulo de creditos.
