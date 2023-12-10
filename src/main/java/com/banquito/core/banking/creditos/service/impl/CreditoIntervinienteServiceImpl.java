@@ -33,9 +33,15 @@ public class CreditoIntervinienteServiceImpl implements CreditoIntervinienteServ
 
     @Override
     public Boolean Delete(CreditoIntervinientePK id) {
-        return GetById(id).map(register ->{
+        return GetById(id).map(register -> {
             creditoIntervinienteRepository.deleteById(id);
             return true;
         }).orElse(false);
     }
+
+    @Override
+    public Optional<List<CreditoInterviniente>> ByTipo(String tipo, CreditoIntervinientePK PK) {
+        return creditoIntervinienteRepository.findByTipoAndPK(tipo, PK);
+    }
+
 }

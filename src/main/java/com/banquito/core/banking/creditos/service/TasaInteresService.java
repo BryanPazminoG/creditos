@@ -13,4 +13,6 @@ public interface TasaInteresService {
     TasaInteres Save(TasaInteres tasaInteres);
 
     Boolean Delete(String id);
+
+    Optional<List<TasaInteres>> GetByTipoTasaInteres(String tipoTasaInteres);
 }

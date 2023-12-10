@@ -2,6 +2,7 @@ package com.banquito.core.banking.creditos.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,15 @@ public class CreditoTablaPagosServiceImpl implements CreditoTablaPagosService {
             creditoTablaPagosRepository.deleteById(id);
             return true;
         }).orElse(false);
+    }
+
+    @Override
+    public Optional<CreditoTablaPagos> ByFechaPago(Date fechaPlanificadaPago, CreditoTablaPagosPK PK) {
+        return creditoTablaPagosRepository.findByFechaPlanificadaPagoAndPK(fechaPlanificadaPago, PK);
+    }
+
+    @Override
+    public List<CreditoTablaPagos> ByEstado(String estado) {
+        return creditoTablaPagosRepository.findByEstado(estado);
     }
 }

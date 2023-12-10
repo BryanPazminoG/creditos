@@ -37,4 +37,9 @@ public class TasaInteresServiceImpl implements TasaInteresService {
             return true;
         }).orElse(false);
     }
+
+    @Override
+    public Optional<List<TasaInteres>> GetByTipoTasaInteres(String tipoTasaInteres) {
+        return tasaInteresRepository.findByTipoTasaInteres(tipoTasaInteres);
+    }
 }

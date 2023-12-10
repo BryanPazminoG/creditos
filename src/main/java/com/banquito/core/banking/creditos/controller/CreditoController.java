@@ -47,4 +47,25 @@ public class CreditoController {
             return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/tipocredito/{tipocredito}")
+    public ResponseEntity<List<Credito>> TipoCredito(@PathVariable("tipocredito") Integer tipocredito) {
+        return new ResponseEntity<>(creditoService.TipoCredito(tipocredito), HttpStatus.OK);
+    }
+
+    @GetMapping("/cliente/{cliente}")
+    public ResponseEntity<List<Credito>> Cliente(@PathVariable("cliente") Integer cliente) {
+        return creditoService.Cliente(cliente).map(register -> {
+            return new ResponseEntity<>(register, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/estadocliente/{estado}/{cliente}")
+    public ResponseEntity<List<Credito>> EstadoCliente(@PathVariable("estado") String estado,
+            @PathVariable("cliente") Integer cliente) {
+        return creditoService.EstadoCliente(estado, cliente).map(register -> {
+            return new ResponseEntity<>(register, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 }

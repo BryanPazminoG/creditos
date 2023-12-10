@@ -37,4 +37,19 @@ public class CreditoServiceImpl implements CreditoService {
             return true;
         }).orElse(false);
     }
+
+    @Override
+    public List<Credito> TipoCredito(Integer codTipoCredito) {
+        return creditoRepository.findByCodTipoCredito(codTipoCredito);
+    }
+
+    @Override
+    public Optional<List<Credito>> Cliente(Integer codCliente) {
+        return creditoRepository.findByCodCliente(codCliente);
+    }
+
+    @Override
+    public Optional<List<Credito>> EstadoCliente(String estado, Integer codCliente) {
+        return creditoRepository.findByEstadoAndCodCliente(estado, codCliente);
+    }
 }

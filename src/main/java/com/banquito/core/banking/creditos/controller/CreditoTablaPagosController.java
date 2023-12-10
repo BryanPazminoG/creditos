@@ -1,6 +1,7 @@
 package com.banquito.core.banking.creditos.controller;
 
 import java.util.List;
+import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,4 +51,18 @@ public class CreditoTablaPagosController {
         }
     }
 
+    @GetMapping("/fechapago/{fechapago}/{creditoid}/{cuotaid}")
+    public ResponseEntity<CreditoTablaPagos> ByFechaPago(@PathVariable("fechapago") Date fechaPago,
+            @PathVariable("creditoid") Integer creditoId,
+            @PathVariable("cuotaid") Integer cuotaId) {
+        CreditoTablaPagosPK creditoTablaPagosPK = new CreditoTablaPagosPK(creditoId, cuotaId);
+        return creditoTablaPagosService.ByFechaPago(fechaPago, creditoTablaPagosPK).map(register -> {
+            return new ResponseEntity<>(register, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/estdo/{estado}")
+    public ResponseEntity<List<CreditoTablaPagos>> ByEstado(@PathVariable("estado") String estado) {
+        return new ResponseEntity<>(creditoTablaPagosService.ByEstado(estado), HttpStatus.OK);
+    }
 }

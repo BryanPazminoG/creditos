@@ -14,4 +14,10 @@ public interface CreditoService {
    Credito Save(Credito credito);
 
    Boolean Delete(Integer id);
+
+   List<Credito> TipoCredito(Integer codTipoCredito);
+
+   Optional<List<Credito>> Cliente(Integer codCliente);
+
+   Optional<List<Credito>> EstadoCliente(String estado, Integer codCliente);
 }

@@ -51,4 +51,13 @@ public class CreditoIntervinienteController {
         }
     }
 
+    @GetMapping("/bytipo/{tipo}/{creditoid}/{clienteid}")
+    public ResponseEntity<List<CreditoInterviniente>> ByTipo(@PathVariable("tipo") String tipo,
+            @PathVariable("creditoid") Integer creditoId,
+            @PathVariable("clienteid") Integer clienteId) {
+        CreditoIntervinientePK creditoIntervinientePK = new CreditoIntervinientePK(creditoId, clienteId);
+        return creditoIntervinienteService.ByTipo(tipo, creditoIntervinientePK).map(register -> {
+            return new ResponseEntity<>(register, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

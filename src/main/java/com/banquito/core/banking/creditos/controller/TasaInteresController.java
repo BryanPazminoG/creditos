@@ -47,4 +47,11 @@ public class TasaInteresController {
             return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/bytasainteres/{tasainteres}")
+    public ResponseEntity<List<TasaInteres>> GetByTipoTasaInteres(@PathVariable("tasainteres") String tasainteres) {
+        return tasaInteresService.GetByTipoTasaInteres(tasainteres).map(register -> {
+            return new ResponseEntity<>(register, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

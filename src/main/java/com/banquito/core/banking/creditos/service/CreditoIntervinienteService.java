@@ -14,4 +14,7 @@ public interface CreditoIntervinienteService {
     CreditoInterviniente Save(CreditoInterviniente creditoInterviniente);
 
     Boolean Delete(CreditoIntervinientePK id);
+
+    Optional<List<CreditoInterviniente>> ByTipo(String tipo, CreditoIntervinientePK PK);
+
 }
