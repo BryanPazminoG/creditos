@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -70,6 +71,9 @@ public class Credito {
     @ManyToOne()
     @JoinColumn(name = "cod_tipo_credito", nullable = false, updatable = false, insertable = false)
     private TipoCredito tipoCredito;
+
+    @Version
+    private Long version;
 
     public Credito() {
     }

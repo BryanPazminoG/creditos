@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,9 @@ public class CreditoInterviniente {
     @ManyToOne()
     @JoinColumn(name = "cod_credito", nullable = false, updatable = false, insertable = false)
     private Credito credito;
+
+    @Version
+    private Long version;
 
     public CreditoInterviniente() {
     }
@@ -59,5 +63,5 @@ public class CreditoInterviniente {
     @Override
     public String toString() {
         return "CreditoInterviniente [PK=" + PK + ", tipo=" + tipo + ", credito=" + credito + "]";
-    }    
+    }
 }

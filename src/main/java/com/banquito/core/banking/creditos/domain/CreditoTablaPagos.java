@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,40 +20,43 @@ import lombok.Setter;
 @Entity
 @Table(name = "credito_tabla_pagos")
 public class CreditoTablaPagos {
-    
+
     @EmbeddedId
     private CreditoTablaPagosPK PK;
-    
-    @Column(name = "capital", nullable = false, precision = 18, scale = 2 )
+
+    @Column(name = "capital", nullable = false, precision = 18, scale = 2)
     private BigDecimal capital;
-    
-    @Column(name = "interes", nullable = false, precision = 18, scale = 2 )
+
+    @Column(name = "interes", nullable = false, precision = 18, scale = 2)
     private BigDecimal interes;
-    
-    @Column(name = "monto_cuota", nullable = false, precision = 18, scale = 2 )
+
+    @Column(name = "monto_cuota", nullable = false, precision = 18, scale = 2)
     private BigDecimal montoCuota;
-    
-    @Column(name = "capital_restante", nullable = false, precision = 18, scale = 2 )
+
+    @Column(name = "capital_restante", nullable = false, precision = 18, scale = 2)
     private BigDecimal capitalRestante;
-    
+
     @Column(name = "fecha_planificada_pago", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaPlanificadaPago;
-    
+
     @Column(name = "estado", nullable = false, length = 3)
     private String estado;
-    
+
     @Column(name = "fecha_pago_efectivo", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaPagoEfectivo;
-    
+
     @Column(name = "transaccion_pago", nullable = false, length = 64)
     private String transaccionPagoj;
 
     @ManyToOne()
     @JoinColumn(name = "cod_credito", updatable = false, insertable = false)
     private Credito credito;
-    
+
+    @Version
+    private Long version;
+
     public CreditoTablaPagos() {
     }
 

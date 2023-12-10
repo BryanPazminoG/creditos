@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,6 +30,9 @@ public class TasaInteres {
 
     @Column(name = "tasa_maxima", nullable = false, precision = 5, scale = 2)
     private BigDecimal tasaMaxima;
+
+    @Version
+    private Long version;
 
     public TasaInteres() {
     }
