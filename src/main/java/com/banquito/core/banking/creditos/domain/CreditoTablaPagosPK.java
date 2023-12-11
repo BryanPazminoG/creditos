@@ -10,9 +10,9 @@ import lombok.Setter;
 @Setter
 @Embeddable
 public class CreditoTablaPagosPK implements Serializable {
-    @Column(name = "cod_credito")
+    @Column(name = "COD_CREDITO")
     private Integer codCredito;
-    @Column(name = "cod_cuota")
+    @Column(name = "COD_CUOTA")
     private Integer codCuota;
 
     public CreditoTablaPagosPK() {

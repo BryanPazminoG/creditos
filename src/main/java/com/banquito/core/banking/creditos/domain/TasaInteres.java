@@ -13,22 +13,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tasa_interes")
+@Table(name = "TASA_INTERES")
 public class TasaInteres {
     @Id
-    @Column(name = "cod_tasa_interes", nullable = false, length = 8)
+    @Column(name = "COD_TASA_INTERES", nullable = false, length = 8)
     private String codTasaInteres;
 
-    @Column(name = "tipo_tasa_interes", nullable = false, length = 3)
+    @Column(name = "TIPO_TASA_INTERES", nullable = false, length = 3)
     private String tipoTasaInteres;
 
-    @Column(name = "nombre", nullable = false, length = 50)
+    @Column(name = "NOMBRE", nullable = false, length = 50)
     private String nombre;
 
-    @Column(name = "tasa_minima", nullable = false, precision = 5, scale = 2)
+    @Column(name = "TASA_MINIMA", nullable = false, precision = 5, scale = 2)
     private BigDecimal tasaMinima;
 
-    @Column(name = "tasa_maxima", nullable = false, precision = 5, scale = 2)
+    @Column(name = "TASA_MAXIMA", nullable = false, precision = 5, scale = 2)
     private BigDecimal tasaMaxima;
 
     @Version

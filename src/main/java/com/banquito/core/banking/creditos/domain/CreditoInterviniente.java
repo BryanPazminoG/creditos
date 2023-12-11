@@ -13,16 +13,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "credito_interviniente")
+@Table(name = "CREDITO_INTERVINIENTE")
 public class CreditoInterviniente {
     @EmbeddedId
     private CreditoIntervinientePK PK;
 
-    @Column(name = "tipo", nullable = false, length = 3)
+    @Column(name = "TIPO", nullable = false, length = 3)
     private String tipo;
 
     @ManyToOne()
-    @JoinColumn(name = "cod_credito", nullable = false, updatable = false, insertable = false)
+    @JoinColumn(name = "COD_CREDITO", nullable = false, updatable = false, insertable = false)
     private Credito credito;
 
     @Version

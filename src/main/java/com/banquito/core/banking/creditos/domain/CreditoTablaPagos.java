@@ -18,40 +18,40 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "credito_tabla_pagos")
+@Table(name = "CREDITO_TABLA_PAGOS")
 public class CreditoTablaPagos {
 
     @EmbeddedId
     private CreditoTablaPagosPK PK;
 
-    @Column(name = "capital", nullable = false, precision = 18, scale = 2)
+    @Column(name = "CAPITAL", nullable = false, precision = 18, scale = 2)
     private BigDecimal capital;
 
-    @Column(name = "interes", nullable = false, precision = 18, scale = 2)
+    @Column(name = "INTERES", nullable = false, precision = 18, scale = 2)
     private BigDecimal interes;
 
-    @Column(name = "monto_cuota", nullable = false, precision = 18, scale = 2)
+    @Column(name = "MONTO_CUOTA", nullable = false, precision = 18, scale = 2)
     private BigDecimal montoCuota;
 
-    @Column(name = "capital_restante", nullable = false, precision = 18, scale = 2)
+    @Column(name = "CAPITAL_RESTANTE", nullable = false, precision = 18, scale = 2)
     private BigDecimal capitalRestante;
 
-    @Column(name = "fecha_planificada_pago", nullable = false)
+    @Column(name = "FECHA_PLANIFICADA_PAGO", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaPlanificadaPago;
 
-    @Column(name = "estado", nullable = false, length = 3)
+    @Column(name = "ESTADO", nullable = false, length = 3)
     private String estado;
 
-    @Column(name = "fecha_pago_efectivo", nullable = false)
+    @Column(name = "FECHA_PAGO_EFECTIVO", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaPagoEfectivo;
 
-    @Column(name = "transaccion_pago", nullable = false, length = 64)
+    @Column(name = "TRANSACCION_PAGO", nullable = false, length = 64)
     private String transaccionPagoj;
 
     @ManyToOne()
-    @JoinColumn(name = "cod_credito", updatable = false, insertable = false)
+    @JoinColumn(name = "COD_CREDITO", updatable = false, insertable = false)
     private Credito credito;
 
     @Version

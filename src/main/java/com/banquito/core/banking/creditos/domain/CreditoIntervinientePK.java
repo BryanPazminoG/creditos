@@ -11,9 +11,9 @@ import lombok.Setter;
 @Setter
 @Embeddable
 public class CreditoIntervinientePK implements Serializable {
-    @Column(name="cod_credito", nullable = false)
+    @Column(name="COD_CREDITO", nullable = false)
     private Integer codCredito;
-    @Column(name="cod_cliente", nullable = false)
+    @Column(name="COD_CLIENTE", nullable = false)
     private Integer codCliente;
 
     public CreditoIntervinientePK() {

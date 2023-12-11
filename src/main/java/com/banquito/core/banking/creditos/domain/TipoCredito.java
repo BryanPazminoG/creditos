@@ -20,53 +20,53 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tipo_credito")
+@Table(name = "TIPO_CREDITO")
 public class TipoCredito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cod_tipo_credito", nullable = false)
+    @Column(name = "COD_TIPO_CREDITO", nullable = false)
     private Integer codTipoCredito;
 
-    @Column(name = "cod_tasa_interes", nullable = true, length = 8)
+    @Column(name = "COD_TASA_INTERES", nullable = true, length = 8)
     private String codTasaInteres;
 
-    @Column(name = "nombre", nullable = false, length = 50)
+    @Column(name = "NOMBRE", nullable = false, length = 50)
     private String nombre;
 
-    @Column(name = "descripcion", nullable = false, length = 500)
+    @Column(name = "DESCRIPCION", nullable = false, length = 500)
     private String descripcion;
 
-    @Column(name = "tipo_cliente", nullable = false, length = 3)
+    @Column(name = "TIPO_CLIENTE", nullable = false, length = 3)
     private String tipoCliente;
 
-    @Column(name = "unidad_plazo", nullable = false, length = 3)
+    @Column(name = "UNIDAD_PLAZO", nullable = false, length = 3)
     private String unidadPlazo;
 
-    @Column(name = "plazo_minimo", nullable = false)
+    @Column(name = "PLAZO_MINIMO", nullable = false)
     private Integer plazoMinimo;
 
-    @Column(name = "plazo_maximo", nullable = false)
+    @Column(name = "PLAZO_MAXIMO", nullable = false)
     private Integer plazoMaximo;
 
-    @Column(name = "monto_minimo", nullable = false, precision = 18, scale = 2)
+    @Column(name = "MONTO_MINIMO", nullable = false, precision = 18, scale = 2)
     private BigDecimal montoMinimo;
 
-    @Column(name = "monto_maximo", nullable = false, precision = 18, scale = 2)
+    @Column(name = "MONTO_MAXIMO", nullable = false, precision = 18, scale = 2)
     private BigDecimal montoMaximo;
 
-    @Column(name = "estado", nullable = false, length = 3)
+    @Column(name = "ESTADO", nullable = false, length = 3)
     private String estado;
 
-    @Column(name = "fecha_creacion", nullable = false)
+    @Column(name = "FECHA_CREACION", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp fechaCreacion;
 
-    @Column(name = "fecha_ultimo_cambio", nullable = false)
+    @Column(name = "FECHA_ULTIMO_CAMBIO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp fechaUltimoCambio;
 
     @ManyToOne()
-    @JoinColumn(name = "cod_tasa_interes", insertable = false, updatable = false)
+    @JoinColumn(name = "COD_TASA_INTERES", insertable = false, updatable = false)
     private TasaInteres tasaInteres;
 
     @Version
