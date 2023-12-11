@@ -3,7 +3,6 @@ package com.banquito.core.banking.creditos.dao;
 import java.util.List;
 import java.math.BigDecimal;
 
-import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,10 +13,10 @@ public interface TipoCreditoRepository extends CrudRepository<TipoCredito, Integ
 
     public List<TipoCredito> findByTipoCliente(String tipoCliente);
 
-    public Optional<List<TipoCredito>> findByMontoMinimoGreaterThanEqualAndMontoMaximoLessThanEqual(BigDecimal montoMinimo,
+    public List<TipoCredito> findByMontoMinimoGreaterThanEqualAndMontoMaximoLessThanEqual(BigDecimal montoMinimo,
             BigDecimal montoMaximo);
 
-    public Optional<List<TipoCredito>> findByPlazoMinimoGreaterThanEqualAndPlazoMaximoLessThanEqual(BigDecimal plazoMinimo,
+    public List<TipoCredito> findByPlazoMinimoGreaterThanEqualAndPlazoMaximoLessThanEqual(BigDecimal plazoMinimo,
             BigDecimal plazoMaximo);
 
     public List<TipoCredito> findByEstado(String estado);
