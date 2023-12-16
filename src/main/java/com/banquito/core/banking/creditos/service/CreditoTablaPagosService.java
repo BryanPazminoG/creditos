@@ -2,11 +2,14 @@ package com.banquito.core.banking.creditos.service;
 
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.banquito.core.banking.creditos.dao.CreditoTablaPagosRepository;
 import com.banquito.core.banking.creditos.domain.CreditoTablaPagos;
 import com.banquito.core.banking.creditos.domain.CreditoTablaPagosPK;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 
+@Service
 public class CreditoTablaPagosService {
     private final CreditoTablaPagosRepository creditoTablaPagosRepository;
 

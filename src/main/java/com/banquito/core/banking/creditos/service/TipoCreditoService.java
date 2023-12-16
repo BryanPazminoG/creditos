@@ -1,10 +1,13 @@
 package com.banquito.core.banking.creditos.service;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.banquito.core.banking.creditos.dao.TipoCreditoRepository;
 import com.banquito.core.banking.creditos.domain.TipoCredito;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 
+@Service
 public class TipoCreditoService {
     private final TipoCreditoRepository tipoCreditoRepository;
 
