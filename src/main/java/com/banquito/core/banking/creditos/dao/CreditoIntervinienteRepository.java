@@ -9,7 +9,6 @@ import com.banquito.core.banking.creditos.domain.CreditoIntervinientePK;
 
 @Repository
 public interface CreditoIntervinienteRepository extends CrudRepository<CreditoInterviniente, CreditoIntervinientePK> {
-
-    public List<CreditoInterviniente> findByTipoAndPK(String tipo, CreditoIntervinientePK PK);
-
+    public List<CreditoInterviniente> findByCodCreditoOrderByTipo(Integer codCredito);
+    //public List<CreditoInterviniente> findByTipoAndPK(String tipo, CreditoIntervinientePK PK);
 }

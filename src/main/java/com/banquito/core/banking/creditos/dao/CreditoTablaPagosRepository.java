@@ -13,5 +13,5 @@ public interface CreditoTablaPagosRepository extends CrudRepository<CreditoTabla
 
     public CreditoTablaPagos findByFechaPlanificadaPagoAndPK(Date fechaPlanificadaPago, CreditoTablaPagosPK PK);
 
-    public List<CreditoTablaPagos> findByEstado(String estado);
+    public List<CreditoTablaPagos> findByEstadoOrderByFechaPlanificadaPago(String estado);
 }

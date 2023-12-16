@@ -15,6 +15,8 @@ import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @Entity
@@ -48,7 +50,11 @@ public class CreditoTablaPagos {
     private Date fechaPagoEfectivo;
 
     @Column(name = "TRANSACCION_PAGO", nullable = false, length = 64)
-    private String transaccionPagoj;
+    private String transaccionPago;
+
+    @Column(name = "FECHA_ULTIMO_CAMBIO", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp fechaUltimoCambio;
 
     @ManyToOne()
     @JoinColumn(name = "COD_CREDITO", updatable = false, insertable = false)
@@ -93,8 +99,9 @@ public class CreditoTablaPagos {
     public String toString() {
         return "CreditoTablaPagos [PK=" + PK + ", capital=" + capital + ", interes=" + interes + ", montoCuota="
                 + montoCuota + ", capitalRestante=" + capitalRestante + ", fechaPlanificadaPago=" + fechaPlanificadaPago
-                + ", estado=" + estado + ", fechaPagoEfectivo=" + fechaPagoEfectivo + ", transaccionPagoj="
-                + transaccionPagoj + ", credito=" + credito + "]";
+                + ", estado=" + estado + ", fechaPagoEfectivo=" + fechaPagoEfectivo + ", transaccionPago="
+                + transaccionPago + ", fechaUltimoCambio=" + fechaUltimoCambio + ", credito=" + credito + ", version="
+                + version + "]";
     }
 
 }

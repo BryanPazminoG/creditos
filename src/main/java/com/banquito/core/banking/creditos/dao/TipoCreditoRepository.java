@@ -13,11 +13,11 @@ public interface TipoCreditoRepository extends CrudRepository<TipoCredito, Integ
 
     public List<TipoCredito> findByTipoCliente(String tipoCliente);
 
-    public List<TipoCredito> findByMontoMinimoGreaterThanEqualAndMontoMaximoLessThanEqual(BigDecimal montoMinimo,
-            BigDecimal montoMaximo);
+    public List<TipoCredito> findByMontoMinimoGreaterThanEqualAndMontoMaximoLessThanEqualAndCodTipoCreditoEqualsOrderByNombre(BigDecimal montoMinimo,
+            BigDecimal montoMaximo, Integer codTipoCredito);
 
-    public List<TipoCredito> findByPlazoMinimoGreaterThanEqualAndPlazoMaximoLessThanEqual(BigDecimal plazoMinimo,
-            BigDecimal plazoMaximo);
+    public List<TipoCredito> findByPlazoMinimoGreaterThanEqualAndPlazoMaximoLessThanEqualAndCodTipoCreditoEqualsOrderByNombre(BigDecimal plazoMinimo,
+            BigDecimal plazoMaximo, Integer codTipoCredito);
 
-    public List<TipoCredito> findByEstado(String estado);
+    public List<TipoCredito> findByEstadoOrderByNombre(String estado);
 }

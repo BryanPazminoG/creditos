@@ -1,11 +1,14 @@
 package com.banquito.core.banking.creditos.domain;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +33,10 @@ public class TasaInteres {
 
     @Column(name = "TASA_MAXIMA", nullable = false, precision = 5, scale = 2)
     private BigDecimal tasaMaxima;
+
+    @Column(name = "FECHA_ULTIMO_CAMBIO", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp fechaUltimoCambio;
 
     @Version
     private Long version;
@@ -69,6 +76,7 @@ public class TasaInteres {
     @Override
     public String toString() {
         return "TasaInteres [codTasaInteres=" + codTasaInteres + ", tipoTasaInteres=" + tipoTasaInteres + ", nombre="
-                + nombre + ", tasaMinima=" + tasaMinima + ", tasaMaxima=" + tasaMaxima + "]";
+                + nombre + ", tasaMinima=" + tasaMinima + ", tasaMaxima=" + tasaMaxima + ", fechaUltimoCambio="
+                + fechaUltimoCambio + ", version=" + version + "]";
     }
 }

@@ -6,9 +6,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -20,6 +23,10 @@ public class CreditoInterviniente {
 
     @Column(name = "TIPO", nullable = false, length = 3)
     private String tipo;
+
+    @Column(name = "FECHA_ULTIMO_CAMBIO", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp fechaUltimoCambio;
 
     @ManyToOne()
     @JoinColumn(name = "COD_CREDITO", nullable = false, updatable = false, insertable = false)
@@ -62,6 +69,8 @@ public class CreditoInterviniente {
 
     @Override
     public String toString() {
-        return "CreditoInterviniente [PK=" + PK + ", tipo=" + tipo + ", credito=" + credito + "]";
+        return "CreditoInterviniente [PK=" + PK + ", tipo=" + tipo + ", fechaUltimoCambio=" + fechaUltimoCambio
+                + ", credito=" + credito + ", version=" + version + "]";
     }
+
 }
