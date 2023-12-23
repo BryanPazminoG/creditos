@@ -28,6 +28,7 @@ public class CreditoController {
     // return new ResponseEntity<>(creditoService.GetAll(), HttpStatus.OK);
     // }
 
+
     @GetMapping("/getbyid/{id}")
     public ResponseEntity<Credito> GetById(@PathVariable("id") Integer id) {
         return creditoService.getById(id)
