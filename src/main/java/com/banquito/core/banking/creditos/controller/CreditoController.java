@@ -5,6 +5,7 @@ package com.banquito.core.banking.creditos.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.banquito.core.banking.creditos.domain.Credito;
 import com.banquito.core.banking.creditos.service.CreditoService;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/credito")
 public class CreditoController {
@@ -39,12 +41,6 @@ public class CreditoController {
     @PostMapping("/save")
     public ResponseEntity<Credito> Save(@RequestBody Credito credito) {
         return new ResponseEntity<>(creditoService.create(credito), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> Delete(@PathVariable Integer id) {
-        creditoService.delete(id);
-        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @PutMapping("/update")

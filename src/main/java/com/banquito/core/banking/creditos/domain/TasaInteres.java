@@ -79,4 +79,5 @@ public class TasaInteres {
                 + nombre + ", tasaMinima=" + tasaMinima + ", tasaMaxima=" + tasaMaxima + ", fechaUltimoCambio="
                 + fechaUltimoCambio + ", version=" + version + "]";
     }
+    
 }

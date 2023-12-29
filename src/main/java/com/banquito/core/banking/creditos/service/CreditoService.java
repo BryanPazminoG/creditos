@@ -21,28 +21,11 @@ public class CreditoService {
         return this.creditoRepository.findById(id);
     }
 
-    // public Iterable<Credito> listAll() {
-    //     return this.creditoRepository.findAll();
-    // }
-
     public Credito create(Credito credito) {
         try {
             return this.creditoRepository.save(credito);
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al crear el Credito: " + credito.toString(), e);
-        }
-    }
-
-    public void delete(Integer id) {
-        try {
-            Optional<Credito> credito = getById(id);
-            if (credito.isPresent()) {
-                this.creditoRepository.delete(credito.get());
-            } else {
-                throw new RuntimeException("El Credito con id" + id + " no existe");
-            }
-        } catch (Exception e) {
-            throw new CreateException("Ocurrio un error al eliminar la Credito, error: " + e.getMessage(), e);
         }
     }
 
