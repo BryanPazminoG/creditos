@@ -7,11 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.core.banking.creditos.domain.Credito;
@@ -24,14 +24,8 @@ public class CreditoController {
     @Autowired
     private CreditoService creditoService;
 
-    // @GetMapping("/getall")
-    // public ResponseEntity<List<Credito>> GetAll() {
-    // return new ResponseEntity<>(creditoService.GetAll(), HttpStatus.OK);
-    // }
-
-
-    @GetMapping("/getbyid/{id}")
-    public ResponseEntity<Credito> GetById(@PathVariable("id") Integer id) {
+    @GetMapping("/getbyid")
+    public ResponseEntity<Credito> GetById(@RequestParam("id") Integer id) {
         return creditoService.getById(id)
                 .map(register -> new ResponseEntity<>(register, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
