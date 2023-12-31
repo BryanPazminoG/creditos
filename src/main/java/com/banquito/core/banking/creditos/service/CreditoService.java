@@ -1,5 +1,6 @@
 package com.banquito.core.banking.creditos.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.banquito.core.banking.creditos.dao.CreditoRepository;
 import com.banquito.core.banking.creditos.domain.Credito;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CreditoService {
@@ -21,6 +24,7 @@ public class CreditoService {
         return this.creditoRepository.findById(id);
     }
 
+    @Transactional
     public Credito create(Credito credito) {
         try {
             return this.creditoRepository.save(credito);
@@ -29,6 +33,7 @@ public class CreditoService {
         }
     }
 
+    @Transactional
     public Credito update(Credito creditoUpdate) {
         try {
             Optional<Credito> credito = getById(creditoUpdate.getCodCredito());
@@ -41,5 +46,9 @@ public class CreditoService {
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al actualizar el Credito, error: " + e.getMessage(), e);
         }
+    }
+
+    public List<Credito> BuscarPorCodigoCliente(Integer codCliente) {
+        return creditoRepository.findByCodClienteOrderByFechaCreacion(codCliente);
     }
 }

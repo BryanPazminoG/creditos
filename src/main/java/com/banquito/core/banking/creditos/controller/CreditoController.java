@@ -1,5 +1,7 @@
 package com.banquito.core.banking.creditos.controller;
 
+import java.util.List;
+
 // import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +65,15 @@ public class CreditoController {
     // return new ResponseEntity<>(register, HttpStatus.OK);
     // }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     // }
+
+    @GetMapping("/buscar-codigo-cliente")
+    public ResponseEntity<List<Credito>> BuscarPorCodigoCliente(@RequestParam("codCliente") Integer codCliente) {
+        List<Credito> creditos = creditoService.BuscarPorCodigoCliente(codCliente);
+        if (!creditos.isEmpty()) {
+            return new ResponseEntity<>(creditos, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 }
