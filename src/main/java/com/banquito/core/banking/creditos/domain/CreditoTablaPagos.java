@@ -45,11 +45,11 @@ public class CreditoTablaPagos {
     @Column(name = "ESTADO", nullable = false, length = 3)
     private String estado;
 
-    @Column(name = "FECHA_PAGO_EFECTIVO", nullable = false)
+    @Column(name = "FECHA_PAGO_EFECTIVO", nullable = true)
     @Temporal(TemporalType.DATE)
     private Date fechaPagoEfectivo;
 
-    @Column(name = "TRANSACCION_PAGO", nullable = false, length = 64)
+    @Column(name = "TRANSACCION_PAGO", nullable = true, length = 64)
     private String transaccionPago;
 
     @Column(name = "FECHA_ULTIMO_CAMBIO", nullable = false)

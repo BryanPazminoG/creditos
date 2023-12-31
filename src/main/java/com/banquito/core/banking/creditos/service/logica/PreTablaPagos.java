@@ -1,4 +1,5 @@
 package com.banquito.core.banking.creditos.service.logica;
+import java.util.Date;
 
 public class PreTablaPagos {
 
@@ -7,6 +8,7 @@ public class PreTablaPagos {
     private String interesPeriodo;
     private String amortizacionPeriodo;
     private String capitalPendiente;
+    private Date fechaPlanificadoPago;
     
     public PreTablaPagos() {
     }
@@ -49,6 +51,14 @@ public class PreTablaPagos {
 
     public void setCapitalPendiente(String capitalPendiente) {
         this.capitalPendiente = capitalPendiente;
+    }
+
+    public Date getFechaPlanificadoPago() {
+        return fechaPlanificadoPago;
+    }
+
+    public void setFechaPlanificadoPago(Date fechaPlanificadoPago) {
+        this.fechaPlanificadoPago = fechaPlanificadoPago;
     }
     
 }
