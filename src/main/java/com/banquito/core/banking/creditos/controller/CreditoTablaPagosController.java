@@ -21,7 +21,7 @@ import com.banquito.core.banking.creditos.domain.CreditoTablaPagos;
 import com.banquito.core.banking.creditos.service.CreditoTablaPagosService;
 import com.banquito.core.banking.creditos.service.logica.PreTablaPagos;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 @RestController
 @RequestMapping("/creditotablapagos")
 public class CreditoTablaPagosController {

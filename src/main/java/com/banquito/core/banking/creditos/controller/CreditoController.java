@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.banquito.core.banking.creditos.domain.Credito;
 import com.banquito.core.banking.creditos.service.CreditoService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 @RestController
 @RequestMapping("/credito")
 public class CreditoController {
