@@ -1,7 +1,7 @@
 package com.banquito.core.banking.creditos.service;
 
 import java.util.Optional;
-
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +27,38 @@ public class CreditoTablaPagosService {
         return this.creditoTablaPagosRepository.findById(creditoTablaPagosPK);
     }
 
+    public List<CreditoTablaPagos> getTablaAmortizacion(Integer codCredito) {
+        return this.creditoTablaPagosRepository.findByPKCodCredito(codCredito);
+    }
+
+    public Optional<CreditoTablaPagos> getProximoPago(Integer codCredito) {
+        List<CreditoTablaPagos> tablaAmortizacion = this.getTablaAmortizacion(codCredito);
+        if (!tablaAmortizacion.isEmpty()) {
+            for (int i = 0; i < tablaAmortizacion.size(); i++) {
+                String elemento = tablaAmortizacion.get(i).getEstado();
+                if ("PEN".equals(elemento)) {
+                    return Optional.of(tablaAmortizacion.get(i));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<List<CreditoTablaPagos>> getPagosRealizados(Integer codCredito) {
+        List<CreditoTablaPagos> tablaAmortizacion = this.getTablaAmortizacion(codCredito);
+        List<CreditoTablaPagos> listaPagos = new ArrayList<>();
+        if (!tablaAmortizacion.isEmpty()) {
+            for (int i = 0; i < tablaAmortizacion.size(); i++) {
+                String elemento = tablaAmortizacion.get(i).getEstado();
+                if ("PAG".equals(elemento)) {
+                    listaPagos.add(tablaAmortizacion.get(i));
+                }
+            }
+            return Optional.of(listaPagos);
+        }
+        return Optional.empty();
+    }
+
     public CreditoTablaPagos create(CreditoTablaPagos creditoTablaPagos) {
         try {
             return this.creditoTablaPagosRepository.save(creditoTablaPagos);
@@ -42,10 +74,12 @@ public class CreditoTablaPagosService {
             if (creditoTablaPagos.isPresent()) {
                 this.creditoTablaPagosRepository.delete(creditoTablaPagos.get());
             } else {
-                throw new RuntimeException("El Credito Tabla Pagos con id " + codCredito + " - " + codCuota + "no existe");
+                throw new RuntimeException(
+                        "El Credito Tabla Pagos con id " + codCredito + " - " + codCuota + "no existe");
             }
         } catch (Exception e) {
-            throw new CreateException("Ocurrio un error al eliminar el Credito Tabla Pagos, error: " + e.getMessage(), e);
+            throw new CreateException("Ocurrio un error al eliminar el Credito Tabla Pagos, error: " + e.getMessage(),
+                    e);
         }
     }
 
@@ -57,14 +91,16 @@ public class CreditoTablaPagosService {
             if (creditoTablaPagos.isPresent()) {
                 return create(creditoTablaPagos.get());
             } else {
-                throw new RuntimeException("El Credito Tabla Pagos con id " + codCredito + " - " + codCuota + "no existe");
+                throw new RuntimeException(
+                        "El Credito Tabla Pagos con id " + codCredito + " - " + codCuota + "no existe");
             }
         } catch (Exception e) {
-            throw new CreateException("Ocurrio un error al eliminar el Credito Tabla Pagos, error: " + e.getMessage(), e);
+            throw new CreateException("Ocurrio un error al eliminar el Credito Tabla Pagos, error: " + e.getMessage(),
+                    e);
         }
     }
 
-    public List<PreTablaPagos> PreVistaTbAmortizacion(double tasaInteres, double montoPrestamo, Integer numeroPagos){
+    public List<PreTablaPagos> PreVistaTbAmortizacion(double tasaInteres, double montoPrestamo, Integer numeroPagos) {
         List<PreTablaPagos> preTablas = reglasNegocio.PreVistaTbAmortizacion(tasaInteres, montoPrestamo, numeroPagos);
         return preTablas;
     }

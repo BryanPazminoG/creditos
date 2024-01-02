@@ -39,8 +39,28 @@ public class CreditoTablaPagosController {
     @GetMapping("/pretablapagos")
     public ResponseEntity<List<PreTablaPagos>> PreVistaTbAmortizacion(@RequestParam("tasaInteres") double tasaInteres,
             @RequestParam("montoPrestamo") double montoPrestamo, @RequestParam("numeroPagos") Integer numeroPagos) {
-        List<PreTablaPagos> pretabla = creditoTablaPagosService.PreVistaTbAmortizacion(tasaInteres, montoPrestamo, numeroPagos);
+        List<PreTablaPagos> pretabla = creditoTablaPagosService.PreVistaTbAmortizacion(tasaInteres, montoPrestamo,
+                numeroPagos);
         return new ResponseEntity<>(pretabla, HttpStatus.OK);
+    }
+
+    @GetMapping("/tabla-amortizacion")
+    public ResponseEntity<List<CreditoTablaPagos>> getTablaAmortizacion(
+            @RequestParam("codCredito") Integer codCredito) {
+        List<CreditoTablaPagos> tabla = creditoTablaPagosService.getTablaAmortizacion(codCredito);
+        return new ResponseEntity<>(tabla, HttpStatus.OK);
+    }
+
+    @GetMapping("/proximo-pago")
+    public ResponseEntity<CreditoTablaPagos> getProximoPago(@RequestParam("codCredito") Integer codCredito) {
+        CreditoTablaPagos letraPago = creditoTablaPagosService.getProximoPago(codCredito).get();
+        return new ResponseEntity<>(letraPago, HttpStatus.OK);
+    }
+
+    @GetMapping("/pagos-realizados")
+    public ResponseEntity<List<CreditoTablaPagos>> getPagosRealizados(@RequestParam("codCredito") Integer codCredito) {
+        List<CreditoTablaPagos> listaPagos = creditoTablaPagosService.getPagosRealizados(codCredito).get();
+        return new ResponseEntity<>(listaPagos, HttpStatus.OK);
     }
 
     @PostMapping("/save")
