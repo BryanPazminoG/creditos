@@ -18,7 +18,7 @@ import com.banquito.core.banking.creditos.domain.CreditoInterviniente;
 // import com.banquito.core.banking.creditos.domain.CreditoIntervinientePK;
 import com.banquito.core.banking.creditos.service.CreditoIntervinienteService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RestController
 @RequestMapping("/creditointerviniente")
 public class CreditoIntervinienteController {
