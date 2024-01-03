@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.banquito.core.banking.creditos.domain.TasaInteres;
 import com.banquito.core.banking.creditos.service.TasaInteresService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RestController
 @RequestMapping("/tasainteres")
 public class TasaInteresController {
