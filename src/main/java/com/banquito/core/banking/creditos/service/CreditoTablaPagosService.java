@@ -3,6 +3,8 @@ package com.banquito.core.banking.creditos.service;
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 import org.springframework.stereotype.Service;
 
 import com.banquito.core.banking.creditos.dao.CreditoTablaPagosRepository;
@@ -28,7 +30,9 @@ public class CreditoTablaPagosService {
     }
 
     public List<CreditoTablaPagos> getTablaAmortizacion(Integer codCredito) {
-        return this.creditoTablaPagosRepository.findByPKCodCredito(codCredito);
+        List<CreditoTablaPagos> tablaAmortizacion = this.creditoTablaPagosRepository.findByPKCodCredito(codCredito);
+        Collections.sort(tablaAmortizacion, Comparator.comparingInt(CreditoTablaPagos -> CreditoTablaPagos.getPK().getCodCuota()));
+        return tablaAmortizacion;
     }
 
     public Optional<CreditoTablaPagos> getProximoPago(Integer codCredito) {
