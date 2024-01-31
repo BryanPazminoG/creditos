@@ -48,7 +48,7 @@ public class CreditoService {
         }
     }
 
-    public List<Credito> BuscarPorCodigoCliente(Integer codCliente) {
-        return creditoRepository.findByCodClienteOrderByFechaCreacion(codCliente);
+    public List<Credito> BuscarPorCliente(String identificacion) {
+        return creditoRepository.findByIdentificacionClienteOrderByFechaCreacion(identificacion);
     }
 }

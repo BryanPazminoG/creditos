@@ -31,8 +31,14 @@ public class Credito {
     @Column(name = "COD_TIPO_CREDITO", nullable = true)
     private Integer codTipoCredito;
 
-    @Column(name = "COD_CLIENTE", nullable = true)
-    private Integer codCliente;
+    @Column(name = "IDENTIFICACION_CLIENTE", nullable = true, length = 64)
+    private String identificacionCliente;
+
+    @Column(name = "TIPO_CLIENTE", nullable = true, length = 3)
+    private String tipoCliente;
+
+    @Column(name = "NUMERO_CUENTA", nullable = true, length = 10)
+    private String numeroCuenta;
 
     @Column(name = "NUMERO_OPERACION", nullable = false, length = 8)
     private String numeroOperacion;
@@ -109,10 +115,12 @@ public class Credito {
 
     @Override
     public String toString() {
-        return "Credito [codCredito=" + codCredito + ", codTipoCredito=" + codTipoCredito + ", codCliente=" + codCliente
+        return "Credito [codCredito=" + codCredito + ", codTipoCredito=" + codTipoCredito + ", identificacionCliente="
+                + identificacionCliente + ", tipoCliente=" + tipoCliente + ", numeroCuenta=" + numeroCuenta
                 + ", numeroOperacion=" + numeroOperacion + ", fechaCreacion=" + fechaCreacion + ", monto=" + monto
                 + ", plazo=" + plazo + ", tasaInteres=" + tasaInteres + ", estado=" + estado + ", fechaDesembolso="
                 + fechaDesembolso + ", fechaUltimoPago=" + fechaUltimoPago + ", capitalPendiente=" + capitalPendiente
-                + ", fechaUltimoCambio=" + fechaUltimoCambio + ", tipoCredito=" + tipoCredito + "]";
+                + ", fechaUltimoCambio=" + fechaUltimoCambio + ", tipoCredito=" + tipoCredito + ", version=" + version
+                + "]";
     }
 }

@@ -17,8 +17,8 @@ public class CreditoIntervinienteService {
         this.creditoIntervinienteRepository = creditoIntervinienteRepository;
     }
 
-    public Optional<CreditoInterviniente> getById(Integer codCredito, Integer codCliente) {
-        CreditoIntervinientePK creditoIntervinientePK = new CreditoIntervinientePK(codCredito, codCliente);
+    public Optional<CreditoInterviniente> getById(Integer codCredito, String identificacion) {
+        CreditoIntervinientePK creditoIntervinientePK = new CreditoIntervinientePK(codCredito, identificacion);
         return this.creditoIntervinienteRepository.findById(creditoIntervinientePK);
     }
 
@@ -31,14 +31,14 @@ public class CreditoIntervinienteService {
         }
     }
 
-    public void delete(Integer codCredito, Integer codCliente) {
+    public void delete(Integer codCredito, String identificacionCliente) {
         try {
-            Optional<CreditoInterviniente> creditoInterviniente = getById(codCredito, codCliente);
+            Optional<CreditoInterviniente> creditoInterviniente = getById(codCredito, identificacionCliente);
             if (creditoInterviniente.isPresent()) {
                 this.creditoIntervinienteRepository.delete(creditoInterviniente.get());
             } else {
                 throw new RuntimeException(
-                        "El Credito Interviniente con id " + codCredito + " - " + codCliente + "no existe");
+                        "El Credito Interviniente con id " + codCredito + " - " + identificacionCliente + "no existe");
             }
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al eliminar el Credito Interviniente, error: " + e.getMessage(), e);
@@ -48,12 +48,12 @@ public class CreditoIntervinienteService {
     public CreditoInterviniente update(CreditoInterviniente creditoIntervinienteUpdate) {
         try {
             Integer codCredito = creditoIntervinienteUpdate.getPK().getCodCredito();
-            Integer codCliente = creditoIntervinienteUpdate.getPK().getCodCliente();
-            Optional<CreditoInterviniente> creditoInterviniente = getById(codCredito, codCliente);
+            String identificacionCliente = creditoIntervinienteUpdate.getPK().getIdentificacionCliente();
+            Optional<CreditoInterviniente> creditoInterviniente = getById(codCredito, identificacionCliente);
             if (creditoInterviniente.isPresent()) {
                 return create(creditoInterviniente.get());
             } else {
-                throw new RuntimeException("El Credito Interviniente con id " + codCredito + " - " + codCliente + "no existe");
+                throw new RuntimeException("El Credito Interviniente con id " + codCredito + " - " + identificacionCliente + "no existe");
             }
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al eliminar el Credito Interviniente, error: " + e.getMessage(), e);

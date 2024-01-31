@@ -10,7 +10,7 @@ import com.banquito.core.banking.creditos.domain.Credito;
 public interface CreditoRepository extends CrudRepository<Credito, Integer> {
     public List<Credito> findByCodTipoCreditoOrderByCodTipoCredito(Integer codTipoCredito);
 
-    public List<Credito> findByCodClienteOrderByFechaCreacion(Integer codCliente);
+    public List<Credito> findByIdentificacionClienteOrderByFechaCreacion(String identificacionCliente);
 
-    public List<Credito> findByEstadoAndCodClienteOrderByFechaCreacion(String estado, Integer codCliente);
+    public List<Credito> findByEstadoAndIdentificacionClienteOrderByFechaCreacion(String estado, String identificacionCliente);
 }

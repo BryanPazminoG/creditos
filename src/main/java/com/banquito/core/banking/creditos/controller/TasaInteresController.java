@@ -1,69 +1,95 @@
 package com.banquito.core.banking.creditos.controller;
 
-// import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.core.banking.creditos.domain.TasaInteres;
 import com.banquito.core.banking.creditos.service.TasaInteresService;
 
+import jakarta.websocket.server.PathParam;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("/tasainteres")
+@RequestMapping("api/v1/tasainteres")
 public class TasaInteresController {
-    @Autowired
+
     private TasaInteresService tasaInteresService;
 
-    @GetMapping("/getall")
-    public ResponseEntity<Iterable<TasaInteres>> GetAll() {
-        return new ResponseEntity<>(tasaInteresService.listAll(), HttpStatus.OK);
+    public TasaInteresController(TasaInteresService tasaInteresService) {
+        this.tasaInteresService = tasaInteresService;
     }
 
-    @GetMapping("/getbyid")
-    public ResponseEntity<TasaInteres> GetById(@RequestParam("id") String id) {
+    @GetMapping
+    public ResponseEntity<Iterable<TasaInteres>> listar() {
+        try {
+            log.info("Obteniendo la lista de tasas de interes");
+            return ResponseEntity.ok(tasaInteresService.listAll());
+        } catch (RuntimeException rte) {
+            log.error("Error al listar las tasas de interes: ", rte);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<TasaInteres> obtenerPorId(@PathParam("id") String id) {
+        log.info("Obteniendo la tasa de interes con el id: {}", id);
         return tasaInteresService.getById(id)
-                .map(register -> new ResponseEntity<>(register, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(register -> ResponseEntity.ok(register))
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/calcular")
-    public ResponseEntity<Double> GetById(@RequestParam("id") String id, @RequestParam("monto") Double monto, @RequestParam("plazo") Integer plazo) {
-        Double calculo = tasaInteresService.calcularTasaInteres(id, monto, plazo);
-        return new ResponseEntity<>(calculo, HttpStatus.OK);
+    @GetMapping("{id}/{monto}/{plazo}")
+    public ResponseEntity<Double> calcularInteres(@PathParam("id") String id, @PathParam("monto") Double monto,
+            @PathParam("plazo") Integer plazo) {
+        try {
+            log.info("Calculando tasa de interes");
+            return ResponseEntity.ok(tasaInteresService.calcularTasaInteres(id, monto, plazo));
+        } catch (RuntimeException rte) {
+            log.error("Error al calcular la tasa de interes: ", rte);
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<TasaInteres> Save(@RequestBody TasaInteres tasaInteres) {
-        return new ResponseEntity<>(tasaInteresService.create(tasaInteres), HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<TasaInteres> save(@RequestBody TasaInteres tasaInteres) {
+        try {
+            log.info("Guardando nuevo registro de tasa interes: {}", tasaInteres);
+            return ResponseEntity.ok(tasaInteresService.create(tasaInteres));
+        } catch (RuntimeException rte) {
+            log.error("Error al crear el nuevo registro: ", rte);
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> Delete(@PathVariable("id") String id) {
-        tasaInteresService.delete(id);
-        return new ResponseEntity<>(true, HttpStatus.OK);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Boolean> delete(@PathParam("id") String id) {
+        try {
+            log.info("Eliminando la tasa de interes con id: {}", id);
+            tasaInteresService.delete(id);
+            return ResponseEntity.ok(true);
+        } catch (RuntimeException rte) {
+            log.error("Error al eliminar el registro ", rte);
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<TasaInteres> Update(@RequestBody TasaInteres tasaInteres) {
-        return new ResponseEntity<>(tasaInteresService.update(tasaInteres), HttpStatus.OK);
+    @PutMapping
+    public ResponseEntity<TasaInteres> update(@RequestBody TasaInteres tasaInteres) {
+        try {
+            log.info("Actualizando la tasa de interes: {}", tasaInteres);
+            return ResponseEntity.ok(tasaInteresService.update(tasaInteres));
+        } catch (RuntimeException rte) {
+            log.error("Error al actualizar el registro ", rte);
+            return ResponseEntity.badRequest().build();
+        }
     }
-    // @GetMapping("/bytasainteres/{tasainteres}")
-    // public ResponseEntity<List<TasaInteres>>
-    // GetByTipoTasaInteres(@PathVariable("tasainteres") String tasainteres) {
-    // return tasaInteresService.GetByTipoTasaInteres(tasainteres).map(register -> {
-    // return new ResponseEntity<>(register, HttpStatus.OK);
-    // }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    // }
 }
