@@ -3,16 +3,16 @@ package com.banquito.core.banking.creditos.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.banquito.core.banking.creditos.domain.CreditoInterviniente;
+import com.banquito.core.banking.creditos.dto.CreditoIntervinienteDTO;
 import com.banquito.core.banking.creditos.service.CreditoIntervinienteService;
 
-import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,20 +28,23 @@ public class CreditoIntervinienteController {
     }
 
     @GetMapping("{idCredito}/{identificacion}")
-    public ResponseEntity<CreditoInterviniente> obtenerPorId(@PathParam("idCredito") Integer idCredito,
-            @PathParam("identificacion") String identificacion) {
-        log.info("Obteniendo interviniente con el credito {} y la identificacion {}", identificacion, idCredito);
-
-        return creditoIntervinienteService.getById(idCredito, identificacion)
-                .map(register -> ResponseEntity.ok(register))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<CreditoIntervinienteDTO> obtenerPorId(@PathVariable("idCredito") Integer idCredito,
+            @PathVariable("identificacion") String identificacion) {
+        try {
+            log.info("Obteniendo interviniente con el credito {} y la identificacion {}", identificacion, idCredito);
+            CreditoIntervinienteDTO dto = creditoIntervinienteService.obtenerPorId(idCredito, identificacion);
+            return ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            log.error("No se encontro el credito interviniente {} - {}: ", idCredito, identificacion);
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    public ResponseEntity<CreditoInterviniente> save(@RequestBody CreditoInterviniente creditoInterviniente) {
+    public ResponseEntity<CreditoIntervinienteDTO> crear(@RequestBody CreditoIntervinienteDTO creditoInterviniente) {
         try {
             log.info("Guardando nuevo registro creditoInterviniente: {}", creditoInterviniente);
-            return ResponseEntity.ok(creditoIntervinienteService.create(creditoInterviniente));
+            return ResponseEntity.ok(creditoIntervinienteService.crear(creditoInterviniente));
         } catch (RuntimeException rte) {
             log.error("Error al crear el nuevo registro: ", rte);
             return ResponseEntity.notFound().build();
@@ -49,10 +52,10 @@ public class CreditoIntervinienteController {
     }
 
     @PutMapping
-    public ResponseEntity<CreditoInterviniente> update(@RequestBody CreditoInterviniente creditoInterviniente) {
+    public ResponseEntity<CreditoIntervinienteDTO> actualizar(@RequestBody CreditoIntervinienteDTO creditoInterviniente) {
         try {
             log.info("Actualizando el registro creditoInterviniente: {}", creditoInterviniente);
-            return ResponseEntity.ok(creditoIntervinienteService.update(creditoInterviniente));
+            return ResponseEntity.ok(creditoIntervinienteService.actualizar(creditoInterviniente));
 
         } catch (RuntimeException rte) {
             log.error("Error al actualizar el registro:", rte);

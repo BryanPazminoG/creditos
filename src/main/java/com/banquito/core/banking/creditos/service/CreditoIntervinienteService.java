@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 import com.banquito.core.banking.creditos.dao.CreditoIntervinienteRepository;
 import com.banquito.core.banking.creditos.domain.CreditoInterviniente;
 import com.banquito.core.banking.creditos.domain.CreditoIntervinientePK;
+import com.banquito.core.banking.creditos.dto.CreditoIntervinienteDTO;
+import com.banquito.core.banking.creditos.dto.Builder.CreditoIntervinienteBuilder;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class CreditoIntervinienteService {
     private final CreditoIntervinienteRepository creditoIntervinienteRepository;
@@ -17,46 +21,60 @@ public class CreditoIntervinienteService {
         this.creditoIntervinienteRepository = creditoIntervinienteRepository;
     }
 
-    public Optional<CreditoInterviniente> getById(Integer codCredito, String identificacion) {
+    public CreditoIntervinienteDTO obtenerPorId(Integer codCredito, String identificacion) {
         CreditoIntervinientePK creditoIntervinientePK = new CreditoIntervinientePK(codCredito, identificacion);
-        return this.creditoIntervinienteRepository.findById(creditoIntervinientePK);
-    }
-
-    public CreditoInterviniente create(CreditoInterviniente creditoInterviniente) {
-        try {
-            return this.creditoIntervinienteRepository.save(creditoInterviniente);
-        } catch (Exception e) {
-            throw new CreateException(
-                    "Ocurrio un error al crear el Credito Interviniente: " + creditoInterviniente.toString(), e);
+        Optional<CreditoInterviniente> creditoInterviniente = this.creditoIntervinienteRepository
+                .findById(creditoIntervinientePK);
+        if (creditoInterviniente.isPresent()) {
+            log.info("Credito Interviniente encotrado");
+            return CreditoIntervinienteBuilder.toDTO(creditoInterviniente.get());
+        } else {
+            throw new RuntimeException(
+                    "No se han encontrado el interviniente" + identificacion + " en el credito " + codCredito);
         }
     }
 
-    public void delete(Integer codCredito, String identificacionCliente) {
+    public CreditoIntervinienteDTO crear(CreditoIntervinienteDTO dto) {
         try {
-            Optional<CreditoInterviniente> creditoInterviniente = getById(codCredito, identificacionCliente);
+            CreditoInterviniente creditoInterviniente = CreditoIntervinienteBuilder.toCreditoInterviniente(dto);
+            this.creditoIntervinienteRepository.save(creditoInterviniente);
+            log.info("El credito Interviniente : {} se ha creado ", dto);
+            return dto;
+        } catch (Exception e) {
+            throw new CreateException(
+                    "Ocurrio un error al crear el Credito Interviniente: " + dto.toString(), e);
+        }
+    }
+
+    public void eliminar(Integer codCredito, String identificacionCliente) {
+        try {
+            CreditoIntervinientePK PK = new CreditoIntervinientePK(codCredito, identificacionCliente);
+            Optional<CreditoInterviniente> creditoInterviniente = this.creditoIntervinienteRepository.findById(PK);
             if (creditoInterviniente.isPresent()) {
                 this.creditoIntervinienteRepository.delete(creditoInterviniente.get());
+                log.info("El credito Interviniente se ha eliminado ");
             } else {
                 throw new RuntimeException(
                         "El Credito Interviniente con id " + codCredito + " - " + identificacionCliente + "no existe");
             }
         } catch (Exception e) {
-            throw new CreateException("Ocurrio un error al eliminar el Credito Interviniente, error: " + e.getMessage(), e);
+            throw new CreateException("Ocurrio un error al eliminar el Credito Interviniente, error: " + e.getMessage(),
+                    e);
         }
     }
 
-    public CreditoInterviniente update(CreditoInterviniente creditoIntervinienteUpdate) {
+    public CreditoIntervinienteDTO actualizar(CreditoIntervinienteDTO dto) {
         try {
-            Integer codCredito = creditoIntervinienteUpdate.getPK().getCodCredito();
-            String identificacionCliente = creditoIntervinienteUpdate.getPK().getIdentificacionCliente();
-            Optional<CreditoInterviniente> creditoInterviniente = getById(codCredito, identificacionCliente);
-            if (creditoInterviniente.isPresent()) {
-                return create(creditoInterviniente.get());
-            } else {
-                throw new RuntimeException("El Credito Interviniente con id " + codCredito + " - " + identificacionCliente + "no existe");
+            CreditoIntervinienteDTO creditoInterviniente = obtenerPorId(dto.getCodCredito(), dto.getIdentificacionCliente());
+            if (creditoInterviniente != null) {
+                return crear(creditoInterviniente);
+            }  else {
+                throw new RuntimeException(
+                        "El Credito Interviniente con id " + dto.getCodCredito() + " - " + dto.getIdentificacionCliente() + "no existe");
             }
         } catch (Exception e) {
-            throw new CreateException("Ocurrio un error al eliminar el Credito Interviniente, error: " + e.getMessage(), e);
+            throw new CreateException("Ocurrio un error al actualizar el Credito Interviniente, error: " + e.getMessage(),
+                    e);
         }
     }
 }
