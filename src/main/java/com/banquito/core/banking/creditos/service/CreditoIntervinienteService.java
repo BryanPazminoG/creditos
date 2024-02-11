@@ -51,6 +51,7 @@ public class CreditoIntervinienteService {
             CreditoIntervinientePK PK = new CreditoIntervinientePK(codCredito, identificacionCliente);
             Optional<CreditoInterviniente> creditoInterviniente = this.creditoIntervinienteRepository.findById(PK);
             if (creditoInterviniente.isPresent()) {
+                log.info("Se encontro el credito Interviniente");
                 this.creditoIntervinienteRepository.delete(creditoInterviniente.get());
                 log.info("El credito Interviniente se ha eliminado ");
             } else {
@@ -67,6 +68,7 @@ public class CreditoIntervinienteService {
         try {
             CreditoIntervinienteDTO creditoInterviniente = obtenerPorId(dto.getCodCredito(), dto.getIdentificacionCliente());
             if (creditoInterviniente != null) {
+                log.info("Se encontro el credito Interviniente");
                 return crear(creditoInterviniente);
             }  else {
                 throw new RuntimeException(
