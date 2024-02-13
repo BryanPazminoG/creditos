@@ -35,7 +35,9 @@ public class TipoCreditoService {
     public List<TipoCreditoDTO> listar() {
         List<TipoCreditoDTO> listDTO = new ArrayList<>();
         for (TipoCredito tipoCredito : this.tipoCreditoRepository.findAll()) {
-            listDTO.add(TipoCreditoBuilder.toDTO(tipoCredito));
+            if(tipoCredito.getEstado().equals("ACT") && tipoCredito.getTipoCliente().equals("NAT")){
+                listDTO.add(TipoCreditoBuilder.toDTO(tipoCredito));
+            }
         }
         return listDTO;
     }

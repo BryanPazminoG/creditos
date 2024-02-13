@@ -52,7 +52,7 @@ public class CreditoController {
     }
 
     @PostMapping
-    public ResponseEntity<CreditoDTO> save(@RequestBody CreditoDTO credito) {
+    public ResponseEntity<Integer> save(@RequestBody CreditoDTO credito) {
         try {
             log.info("Guardando nuevo registro credito: {}", credito);
             return ResponseEntity.ok(creditoService.crear(credito));

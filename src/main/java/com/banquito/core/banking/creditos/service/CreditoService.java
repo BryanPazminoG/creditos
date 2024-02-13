@@ -36,12 +36,12 @@ public class CreditoService {
     }
 
     @Transactional
-    public CreditoDTO crear(CreditoDTO dto) {
+    public Integer crear(CreditoDTO dto) {
         try {
             Credito credito = CreditoBuilder.toCredito(dto);
-            this.creditoRepository.save(credito);
+            credito = this.creditoRepository.save(credito);
             log.info("Se ha creado el credito: {}", dto);
-            return dto;
+            return credito.getCodCredito();
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al crear el Credito: " + dto.toString(), e);
         }
@@ -52,7 +52,8 @@ public class CreditoService {
         try {
             CreditoDTO credito = obtenerPorId(dto.getCodCredito());
             if (credito != null) {
-                return crear(credito);
+                crear(credito);
+                return dto;
             } else {
                 throw new RuntimeException(
                         "El Credito con id" + dto.getCodCredito() + " no existe");
