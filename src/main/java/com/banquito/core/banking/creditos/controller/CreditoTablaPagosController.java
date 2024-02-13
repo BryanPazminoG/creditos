@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.core.banking.creditos.dto.CreditoTablaPagosDTO;
@@ -17,7 +18,8 @@ import com.banquito.core.banking.creditos.service.logica.PreTablaPagos;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@CrossOrigin
+//@CrossOrigin
+@CrossOrigin(origins = "", allowedHeaders = "", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT})
 @RestController
 @RequestMapping("api/v1/pagos")
 public class CreditoTablaPagosController {
