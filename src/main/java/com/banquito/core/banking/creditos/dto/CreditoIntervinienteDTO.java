@@ -2,29 +2,14 @@ package com.banquito.core.banking.creditos.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
 
 @Builder
 @Data
-public class CreditoDTO {
+public class CreditoIntervinienteDTO {
 
     private Integer codCredito;
-    private Integer codTipoCredito;
-    private String identificacionCliente;
-    private String tipoCliente;
-    private String numeroCuenta;
-    private String numeroOperacion;
-    private Timestamp fechaCreacion;
-    private BigDecimal monto;
-    private Integer plazo;
-    private BigDecimal tasaInteres;
-    private String estado;
-    private Timestamp fechaDesembolso;
-    private Date fechaUltimoPago;
-    private BigDecimal capitalPendiente;
-
+    private String codCliente;
+    private String tipo;
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -33,20 +18,25 @@ public class CreditoDTO {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        CreditoDTO other = (CreditoDTO) obj;
+        CreditoIntervinienteDTO other = (CreditoIntervinienteDTO) obj;
         if (codCredito == null) {
             if (other.codCredito != null)
                 return false;
         } else if (!codCredito.equals(other.codCredito))
             return false;
+        if (codCliente == null) {
+            if (other.codCliente != null)
+                return false;
+        } else if (!codCliente.equals(other.codCliente))
+            return false;
         return true;
     }
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((codCredito == null) ? 0 : codCredito.hashCode());
+        result = prime * result + ((codCliente == null) ? 0 : codCliente.hashCode());
         return result;
     }
 }

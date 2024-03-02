@@ -1,8 +1,5 @@
 package com.banquito.core.banking.creditos.dto.Builder;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import com.banquito.core.banking.creditos.domain.Credito;
 import com.banquito.core.banking.creditos.dto.CreditoDTO;
 
@@ -12,18 +9,18 @@ public class CreditoBuilder {
         CreditoDTO dto = CreditoDTO.builder()
                 .codCredito(credito.getCodCredito())
                 .codTipoCredito(credito.getCodTipoCredito())
-                .identificacionCliente(credito.getIdentificacionCliente())
-                .tipoCliente(credito.getTipoCliente())
+                .codTransaccion(credito.getCodTransaccion())
+                .codCliente(credito.getCodCliente())
                 .numeroCuenta(credito.getNumeroCuenta())
-                .numeroOperacion(credito.getNumeroOperacion())
-                .fechaCreacion(credito.getFechaCreacion())
                 .monto(credito.getMonto())
                 .plazo(credito.getPlazo())
-                .tasaInteres(credito.getTasaInteres())
+                .numeroCuotas(credito.getNumeroCuotas())
+                .cuotasPagadas(credito.getCuotasPagadas())
+                .canalTransaccion(credito.getCanalTransaccion())
                 .estado(credito.getEstado())
+                .fechaAprobacion(credito.getFechaAprobacion())
                 .fechaDesembolso(credito.getFechaDesembolso())
-                .fechaUltimoPago(credito.getFechaUltimoPago())
-                .capitalPendiente(credito.getCapitalPendiente()).build();
+                .fechaCierre(credito.getFechaCierre()).build();
         return dto;
     }
 
@@ -32,23 +29,18 @@ public class CreditoBuilder {
         Credito credito = new Credito();
         credito.setCodCredito(dto.getCodCredito());
         credito.setCodTipoCredito(dto.getCodTipoCredito());
-        credito.setIdentificacionCliente(dto.getIdentificacionCliente());
-        credito.setTipoCliente(dto.getTipoCliente());
+        credito.setCodTransaccion(dto.getCodTransaccion());
+        credito.setCodCliente(dto.getCodCliente());
         credito.setNumeroCuenta(dto.getNumeroCuenta());
-        credito.setNumeroOperacion(dto.getNumeroOperacion());
-        credito.setFechaCreacion(dto.getFechaCreacion());
         credito.setMonto(dto.getMonto());
         credito.setPlazo(dto.getPlazo());
-        credito.setTasaInteres(dto.getTasaInteres());
+        credito.setNumeroCuotas(dto.getNumeroCuotas());
+        credito.setCuotasPagadas(dto.getCuotasPagadas());
+        credito.setCanalTransaccion(dto.getCanalTransaccion());
         credito.setEstado(dto.getEstado());
+        credito.setFechaAprobacion(dto.getFechaAprobacion());
         credito.setFechaDesembolso(dto.getFechaDesembolso());
-        credito.setFechaUltimoPago(dto.getFechaUltimoPago());
-        credito.setCapitalPendiente(dto.getCapitalPendiente());
-
-        Date date = new Date();
-        Timestamp timestamp = new Timestamp(date.getTime());
-
-        credito.setFechaUltimoCambio(timestamp);
+        credito.setFechaCierre(dto.getFechaCierre());
 
         return credito;
     }

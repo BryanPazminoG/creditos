@@ -3,9 +3,6 @@ package com.banquito.core.banking.creditos.dto.Builder;
 import com.banquito.core.banking.creditos.domain.TipoCredito;
 import com.banquito.core.banking.creditos.dto.TipoCreditoDTO;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 public class TipoCreditoBuilder {
 
     public static TipoCreditoDTO toDTO(TipoCredito tipoCredito) {
@@ -21,7 +18,6 @@ public class TipoCreditoBuilder {
                 .montoMinimo(tipoCredito.getMontoMinimo())
                 .montoMaximo(tipoCredito.getMontoMaximo())
                 .estado(tipoCredito.getEstado())
-                .fechaCreacion(tipoCredito.getFechaCreacion())
                 .build();
         return dto;
     }
@@ -40,12 +36,6 @@ public class TipoCreditoBuilder {
         tipoCredito.setMontoMinimo(dto.getMontoMinimo());
         tipoCredito.setMontoMaximo(dto.getMontoMaximo());
         tipoCredito.setEstado(dto.getEstado());
-        tipoCredito.setFechaCreacion(dto.getFechaCreacion());
-
-        Date date = new Date();
-        Timestamp timestamp = new Timestamp(date.getTime());
-
-        tipoCredito.setFechaUltimoCambio(timestamp);
 
         return tipoCredito;
     }

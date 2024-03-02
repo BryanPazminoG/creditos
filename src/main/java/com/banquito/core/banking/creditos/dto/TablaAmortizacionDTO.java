@@ -7,7 +7,7 @@ import java.sql.Date;
 
 @Builder
 @Data
-public class CreditoTablaPagosDTO {
+public class TablaAmortizacionDTO {
 
     private Integer codCredito;
     private Integer codCuota;
@@ -17,8 +17,6 @@ public class CreditoTablaPagosDTO {
     private BigDecimal capitalRestante;
     private Date fechaPlanificadaPago;
     private String estado;
-    private Date fechaPagoEfectivo;
-    private String transaccionPago;
 
     @Override
     public boolean equals(Object obj) {
@@ -28,7 +26,7 @@ public class CreditoTablaPagosDTO {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        CreditoTablaPagosDTO other = (CreditoTablaPagosDTO) obj;
+        TablaAmortizacionDTO other = (TablaAmortizacionDTO) obj;
         if (codCredito == null) {
             if (other.codCredito != null)
                 return false;
@@ -41,7 +39,6 @@ public class CreditoTablaPagosDTO {
             return false;
         return true;
     }
-
     @Override
     public int hashCode() {
         final int prime = 31;

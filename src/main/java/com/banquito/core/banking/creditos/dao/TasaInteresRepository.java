@@ -9,5 +9,4 @@ import com.banquito.core.banking.creditos.domain.TasaInteres;
 
 @Repository
 public interface TasaInteresRepository extends CrudRepository<TasaInteres, String> {
-    //public List<TasaInteres> findByTipoTasaInteres(String tipoTasaInteres);
 }

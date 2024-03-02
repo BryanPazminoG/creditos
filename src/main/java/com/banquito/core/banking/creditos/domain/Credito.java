@@ -73,10 +73,6 @@ public class Credito {
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp fechaDesembolso;
 
-    @Column(name = "FECHA_PRIMER_PAGO", nullable = true)
-    @Temporal(TemporalType.DATE)
-    private Date fechaPrimerPago;
-
     @Column(name = "FECHA_CIERRE", nullable = true)
     @Temporal(TemporalType.DATE)
     private Date fechaCierre;
@@ -131,9 +127,7 @@ public class Credito {
                 + ", numeroCuenta=" + numeroCuenta + ", monto=" + monto + ", plazo=" + plazo + ", numeroCuotas="
                 + numeroCuotas + ", cuotasPagadas=" + cuotasPagadas + ", canalTransaccion=" + canalTransaccion
                 + ", estado=" + estado + ", fechaCreacion=" + fechaCreacion + ", fechaAprobacion=" + fechaAprobacion
-                + ", fechaDesembolso=" + fechaDesembolso + ", fechaPrimerPago=" + fechaPrimerPago + ", fechaCierre="
-                + fechaCierre + ", fechaUltimoCambio=" + fechaUltimoCambio + ", tipoCredito=" + tipoCredito
-                + ", version=" + version + "]";
+                + ", fechaDesembolso=" + fechaDesembolso + ", fechaCierre=" + fechaCierre + ", fechaUltimoCambio="
+                + fechaUltimoCambio + ", tipoCredito=" + tipoCredito + ", version=" + version + "]";
     }
-
 }

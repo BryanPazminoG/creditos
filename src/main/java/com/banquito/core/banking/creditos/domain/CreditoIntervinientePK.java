@@ -14,11 +14,11 @@ public class CreditoIntervinientePK implements Serializable {
     @Column(name="COD_CREDITO", nullable = false)
     private Integer codCredito;
     @Column(name="COD_CLIENTE", nullable = false)
-    private Integer codCliente;
+    private String codCliente;
 
     public CreditoIntervinientePK() {
     }
-    public CreditoIntervinientePK(Integer codCredito, Integer codCliente) {
+    public CreditoIntervinientePK(Integer codCredito, String codCliente) {
         this.codCredito = codCredito;
         this.codCliente = codCliente;
     }

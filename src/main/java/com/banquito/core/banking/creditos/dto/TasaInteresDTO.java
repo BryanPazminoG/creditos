@@ -2,6 +2,7 @@ package com.banquito.core.banking.creditos.dto;
 
 import lombok.Builder;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -11,10 +12,12 @@ public class TasaInteresDTO {
 
     private String codTasaInteres;
     private String tipoTasaInteres;
-    private String nombre;
     private BigDecimal tasaMinima;
     private BigDecimal tasaMaxima;
-
+    private String estado;
+    private Timestamp fechaInicioVigencia;
+    private Timestamp fechaFinVigencia;
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

@@ -2,8 +2,6 @@ package com.banquito.core.banking.creditos.dto.Builder;
 
 import com.banquito.core.banking.creditos.domain.TasaInteres;
 import com.banquito.core.banking.creditos.dto.TasaInteresDTO;
-import java.sql.Timestamp;
-import java.util.Date;
 
 public class TasaInteresBuilder {
 
@@ -12,9 +10,11 @@ public class TasaInteresBuilder {
         TasaInteresDTO dto = TasaInteresDTO.builder()
                 .codTasaInteres(tasaInteres.getCodTasaInteres())
                 .tipoTasaInteres(tasaInteres.getTipoTasaInteres())
-                .nombre(tasaInteres.getNombre())
                 .tasaMinima(tasaInteres.getTasaMinima())
-                .tasaMaxima(tasaInteres.getTasaMaxima()).build();
+                .tasaMaxima(tasaInteres.getTasaMaxima())
+                .estado(tasaInteres.getEstado())
+                .fechaInicioVigencia(tasaInteres.getFechaInicioVigencia())
+                .fechaFinVigencia(tasaInteres.getFechaFinVigencia()).build();
         return dto;
     }
 
@@ -23,15 +23,11 @@ public class TasaInteresBuilder {
         TasaInteres tasaInteres = new TasaInteres();
         tasaInteres.setCodTasaInteres(dto.getCodTasaInteres());
         tasaInteres.setTipoTasaInteres(dto.getTipoTasaInteres());
-        tasaInteres.setNombre(dto.getNombre());
         tasaInteres.setTasaMinima(dto.getTasaMinima());
         tasaInteres.setTasaMaxima(dto.getTasaMaxima());
-        tasaInteres.setCodTasaInteres(dto.getCodTasaInteres());
-
-        Date date = new Date();
-        Timestamp timestamp = new Timestamp(date.getTime());
-        
-        tasaInteres.setFechaUltimoCambio(timestamp);
+        tasaInteres.setEstado(dto.getEstado());
+        tasaInteres.setFechaInicioVigencia(dto.getFechaInicioVigencia());
+        tasaInteres.setFechaFinVigencia(dto.getFechaFinVigencia());
 
         return tasaInteres;
     }

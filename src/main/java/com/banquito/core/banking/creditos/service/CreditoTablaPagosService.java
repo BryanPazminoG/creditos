@@ -4,16 +4,16 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.banquito.core.banking.creditos.dao.CreditoTablaPagosRepository;
+import com.banquito.core.banking.creditos.dao.TablaAmortizacionRepository;
 import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
 import com.banquito.core.banking.creditos.domain.TablaAmortizacionPK;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 
 @Service
 public class CreditoTablaPagosService {
-    private final CreditoTablaPagosRepository creditoTablaPagosRepository;
+    private final TablaAmortizacionRepository creditoTablaPagosRepository;
 
-    public CreditoTablaPagosService(CreditoTablaPagosRepository creditoTablaPagosRepository) {
+    public CreditoTablaPagosService(TablaAmortizacionRepository creditoTablaPagosRepository) {
         this.creditoTablaPagosRepository = creditoTablaPagosRepository;
     }
 

@@ -9,7 +9,9 @@ import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
 import com.banquito.core.banking.creditos.domain.TablaAmortizacionPK;
 
 @Repository
-public interface CreditoTablaPagosRepository extends CrudRepository<TablaAmortizacion, TablaAmortizacionPK> {
+public interface TablaAmortizacionRepository extends CrudRepository<TablaAmortizacion, TablaAmortizacionPK> {
+
+    public List<TablaAmortizacion> findByPKCodCredito(Integer codCredito);
 
     public TablaAmortizacion findByFechaPlanificadaPagoAndPK(Date fechaPlanificadaPago, TablaAmortizacionPK PK);
 
