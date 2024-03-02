@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.banquito.core.banking.creditos.domain.CreditoTablaPagos;
+import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
 // import com.banquito.core.banking.creditos.domain.CreditoTablaPagosPK;
 import com.banquito.core.banking.creditos.service.CreditoTablaPagosService;
 
@@ -30,7 +30,7 @@ public class CreditoTablaPagosController {
     // }
 
     @GetMapping("/getbyid/{creditoid}/{cuotaid}")
-    public ResponseEntity<CreditoTablaPagos> GetById(@PathVariable("creditoid") Integer creditoId,
+    public ResponseEntity<TablaAmortizacion> GetById(@PathVariable("creditoid") Integer creditoId,
             @PathVariable("cuotaid") Integer cuotaId) {
         return creditoTablaPagosService.getById(creditoId, cuotaId)
                 .map(register -> new ResponseEntity<>(register, HttpStatus.OK))
@@ -38,7 +38,7 @@ public class CreditoTablaPagosController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<CreditoTablaPagos> Save(@RequestBody CreditoTablaPagos creditoTablaPagos) {
+    public ResponseEntity<TablaAmortizacion> Save(@RequestBody TablaAmortizacion creditoTablaPagos) {
         return new ResponseEntity<>(creditoTablaPagosService.create(creditoTablaPagos), HttpStatus.OK);
     }
 
@@ -50,7 +50,7 @@ public class CreditoTablaPagosController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<CreditoTablaPagos> Update(@RequestBody CreditoTablaPagos creditoTablaPagos) {
+    public ResponseEntity<TablaAmortizacion> Update(@RequestBody TablaAmortizacion creditoTablaPagos) {
         return new ResponseEntity<>(creditoTablaPagosService.update(creditoTablaPagos), HttpStatus.OK);
     }
     // @GetMapping("/fechapago/{fechapago}/{creditoid}/{cuotaid}")

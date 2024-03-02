@@ -1,6 +1,7 @@
 package com.banquito.core.banking.creditos.domain;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
@@ -27,7 +28,7 @@ public class TipoCredito {
     @Column(name = "COD_TIPO_CREDITO", nullable = false)
     private Integer codTipoCredito;
 
-    @Column(name = "COD_TASA_INTERES", nullable = true, length = 8)
+    @Column(name = "COD_TASA_INTERES", nullable = false, length = 8)
     private String codTasaInteres;
 
     @Column(name = "NOMBRE", nullable = false, length = 50)
@@ -58,8 +59,8 @@ public class TipoCredito {
     private String estado;
 
     @Column(name = "FECHA_CREACION", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp fechaCreacion;
+    @Temporal(TemporalType.DATE)
+    private Date fechaCreacion;
 
     @Column(name = "FECHA_ULTIMO_CAMBIO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -110,6 +111,7 @@ public class TipoCredito {
                 + nombre + ", descripcion=" + descripcion + ", tipoCliente=" + tipoCliente + ", unidadPlazo="
                 + unidadPlazo + ", plazoMinimo=" + plazoMinimo + ", plazoMaximo=" + plazoMaximo + ", montoMinimo="
                 + montoMinimo + ", montoMaximo=" + montoMaximo + ", estado=" + estado + ", fechaCreacion="
-                + fechaCreacion + ", fechaUltimoCambio=" + fechaUltimoCambio + ", tasaInteres=" + tasaInteres + "]";
-    }
+                + fechaCreacion + ", fechaUltimoCambio=" + fechaUltimoCambio + ", tasaInteres=" + tasaInteres
+                + ", version=" + version + "]";
+    }  
 }

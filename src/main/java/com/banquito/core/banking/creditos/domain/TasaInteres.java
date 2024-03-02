@@ -1,6 +1,7 @@
 package com.banquito.core.banking.creditos.domain;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
@@ -25,14 +26,26 @@ public class TasaInteres {
     @Column(name = "TIPO_TASA_INTERES", nullable = false, length = 3)
     private String tipoTasaInteres;
 
-    @Column(name = "NOMBRE", nullable = false, length = 50)
-    private String nombre;
-
     @Column(name = "TASA_MINIMA", nullable = false, precision = 5, scale = 2)
     private BigDecimal tasaMinima;
 
     @Column(name = "TASA_MAXIMA", nullable = false, precision = 5, scale = 2)
     private BigDecimal tasaMaxima;
+
+    @Column(name = "ESTADO", nullable = false, length = 3)
+    private String estado;
+
+    @Column(name = "FECHA_CREACION", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fechaCreacion;
+
+    @Column(name = "FECHA_INICIO_VIGENCIA", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp fechaInicioVigencia;
+
+    @Column(name = "FECHA_FIN_VIGENCIA", nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp fechaFinVigencia;
 
     @Column(name = "FECHA_ULTIMO_CAMBIO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -75,8 +88,10 @@ public class TasaInteres {
 
     @Override
     public String toString() {
-        return "TasaInteres [codTasaInteres=" + codTasaInteres + ", tipoTasaInteres=" + tipoTasaInteres + ", nombre="
-                + nombre + ", tasaMinima=" + tasaMinima + ", tasaMaxima=" + tasaMaxima + ", fechaUltimoCambio="
-                + fechaUltimoCambio + ", version=" + version + "]";
+        return "TasaInteres [codTasaInteres=" + codTasaInteres + ", tipoTasaInteres=" + tipoTasaInteres
+                + ", tasaMinima=" + tasaMinima + ", tasaMaxima=" + tasaMaxima + ", estado=" + estado
+                + ", fechaCreacion=" + fechaCreacion + ", fechaInicioVigencia=" + fechaInicioVigencia
+                + ", fechaFinVigencia=" + fechaFinVigencia + ", fechaUltimoCambio=" + fechaUltimoCambio + ", version="
+                + version + "]";
     }
 }

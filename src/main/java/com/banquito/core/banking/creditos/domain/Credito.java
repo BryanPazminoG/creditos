@@ -28,18 +28,20 @@ public class Credito {
     @Column(name = "COD_CREDITO", nullable = false)
     private Integer codCredito;
 
-    @Column(name = "COD_TIPO_CREDITO", nullable = true)
+    @Column(name = "COD_TIPO_CREDITO", nullable = false)
     private Integer codTipoCredito;
 
-    @Column(name = "COD_CLIENTE", nullable = true)
-    private Integer codCliente;
+    @Column(name = "COD_TRANSACCION", nullable = true, length = 64)
+    private String codTransaccion;
 
-    @Column(name = "NUMERO_OPERACION", nullable = false, length = 8)
+    @Column(name = "COD_CLIENTE", nullable = false, length = 64)
+    private String codCliente;
+
+    @Column(name = "NUMERO_OPERACION", nullable = false, length = 64)
     private String numeroOperacion;
 
-    @Column(name = "FECHA_CREACION", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp fechaCreacion;
+    @Column(name = "NUMERO_CUENTA", nullable = false, length = 10)
+    private String numeroCuenta;
 
     @Column(name = "MONTO", nullable = false, precision = 18, scale = 2)
     private BigDecimal monto;
@@ -47,22 +49,37 @@ public class Credito {
     @Column(name = "PLAZO", nullable = false)
     private Integer plazo;
 
-    @Column(name = "TASA_INTERES", nullable = false, precision = 5, scale = 2)
-    private BigDecimal tasaInteres;
+    @Column(name = "NUMERO_CUOTAS", nullable = false)
+    private Integer numeroCuotas;
+
+    @Column(name = "CUOTAS_PAGADAS", nullable = true)
+    private Integer cuotasPagadas;
+
+    @Column(name = "CANAL_TRANSACCION", nullable = false, length = 3)
+    private String canalTransaccion;
 
     @Column(name = "ESTADO", nullable = false, length = 3)
     private String estado;
 
-    @Column(name = "FECHA_DESEMBOLSO", nullable = false)
+    @Column(name = "FECHA_CREACION", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fechaCreacion;
+
+    @Column(name = "FECHA_APROBACION", nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp fechaAprobacion;
+
+    @Column(name = "FECHA_DESEMBOLSO", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp fechaDesembolso;
 
-    @Column(name = "FECHA_ULTIMO_PAGO", nullable = true)
+    @Column(name = "FECHA_PRIMER_PAGO", nullable = true)
     @Temporal(TemporalType.DATE)
-    private Date fechaUltimoPago;
+    private Date fechaPrimerPago;
 
-    @Column(name = "CAPITAL_PENDIENTE", nullable = false, precision = 18, scale = 2)
-    private BigDecimal capitalPendiente;
+    @Column(name = "FECHA_CIERRE", nullable = true)
+    @Temporal(TemporalType.DATE)
+    private Date fechaCierre;
 
     @Column(name = "FECHA_ULTIMO_CAMBIO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -109,10 +126,14 @@ public class Credito {
 
     @Override
     public String toString() {
-        return "Credito [codCredito=" + codCredito + ", codTipoCredito=" + codTipoCredito + ", codCliente=" + codCliente
-                + ", numeroOperacion=" + numeroOperacion + ", fechaCreacion=" + fechaCreacion + ", monto=" + monto
-                + ", plazo=" + plazo + ", tasaInteres=" + tasaInteres + ", estado=" + estado + ", fechaDesembolso="
-                + fechaDesembolso + ", fechaUltimoPago=" + fechaUltimoPago + ", capitalPendiente=" + capitalPendiente
-                + ", fechaUltimoCambio=" + fechaUltimoCambio + ", tipoCredito=" + tipoCredito + "]";
+        return "Credito [codCredito=" + codCredito + ", codTipoCredito=" + codTipoCredito + ", codTransaccion="
+                + codTransaccion + ", codCliente=" + codCliente + ", numeroOperacion=" + numeroOperacion
+                + ", numeroCuenta=" + numeroCuenta + ", monto=" + monto + ", plazo=" + plazo + ", numeroCuotas="
+                + numeroCuotas + ", cuotasPagadas=" + cuotasPagadas + ", canalTransaccion=" + canalTransaccion
+                + ", estado=" + estado + ", fechaCreacion=" + fechaCreacion + ", fechaAprobacion=" + fechaAprobacion
+                + ", fechaDesembolso=" + fechaDesembolso + ", fechaPrimerPago=" + fechaPrimerPago + ", fechaCierre="
+                + fechaCierre + ", fechaUltimoCambio=" + fechaUltimoCambio + ", tipoCredito=" + tipoCredito
+                + ", version=" + version + "]";
     }
+
 }

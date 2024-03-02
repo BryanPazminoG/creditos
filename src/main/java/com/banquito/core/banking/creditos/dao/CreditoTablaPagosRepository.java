@@ -5,13 +5,13 @@ import java.sql.Date;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import com.banquito.core.banking.creditos.domain.CreditoTablaPagos;
-import com.banquito.core.banking.creditos.domain.CreditoTablaPagosPK;
+import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
+import com.banquito.core.banking.creditos.domain.TablaAmortizacionPK;
 
 @Repository
-public interface CreditoTablaPagosRepository extends CrudRepository<CreditoTablaPagos, CreditoTablaPagosPK> {
+public interface CreditoTablaPagosRepository extends CrudRepository<TablaAmortizacion, TablaAmortizacionPK> {
 
-    public CreditoTablaPagos findByFechaPlanificadaPagoAndPK(Date fechaPlanificadaPago, CreditoTablaPagosPK PK);
+    public TablaAmortizacion findByFechaPlanificadaPagoAndPK(Date fechaPlanificadaPago, TablaAmortizacionPK PK);
 
-    public List<CreditoTablaPagos> findByEstadoOrderByFechaPlanificadaPago(String estado);
+    public List<TablaAmortizacion> findByEstadoOrderByFechaPlanificadaPago(String estado);
 }

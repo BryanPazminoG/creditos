@@ -5,8 +5,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.banquito.core.banking.creditos.dao.CreditoTablaPagosRepository;
-import com.banquito.core.banking.creditos.domain.CreditoTablaPagos;
-import com.banquito.core.banking.creditos.domain.CreditoTablaPagosPK;
+import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
+import com.banquito.core.banking.creditos.domain.TablaAmortizacionPK;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 
 @Service
@@ -17,8 +17,8 @@ public class CreditoTablaPagosService {
         this.creditoTablaPagosRepository = creditoTablaPagosRepository;
     }
 
-    public Optional<CreditoTablaPagos> getById(Integer codCredito, Integer codCuota) {
-        CreditoTablaPagosPK creditoTablaPagosPK = new CreditoTablaPagosPK(codCredito, codCuota);
+    public Optional<TablaAmortizacion> getById(Integer codCredito, Integer codCuota) {
+        TablaAmortizacionPK creditoTablaPagosPK = new TablaAmortizacionPK(codCredito, codCuota);
         return this.creditoTablaPagosRepository.findById(creditoTablaPagosPK);
     }
 
@@ -26,7 +26,7 @@ public class CreditoTablaPagosService {
     // return this.creditoTablaPagosRepository.findAll();
     // }
 
-    public CreditoTablaPagos create(CreditoTablaPagos creditoTablaPagos) {
+    public TablaAmortizacion create(TablaAmortizacion creditoTablaPagos) {
         try {
             return this.creditoTablaPagosRepository.save(creditoTablaPagos);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class CreditoTablaPagosService {
 
     public void delete(Integer codCredito, Integer codCuota) {
         try {
-            Optional<CreditoTablaPagos> creditoTablaPagos = getById(codCredito, codCuota);
+            Optional<TablaAmortizacion> creditoTablaPagos = getById(codCredito, codCuota);
             if (creditoTablaPagos.isPresent()) {
                 this.creditoTablaPagosRepository.delete(creditoTablaPagos.get());
             } else {
@@ -48,11 +48,11 @@ public class CreditoTablaPagosService {
         }
     }
 
-    public CreditoTablaPagos update(CreditoTablaPagos creditoTablaPagosUpdate) {
+    public TablaAmortizacion update(TablaAmortizacion creditoTablaPagosUpdate) {
         try {
             Integer codCredito = creditoTablaPagosUpdate.getPK().getCodCredito();
             Integer codCuota = creditoTablaPagosUpdate.getPK().getCodCuota();
-            Optional<CreditoTablaPagos> creditoTablaPagos = getById(codCredito, codCuota);
+            Optional<TablaAmortizacion> creditoTablaPagos = getById(codCredito, codCuota);
             if (creditoTablaPagos.isPresent()) {
                 return create(creditoTablaPagos.get());
             } else {

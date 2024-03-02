@@ -20,11 +20,11 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Entity
-@Table(name = "CREDITO_TABLA_PAGOS")
-public class CreditoTablaPagos {
+@Table(name = "TABLA_AMORTIZACION")
+public class TablaAmortizacion {
 
     @EmbeddedId
-    private CreditoTablaPagosPK PK;
+    private TablaAmortizacionPK PK;
 
     @Column(name = "CAPITAL", nullable = false, precision = 18, scale = 2)
     private BigDecimal capital;
@@ -42,19 +42,12 @@ public class CreditoTablaPagos {
     @Temporal(TemporalType.DATE)
     private Date fechaPlanificadaPago;
 
-    @Column(name = "ESTADO", nullable = false, length = 3)
-    private String estado;
-
-    @Column(name = "FECHA_PAGO_EFECTIVO", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaPagoEfectivo;
-
-    @Column(name = "TRANSACCION_PAGO", nullable = false, length = 64)
-    private String transaccionPago;
-
     @Column(name = "FECHA_ULTIMO_CAMBIO", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp fechaUltimoCambio;
+
+    @Column(name = "ESTADO", nullable = false, length = 3)
+    private String estado;
 
     @ManyToOne()
     @JoinColumn(name = "COD_CREDITO", updatable = false, insertable = false)
@@ -63,10 +56,10 @@ public class CreditoTablaPagos {
     @Version
     private Long version;
 
-    public CreditoTablaPagos() {
+    public TablaAmortizacion() {
     }
 
-    public CreditoTablaPagos(CreditoTablaPagosPK pK) {
+    public TablaAmortizacion(TablaAmortizacionPK pK) {
         PK = pK;
     }
 
@@ -86,7 +79,7 @@ public class CreditoTablaPagos {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        CreditoTablaPagos other = (CreditoTablaPagos) obj;
+        TablaAmortizacion other = (TablaAmortizacion) obj;
         if (PK == null) {
             if (other.PK != null)
                 return false;
@@ -97,11 +90,9 @@ public class CreditoTablaPagos {
 
     @Override
     public String toString() {
-        return "CreditoTablaPagos [PK=" + PK + ", capital=" + capital + ", interes=" + interes + ", montoCuota="
+        return "TablaAmortizacion [PK=" + PK + ", capital=" + capital + ", interes=" + interes + ", montoCuota="
                 + montoCuota + ", capitalRestante=" + capitalRestante + ", fechaPlanificadaPago=" + fechaPlanificadaPago
-                + ", estado=" + estado + ", fechaPagoEfectivo=" + fechaPagoEfectivo + ", transaccionPago="
-                + transaccionPago + ", fechaUltimoCambio=" + fechaUltimoCambio + ", credito=" + credito + ", version="
-                + version + "]";
+                + ", fechaUltimoCambio=" + fechaUltimoCambio + ", estado=" + estado + ", credito=" + credito
+                + ", version=" + version + "]";
     }
-
 }
