@@ -20,20 +20,20 @@ public class TransaccionCreditoBuilder {
         return dto;
     }
 
-    public static TransaccionCredito toInteresAcumulado(TransaccionCreditoDTO dto) {
+    public static TransaccionCredito toTransaccionCredito(TransaccionCreditoDTO dto) {
 
-        TransaccionCredito tasaAcumulado = new TransaccionCredito();
-        tasaAcumulado.setCodTransaccionCredito(dto.getCodTransaccionCredito());
-        tasaAcumulado.setCodCredito(dto.getCodCredito());
-        tasaAcumulado.setCodCuota(dto.getCodCuota());
-        tasaAcumulado.setCodInteresAcumulado(dto.getCodInteresAcumulado());
-        tasaAcumulado.setCodTransaccion(dto.getCodTransaccion());
-        tasaAcumulado.setNumeroCuenta(dto.getNumeroCuenta());
-        tasaAcumulado.setReferencia(dto.getReferencia());    
-        tasaAcumulado.setEstado(dto.getEstado());
-        tasaAcumulado.setTipoPago(dto.getTipoPago());
-        tasaAcumulado.setFechaPago(dto.getFechaPago());
+        TransaccionCredito transaccionCredito = new TransaccionCredito();
+        transaccionCredito.setCodTransaccionCredito(dto.getCodTransaccionCredito());
+        transaccionCredito.setCodCredito(dto.getCodCredito());
+        transaccionCredito.setCodCuota(dto.getCodCuota());
+        transaccionCredito.setCodInteresAcumulado(dto.getCodInteresAcumulado());
+        transaccionCredito.setCodTransaccion(dto.getCodTransaccion());
+        transaccionCredito.setNumeroCuenta(dto.getNumeroCuenta());
+        transaccionCredito.setReferencia(dto.getReferencia());    
+        transaccionCredito.setEstado(dto.getEstado());
+        transaccionCredito.setTipoPago(dto.getTipoPago());
+        transaccionCredito.setFechaPago(dto.getFechaPago());
 
-        return tasaAcumulado;
+        return transaccionCredito;
     }
 }

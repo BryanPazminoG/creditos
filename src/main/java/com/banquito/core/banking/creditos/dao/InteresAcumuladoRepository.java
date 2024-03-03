@@ -11,5 +11,4 @@ import com.banquito.core.banking.creditos.domain.InteresAcumulado;
 public interface InteresAcumuladoRepository extends CrudRepository<InteresAcumulado, Integer> {
     public List<InteresAcumulado> findByCodCreditoOrderByFechaCreacion(Integer codCredito);
     public List<InteresAcumulado> findByEstadoOrderByFechaCreacion(String estado);
-
 }

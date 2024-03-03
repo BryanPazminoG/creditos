@@ -12,9 +12,12 @@ import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
+import com.banquito.core.banking.creditos.dao.InteresAcumuladoRepository;
 import com.banquito.core.banking.creditos.dao.TablaAmortizacionRepository;
+import com.banquito.core.banking.creditos.domain.InteresAcumulado;
 import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
 import com.banquito.core.banking.creditos.domain.TablaAmortizacionPK;
+import com.banquito.core.banking.creditos.dto.CreditoDTO;
 import com.banquito.core.banking.creditos.dto.TablaAmortizacionDTO;
 import com.banquito.core.banking.creditos.dto.Builder.TablaAmortizacionBuilder;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
@@ -26,9 +29,12 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class TablaAmortizacionService {
     private final TablaAmortizacionRepository TablaAmortizacionRepository;
+    private final InteresAcumuladoRepository interesAcumuladoRepository;
 
-    public TablaAmortizacionService(TablaAmortizacionRepository TablaAmortizacionRepository) {
+    public TablaAmortizacionService(TablaAmortizacionRepository TablaAmortizacionRepository,
+            InteresAcumuladoRepository interesAcumuladoRepository) {
         this.TablaAmortizacionRepository = TablaAmortizacionRepository;
+        this.interesAcumuladoRepository = interesAcumuladoRepository;
     }
 
     public TablaAmortizacionDTO obtenerPorId(Integer codCredito, Integer codCuota) {
@@ -72,6 +78,17 @@ public class TablaAmortizacionService {
         return Optional.empty();
     }
 
+    public BigDecimal obtenerInteresVigente(Integer codCredito) {
+        List<InteresAcumulado> listInteres = this.interesAcumuladoRepository.findByCodCreditoOrderByFechaCreacion(codCredito);
+        if(!listInteres.isEmpty()){
+            log.info("Interes Acumulado encotrado");
+            return listInteres.get(0).getTasaInteresVigente();
+        }else{
+            throw new RuntimeException(
+                "No se han encontrado ningun interes aculumado con el codigo del credito" + codCredito);
+        }
+    }
+
     public List<TablaAmortizacionDTO> getPagosRealizados(Integer codCredito) {
         List<TablaAmortizacionDTO> listDTO = this.getTablaAmortizacion(codCredito);
         List<TablaAmortizacionDTO> listaPagos = new ArrayList<>();
@@ -92,7 +109,8 @@ public class TablaAmortizacionService {
         try {
             TablaAmortizacionDTO tablaAmortizacionDTO = obtenerPorId(dto.getCodCredito(), dto.getCodCuota());
             if (tablaAmortizacionDTO != null) {
-                TablaAmortizacion tablaAmortizacion = TablaAmortizacionBuilder.toTablaAmortizacion(tablaAmortizacionDTO);
+                TablaAmortizacion tablaAmortizacion = TablaAmortizacionBuilder
+                        .toTablaAmortizacion(tablaAmortizacionDTO);
                 TablaAmortizacionRepository.save(tablaAmortizacion);
                 return dto;
             } else {
@@ -135,7 +153,11 @@ public class TablaAmortizacionService {
     }
 
     @Transactional
-    public List<TablaAmortizacionDTO> crear(BigDecimal tasaInteres, BigDecimal montoPrestamo, Integer numeroPagos) {
+    public List<TablaAmortizacionDTO> crear(CreditoDTO dto) {
+
+        BigDecimal tasaInteres = this.obtenerInteresVigente(dto.getCodCredito());
+        BigDecimal montoPrestamo = dto.getMonto();
+        Integer numeroPagos = dto.getNumeroCuotas();
 
         BigDecimal interesMensual = tasaInteres.divide(new BigDecimal(12))
                 .divide(new BigDecimal(100));

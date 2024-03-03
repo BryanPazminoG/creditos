@@ -3,6 +3,7 @@ package com.banquito.core.banking.creditos.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.math.BigDecimal;
 
 import org.springframework.stereotype.Service;
 
@@ -39,12 +40,12 @@ public class InteresAcumuladoService {
     public List<InteresAcumuladoDTO> listarPorCodigoCredito(Integer codCredito) {
         List<InteresAcumuladoDTO> listDTO = new ArrayList<>();
         for (InteresAcumulado interesAcumulado : this.interesAcumuladoRepository
-                .findByCodCreditoOrderByFechaCreacion(codCredito)) {
+        .findByCodCreditoOrderByFechaCreacion(codCredito)) {
             listDTO.add(InteresAcumuladoBuilder.toDTO(interesAcumulado));
         }
         return listDTO;
     }
-
+    
     public List<InteresAcumuladoDTO> listarEstado(String estado) {
         try {
             if("PAG".equals(estado) || "PEN".equals(estado)){

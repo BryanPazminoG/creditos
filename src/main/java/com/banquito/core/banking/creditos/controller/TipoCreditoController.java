@@ -2,7 +2,6 @@ package com.banquito.core.banking.creditos.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,18 +57,6 @@ public class TipoCreditoController {
         } catch (RuntimeException rte) {
             log.error("Error al crear el nuevo registro: ", rte);
             return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> eliminar(@PathVariable("id") Integer id) {
-        try {
-            log.info("Eliminando el tipo credito con id: {}", id);
-            tipoCreditoService.eliminar(id);
-            return ResponseEntity.ok(true);
-        } catch (RuntimeException rte) {
-            log.error("Error al eliminar el registro ", rte);
-            return ResponseEntity.notFound().build();
         }
     }
 

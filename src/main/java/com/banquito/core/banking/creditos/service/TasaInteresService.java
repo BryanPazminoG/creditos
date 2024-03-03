@@ -51,12 +51,12 @@ public class TasaInteresService {
     }
 
     @Transactional
-    public String crear(TasaInteresDTO dto) {
+    public TasaInteresDTO crear(TasaInteresDTO dto) {
         try {
             TasaInteres tasaInteres = TasaInteresBuilder.toTasaInteres(dto);
             this.tasaInteresRepository.save(tasaInteres);
             log.info("Se ha creado la tasa de interes exitosamente: {}", dto);
-            return dto.getCodTasaInteres();
+            return dto;
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al crear la tasaInteres: " + dto.toString(), e);
         }

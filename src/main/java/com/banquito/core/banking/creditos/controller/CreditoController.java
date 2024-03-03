@@ -28,23 +28,23 @@ public class CreditoController {
         this.creditoService = creditoService;
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<CreditoDTO> obtenerPorId(@PathVariable("id") Integer id) {
+    @GetMapping("{codCredito}")
+    public ResponseEntity<CreditoDTO> obtenerPorId(@PathVariable("codCredito") Integer codCredito) {
         try {
-            log.info("Obteniendo credito por el ID: {}", id);
-            CreditoDTO credito = creditoService.obtenerPorId(id);
+            log.info("Obteniendo credito por el ID: {}", codCredito);
+            CreditoDTO credito = creditoService.obtenerPorId(codCredito);
             return ResponseEntity.ok(credito);
         } catch (Exception e) {
-            log.error("Error al obtener el credito con el id: {}", id);
+            log.error("Error al obtener el credito con el id: {}", codCredito);
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("clientes/{identificacion}")
-    public ResponseEntity<List<CreditoDTO>> BuscarPorCodigoCliente(@PathVariable("identificacion") String identificacion) {
+    @GetMapping("cliente/{codCliente}")
+    public ResponseEntity<List<CreditoDTO>> BuscarPorCodigoCliente(@PathVariable("codCliente") String codCliente) {
         try {
-            log.info("Buscando el credito por el numero de identificacion del cliente: {}", identificacion);
-            return ResponseEntity.ok(creditoService.BuscarPorCliente(identificacion));
+            log.info("Buscando el credito por el codigo del cliente: {}", codCliente);
+            return ResponseEntity.ok(creditoService.BuscarPorCliente(codCliente));
         } catch (RuntimeException rte) {
             log.error("Error al obtener el credito: {}", rte);
             return ResponseEntity.notFound().build();
