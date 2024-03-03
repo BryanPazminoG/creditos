@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 @Builder
 @Data
-public class TransaccionCredito {
+public class TransaccionCreditoDTO {
 
     private Integer codTransaccionCredito;
     private Integer codCredito;
@@ -27,7 +27,7 @@ public class TransaccionCredito {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        TransaccionCredito other = (TransaccionCredito) obj;
+        TransaccionCreditoDTO other = (TransaccionCreditoDTO) obj;
         if (codTransaccionCredito == null) {
             if (other.codTransaccionCredito != null)
                 return false;

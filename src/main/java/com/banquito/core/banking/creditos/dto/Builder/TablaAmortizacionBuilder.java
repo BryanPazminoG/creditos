@@ -19,7 +19,7 @@ public class TablaAmortizacionBuilder {
         return dto;
     }
 
-    public static TablaAmortizacion toCreditoTablaPagos(TablaAmortizacionDTO dto) {
+    public static TablaAmortizacion toTablaAmortizacion(TablaAmortizacionDTO dto) {
 
         TablaAmortizacion creditoTablaPagos = new TablaAmortizacion();
         TablaAmortizacionPK PK = new TablaAmortizacionPK();

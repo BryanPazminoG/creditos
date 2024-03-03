@@ -61,8 +61,12 @@ public class TransaccionCredito {
     private Date fechaCreacion;
 
     @ManyToOne()
-    @JoinColumn(name = "COD_TIPO_CREDITO", nullable = false, updatable = false, insertable = false)
-    private TipoCredito tipoCredito;
+    @JoinColumn(name = "COD_INTERES_ACUMULADO", nullable = false, updatable = false, insertable = false)
+    private InteresAcumulado interesAcumulado;
+
+    @ManyToOne()
+    @JoinColumn(name = "PK", nullable = false, updatable = false, insertable = false)
+    private TablaAmortizacion tablaAmortizacion;
 
     @Version
     private Long version;
@@ -105,6 +109,8 @@ public class TransaccionCredito {
                 + ", codCuota=" + codCuota + ", codInteresAcumulado=" + codInteresAcumulado + ", codTransaccion="
                 + codTransaccion + ", numeroCuenta=" + numeroCuenta + ", referencia=" + referencia + ", estado="
                 + estado + ", tipoPago=" + tipoPago + ", fechaPago=" + fechaPago + ", fechaCreacion=" + fechaCreacion
-                + ", tipoCredito=" + tipoCredito + ", version=" + version + "]";
+                + ", interesAcumulado=" + interesAcumulado + ", tablaAmortizacion=" + tablaAmortizacion + ", version="
+                + version + "]";
     }
+
 }

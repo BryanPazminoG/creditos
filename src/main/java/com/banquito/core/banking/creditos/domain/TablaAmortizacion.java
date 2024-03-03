@@ -1,7 +1,7 @@
 package com.banquito.core.banking.creditos.domain;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.sql.Date; /***********POSIBLE ERROR*************/
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;

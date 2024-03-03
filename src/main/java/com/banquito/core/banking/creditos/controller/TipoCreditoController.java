@@ -1,10 +1,7 @@
 package com.banquito.core.banking.creditos.controller;
 
-// import java.util.List;
-// import java.math.BigDecimal;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,72 +10,77 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.banquito.core.banking.creditos.domain.TipoCredito;
+import com.banquito.core.banking.creditos.dto.TipoCreditoDTO;
 import com.banquito.core.banking.creditos.service.TipoCreditoService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@CrossOrigin
 @RestController
-@RequestMapping("/tipocredito")
+@RequestMapping("api/v1/tipoCreditos")
 public class TipoCreditoController {
-    @Autowired
+
     private TipoCreditoService tipoCreditoService;
 
-    @GetMapping("/getall")
-    public ResponseEntity<Iterable<TipoCredito>> GetAll() {
-        return new ResponseEntity<>(tipoCreditoService.listAll(), HttpStatus.OK);
+    public TipoCreditoController(TipoCreditoService tipoCreditoService) {
+        this.tipoCreditoService = tipoCreditoService;
     }
 
-    @GetMapping("/getbyid/{id}")
-    public ResponseEntity<TipoCredito> GetById(@PathVariable("id") Integer id) {
-        return tipoCreditoService.getById(id)
-                .map(register -> new ResponseEntity<>(register, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @GetMapping
+    public ResponseEntity<Iterable<TipoCreditoDTO>> listar() {
+        try {
+            log.info("Obteniendo la lista de tipo credito");
+            return ResponseEntity.ok(tipoCreditoService.listar());
+        } catch (RuntimeException rte) {
+            log.error("Error al listar tipo credito: ", rte);
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<TipoCredito> Save(@RequestBody TipoCredito tipoCredito) {
-        return new ResponseEntity<>(tipoCreditoService.create(tipoCredito), HttpStatus.OK);
+    @GetMapping("{id}")
+    public ResponseEntity<TipoCreditoDTO> obtenerPorId(@PathVariable("id") Integer id) {
+        try {
+            log.info("Obteniendo el tipo credito con el id: {}", id);
+            TipoCreditoDTO tipoCredito = tipoCreditoService.obtenerPorId(id);
+            return ResponseEntity.ok(tipoCredito);
+        } catch (Exception e) {
+            log.error("No se encontro la tasa de interes con el id: ", id);
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Boolean> Delete(@PathVariable("id") Integer id) {
-        tipoCreditoService.delete(id);
-        return new ResponseEntity<>(true, HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<TipoCreditoDTO> save(@RequestBody TipoCreditoDTO tipoCredito) {
+        try {
+            log.info("Guardando nuevo registro de tipo credito: {}", tipoCredito);
+            return ResponseEntity.ok(tipoCreditoService.crear(tipoCredito));
+        } catch (RuntimeException rte) {
+            log.error("Error al crear el nuevo registro: ", rte);
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<TipoCredito> Update(@RequestBody TipoCredito tipoCredito) {
-        return new ResponseEntity<>(tipoCreditoService.update(tipoCredito), HttpStatus.OK);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Boolean> eliminar(@PathVariable("id") Integer id) {
+        try {
+            log.info("Eliminando el tipo credito con id: {}", id);
+            tipoCreditoService.eliminar(id);
+            return ResponseEntity.ok(true);
+        } catch (RuntimeException rte) {
+            log.error("Error al eliminar el registro ", rte);
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // @GetMapping("/tipocliente/{cliente}")
-    // public ResponseEntity<List<TipoCredito>>
-    // ByTipoCliente(@PathVariable("cliente") String cliente) {
-    // return new ResponseEntity<>(tipoCreditoService.ByTipoCliente(cliente),
-    // HttpStatus.OK);
-    // }
-
-    // @GetMapping("/monto/{min}/{max}")
-    // public ResponseEntity<List<TipoCredito>> ByMonto(@PathVariable("min")
-    // BigDecimal min,
-    // @PathVariable("max") BigDecimal max) {
-    // return tipoCreditoService.ByMonto(min, max).map(register -> {
-    // return new ResponseEntity<>(register, HttpStatus.OK);
-    // }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    // }
-
-    // @GetMapping("/plazo/{min}/{max}")
-    // public ResponseEntity<List<TipoCredito>> ByPlazo(@PathVariable("min")
-    // BigDecimal min,
-    // @PathVariable("max") BigDecimal max) {
-    // return tipoCreditoService.ByPlazo(min, max).map(register -> {
-    // return new ResponseEntity<>(register, HttpStatus.OK);
-    // }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    // }
-
-    // @GetMapping("/estado/{estado}")
-    // public ResponseEntity<List<TipoCredito>> ByEstado(@PathVariable("estado")
-    // String estado) {
-    // return new ResponseEntity<>(tipoCreditoService.ByEstado(estado),
-    // HttpStatus.OK);
-    // }
+    @PutMapping
+    public ResponseEntity<TipoCreditoDTO> actualizar(@RequestBody TipoCreditoDTO tipoCredito) {
+        try {
+            log.info("Actualizando el tipo credito: {}", tipoCredito);
+            return ResponseEntity.ok(tipoCreditoService.actualizar(tipoCredito));
+        } catch (RuntimeException rte) {
+            log.error("Error al actualizar el registro ", rte);
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
