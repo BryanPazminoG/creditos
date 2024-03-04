@@ -24,7 +24,7 @@ public class InteresAcumuladoService {
         this.interesAcumuladoRepository = interesAcumuladoRepository;
     }
 
-    public InteresAcumuladoDTO obtenerPorId(Integer codInteresAcumulado) {
+    public InteresAcumuladoDTO ObtenerPorId(Integer codInteresAcumulado) {
         Optional<InteresAcumulado> interesAcumulado = this.interesAcumuladoRepository
                 .findById(codInteresAcumulado);
         if (interesAcumulado.isPresent()) {
@@ -36,7 +36,7 @@ public class InteresAcumuladoService {
         }
     }
 
-    public List<InteresAcumuladoDTO> listarPorCodigoCredito(Integer codCredito) {
+    public List<InteresAcumuladoDTO> ListarPorCodigoCredito(Integer codCredito) {
         List<InteresAcumuladoDTO> listDTO = new ArrayList<>();
         for (InteresAcumulado interesAcumulado : this.interesAcumuladoRepository
         .findByCodCreditoOrderByFechaCreacion(codCredito)) {
@@ -45,7 +45,7 @@ public class InteresAcumuladoService {
         return listDTO;
     }
     
-    public List<InteresAcumuladoDTO> listarEstado(String estado) {
+    public List<InteresAcumuladoDTO> ListarEstado(String estado) {
         try {
             if("PAG".equals(estado) || "PEN".equals(estado)){
                 List<InteresAcumuladoDTO> listDTO = new ArrayList<>();
@@ -63,7 +63,7 @@ public class InteresAcumuladoService {
     }
 
     @Transactional
-    public InteresAcumuladoDTO crear(InteresAcumuladoDTO dto) {
+    public InteresAcumuladoDTO Crear(InteresAcumuladoDTO dto) {
         try {
             InteresAcumulado interesAcumulado = InteresAcumuladoBuilder.toInteresAcumulado(dto);
             LocalDate fechaActualDate = LocalDate.now();
@@ -78,7 +78,7 @@ public class InteresAcumuladoService {
     }
 
     @Transactional
-    public InteresAcumuladoDTO cambiarEstado(Integer codInteresAcumulado, String estado) {
+    public InteresAcumuladoDTO CambiarEstado(Integer codInteresAcumulado, String estado) {
         try {
             if("PAG".equals(estado) || "PEN".equals(estado)){
                 Optional<InteresAcumulado> interesAcumulado = this.interesAcumuladoRepository.findById(codInteresAcumulado);

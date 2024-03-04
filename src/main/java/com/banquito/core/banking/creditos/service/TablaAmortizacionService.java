@@ -38,7 +38,18 @@ public class TablaAmortizacionService {
         this.interesAcumuladoRepository = interesAcumuladoRepository;
     }
 
-    public TablaAmortizacionDTO obtenerPorId(Integer codCredito, Integer codCuota) {
+    public List<TablaAmortizacionDTO> BuscarTablaAmortizacion(Integer codCredito) {
+        List<TablaAmortizacionDTO> listDTO = new ArrayList<>();
+        List<TablaAmortizacion> tablaAmortizacion = this.TablaAmortizacionRepository.findByPKCodCredito(codCredito);
+        Collections.sort(tablaAmortizacion,
+                Comparator.comparingInt(TablaAmortizacion -> TablaAmortizacion.getPK().getCodCuota()));
+        for (TablaAmortizacion TablaAmortizacion : tablaAmortizacion) {
+            listDTO.add(TablaAmortizacionBuilder.toDTO(TablaAmortizacion));
+        }
+        return listDTO;
+    }
+
+    public TablaAmortizacionDTO ObtenerPorCuota(Integer codCredito, Integer codCuota) {
         TablaAmortizacionPK PK = new TablaAmortizacionPK(codCredito, codCuota);
         Optional<TablaAmortizacion> TablaAmortizacion = this.TablaAmortizacionRepository.findById(PK);
 
@@ -51,19 +62,8 @@ public class TablaAmortizacionService {
         }
     }
 
-    public List<TablaAmortizacionDTO> getTablaAmortizacion(Integer codCredito) {
-        List<TablaAmortizacionDTO> listDTO = new ArrayList<>();
-        List<TablaAmortizacion> tablaAmortizacion = this.TablaAmortizacionRepository.findByPKCodCredito(codCredito);
-        Collections.sort(tablaAmortizacion,
-                Comparator.comparingInt(TablaAmortizacion -> TablaAmortizacion.getPK().getCodCuota()));
-        for (TablaAmortizacion TablaAmortizacion : tablaAmortizacion) {
-            listDTO.add(TablaAmortizacionBuilder.toDTO(TablaAmortizacion));
-        }
-        return listDTO;
-    }
-
-    public Optional<TablaAmortizacionDTO> getProximoPago(Integer codCredito) {
-        List<TablaAmortizacionDTO> listDTO = this.getTablaAmortizacion(codCredito);
+    public Optional<TablaAmortizacionDTO> ProximoPago(Integer codCredito) {
+        List<TablaAmortizacionDTO> listDTO = this.BuscarTablaAmortizacion(codCredito);
         if (!listDTO.isEmpty()) {
             log.info("Cuota proxima encontrada");
             for (int i = 0; i < listDTO.size(); i++) {
@@ -76,19 +76,8 @@ public class TablaAmortizacionService {
         return Optional.empty();
     }
 
-    public BigDecimal obtenerInteresVigente(Integer codCredito) {
-        List<InteresAcumulado> listInteres = this.interesAcumuladoRepository.findByCodCreditoOrderByFechaCreacion(codCredito);
-        if(!listInteres.isEmpty()){
-            log.info("Interes Acumulado encotrado");
-            return listInteres.get(0).getTasaInteresVigente();
-        }else{
-            throw new RuntimeException(
-                "No se han encontrado ningun interes aculumado con el codigo del credito" + codCredito);
-        }
-    }
-
-    public List<TablaAmortizacionDTO> getPagosRealizados(Integer codCredito) {
-        List<TablaAmortizacionDTO> listDTO = this.getTablaAmortizacion(codCredito);
+    public List<TablaAmortizacionDTO> PagosRealizados(Integer codCredito) {
+        List<TablaAmortizacionDTO> listDTO = this.BuscarTablaAmortizacion(codCredito);
         List<TablaAmortizacionDTO> listaPagos = new ArrayList<>();
         if (!listDTO.isEmpty()) {
             log.info("Pagos realizados encontrados");
@@ -103,7 +92,7 @@ public class TablaAmortizacionService {
     }
 
     @Transactional
-    public TablaAmortizacionDTO cambiarEstado(Integer codCredito, Integer codCuota, String estado) {
+    public TablaAmortizacionDTO CambiarEstado(Integer codCredito, Integer codCuota, String estado) {
         try {
             if ("PEN".equals(estado) || "MOR".equals(estado) || "PAG".equals(estado)) {
 
@@ -132,8 +121,19 @@ public class TablaAmortizacionService {
         }
     }
 
+    public BigDecimal obtenerInteresVigente(Integer codCredito) {
+        List<InteresAcumulado> listInteres = this.interesAcumuladoRepository.findByCodCreditoOrderByFechaCreacion(codCredito);
+        if(!listInteres.isEmpty()){
+            log.info("Interes Acumulado encotrado");
+            return listInteres.get(0).getTasaInteresVigente();
+        }else{
+            throw new RuntimeException(
+                "No se han encontrado ningun interes aculumado con el codigo del credito" + codCredito);
+        }
+    }
+
     @Transactional
-    public List<TablaAmortizacionDTO> crear(CreditoDTO dto) {
+    public List<TablaAmortizacionDTO> Crear(CreditoDTO dto) {
 
         BigDecimal tasaInteres = this.obtenerInteresVigente(dto.getCodCredito());
         BigDecimal montoPrestamo = dto.getMonto();

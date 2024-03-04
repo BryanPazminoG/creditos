@@ -29,7 +29,16 @@ public class TipoCreditoService {
         this.tipoCreditoRepository = tipoCreditoRepository;
     }
 
-    public TipoCreditoDTO obtenerPorId(Integer id) {
+    public List<TipoCreditoDTO> Listar() {
+        List<TipoCreditoDTO> listDTO = new ArrayList<>();
+        for (TipoCredito tipoCredito : this.tipoCreditoRepository.findAll()) {
+            listDTO.add(TipoCreditoBuilder.toDTO(tipoCredito));
+        }
+        log.info("Se obtuvo la lista de tipo credito: ", listDTO);
+        return listDTO;
+    }
+
+    public TipoCreditoDTO ObtenerPorId(Integer id) {
         Optional<TipoCredito> tipoCredito = this.tipoCreditoRepository.findById(id);
         if (tipoCredito.isPresent()) {
             log.info("El tipo credito con id {} se ha obtenido", id);
@@ -39,26 +48,21 @@ public class TipoCreditoService {
         }
     }
 
-    public List<TipoCreditoDTO> listar() {
-        List<TipoCreditoDTO> listDTO = new ArrayList<>();
-        for (TipoCredito tipoCredito : this.tipoCreditoRepository.findAll()) {
-            listDTO.add(TipoCreditoBuilder.toDTO(tipoCredito));
+    public List<TipoCreditoDTO> ListarPorEstado(String estado) {
+        if ("ACT".equals(estado) || "INA".equals(estado)) {
+            List<TipoCreditoDTO> listDTO = new ArrayList<>();
+            for (TipoCredito tipoCredito : this.tipoCreditoRepository.findByEstadoOrderByNombre(estado)) {
+                listDTO.add(TipoCreditoBuilder.toDTO(tipoCredito));
+            }
+            log.info("Se obtuvo la lista de tipo credito activos: ", listDTO);
+            return listDTO;
+        } else {
+            throw new RuntimeException("Estado ingresado invalido: " + estado);
         }
-        log.info("Se obtuvo la lista de tipo credito: ", listDTO);
-        return listDTO;
-    }
-
-    public List<TipoCreditoDTO> listarActivos() {
-        List<TipoCreditoDTO> listDTO = new ArrayList<>();
-        for (TipoCredito tipoCredito : this.tipoCreditoRepository.findByEstadoOrderByNombre("ACT")) {
-            listDTO.add(TipoCreditoBuilder.toDTO(tipoCredito));
-        }
-        log.info("Se obtuvo la lista de tipo credito activos: ", listDTO);
-        return listDTO;
     }
 
     @Transactional
-    public TipoCreditoDTO crear(TipoCreditoDTO dto) {
+    public TipoCreditoDTO Crear(TipoCreditoDTO dto) {
         try {
             TipoCredito tipoCredito = TipoCreditoBuilder.toTipoCredito(dto);
             LocalDate fechaActualDate = LocalDate.now();
@@ -74,7 +78,7 @@ public class TipoCreditoService {
     }
 
     @Transactional
-    public TipoCreditoDTO actualizar(TipoCreditoDTO dto) {
+    public TipoCreditoDTO Actualizar(TipoCreditoDTO dto) {
         try {
             TipoCredito tipoCredito = TipoCreditoBuilder.toTipoCredito(dto);
             if (tipoCredito != null) {
@@ -93,7 +97,7 @@ public class TipoCreditoService {
     }
 
     @Transactional
-    public TipoCreditoDTO cambiarEstado(Integer codTipoCredito, String estado) {
+    public TipoCreditoDTO CambiarEstado(Integer codTipoCredito, String estado) {
         try {
             if ("ACT".equals(estado) || "INA".equals(estado)) {
                 Optional<TipoCredito> tipoCredito = this.tipoCreditoRepository.findById(codTipoCredito);

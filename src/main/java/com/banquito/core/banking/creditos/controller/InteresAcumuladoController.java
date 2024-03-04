@@ -4,16 +4,17 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.banquito.core.banking.creditos.dto.InteresAcumuladoDTO;
 import com.banquito.core.banking.creditos.service.InteresAcumuladoService;
 
+import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,10 +29,11 @@ public class InteresAcumuladoController {
     }
 
     @GetMapping("{codInteresAcumulado}")
-    public ResponseEntity<InteresAcumuladoDTO> obtenerPorId(@PathVariable("codInteresAcumulado") Integer codInteresAcumulado) {
+    public ResponseEntity<InteresAcumuladoDTO> ObtenerPorId(
+            @PathVariable("codInteresAcumulado") Integer codInteresAcumulado) {
         try {
             log.info("Obteniendo el interes acumulado por el ID: {}", codInteresAcumulado);
-            InteresAcumuladoDTO interesAcumuladoDTO = interesAcumuladoService.obtenerPorId(codInteresAcumulado);
+            InteresAcumuladoDTO interesAcumuladoDTO = interesAcumuladoService.ObtenerPorId(codInteresAcumulado);
             return ResponseEntity.ok(interesAcumuladoDTO);
         } catch (Exception e) {
             log.error("Error al obtener el interes acumulado por el ID {}", codInteresAcumulado);
@@ -40,10 +42,11 @@ public class InteresAcumuladoController {
     }
 
     @GetMapping("{codCredito}/credito")
-    public ResponseEntity<List<InteresAcumuladoDTO>> obtenerPorCredito(@PathVariable("codCredito") Integer codCredito) {
+    public ResponseEntity<List<InteresAcumuladoDTO>> ObtenerPorCredito(@PathVariable("codCredito") Integer codCredito) {
         try {
             log.info("Obteniendo el interes acumulado por el ID credito: {}", codCredito);
-            List<InteresAcumuladoDTO> listInteresAcumuladoDTO = interesAcumuladoService.listarPorCodigoCredito(codCredito);
+            List<InteresAcumuladoDTO> listInteresAcumuladoDTO = interesAcumuladoService
+                    .ListarPorCodigoCredito(codCredito);
             return ResponseEntity.ok(listInteresAcumuladoDTO);
         } catch (Exception e) {
             log.error("Error al obtener el interes acumulado por el ID credito {}", codCredito);
@@ -52,10 +55,10 @@ public class InteresAcumuladoController {
     }
 
     @GetMapping("/estado/{estado}")
-    public ResponseEntity<List<InteresAcumuladoDTO>> obtenerPorEstado(@PathVariable("estado") String estado) {
+    public ResponseEntity<List<InteresAcumuladoDTO>> ObtenerPorEstado(@PathVariable("estado") String estado) {
         try {
             log.info("Obteniendo el interes acumulado por el estado: {}", estado);
-            List<InteresAcumuladoDTO> listInteresAcumuladoDTO = interesAcumuladoService.listarEstado(estado);
+            List<InteresAcumuladoDTO> listInteresAcumuladoDTO = interesAcumuladoService.ListarEstado(estado);
             return ResponseEntity.ok(listInteresAcumuladoDTO);
         } catch (Exception e) {
             log.error("Error al obtener el interes acumulado por el estado {}", estado);
@@ -64,12 +67,24 @@ public class InteresAcumuladoController {
     }
 
     @PostMapping
-    public ResponseEntity<InteresAcumuladoDTO> crear(@RequestBody InteresAcumuladoDTO interesAcumuladoDTO) {
+    public ResponseEntity<InteresAcumuladoDTO> Crear(@RequestBody InteresAcumuladoDTO interesAcumuladoDTO) {
         try {
             log.info("Creando el interes acumulado: {}", interesAcumuladoDTO);
-            return ResponseEntity.ok(interesAcumuladoService.crear(interesAcumuladoDTO));
+            return ResponseEntity.ok(interesAcumuladoService.Crear(interesAcumuladoDTO));
         } catch (RuntimeException rte) {
             log.error("Error al crear el interes acumulado: ", rte);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PatchMapping
+    public ResponseEntity<InteresAcumuladoDTO> CambiarEstado(@PathParam("codInteresAcumulado") Integer codInteresAcumulado,
+            @PathParam("estado") String estado) {
+        try {
+            log.info("Actualizando estado del interes acumulado: {} ", estado);
+            return ResponseEntity.ok(interesAcumuladoService.CambiarEstado(codInteresAcumulado, estado));
+        } catch (RuntimeException rte) {
+            log.error("Error al actualizar el estado de la tabla de amortizacion: ", rte);
             return ResponseEntity.badRequest().build();
         }
     }

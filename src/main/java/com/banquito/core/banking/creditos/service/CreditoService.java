@@ -30,7 +30,7 @@ public class CreditoService {
         this.creditoRepository = creditoRepository;
     }
 
-    public CreditoDTO obtenerPorId(Integer id) {
+    public CreditoDTO ObtenerPorId(Integer id) {
         Optional<Credito> credito = this.creditoRepository.findById(id);
         if (credito.isPresent()) {
             log.info("Se ha encontrado el credito con id: {}", id);
@@ -41,7 +41,7 @@ public class CreditoService {
     }
 
     @Transactional
-    public Integer crear(CreditoDTO dto) {
+    public Integer Crear(CreditoDTO dto) {
         try {
             Credito credito = CreditoBuilder.toCredito(dto);
             LocalDate fechaActualDate = LocalDate.now();
@@ -66,7 +66,7 @@ public class CreditoService {
     }
 
     @Transactional
-    public CreditoDTO actualizar(CreditoDTO dto) {
+    public CreditoDTO Actualizar(CreditoDTO dto) {
         try {
             Credito credito = CreditoBuilder.toCredito(dto);
             if (credito != null) {
@@ -85,7 +85,7 @@ public class CreditoService {
     }
 
     @Transactional
-    public CreditoDTO cambiarEstado(Integer codCredito, String estado) {
+    public CreditoDTO CambiarEstado(Integer codCredito, String estado) {
         try {
             if ("APR".equals(estado) || "DES".equals(estado) || "VIG".equals(estado) || "LIQ".equals(estado)) {
                 Optional<Credito> credito = this.creditoRepository.findById(codCredito);

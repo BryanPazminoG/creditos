@@ -27,8 +27,17 @@ public class TasaInteresService {
     public TasaInteresService(TasaInteresRepository tasaInteresRepository) {
         this.tasaInteresRepository = tasaInteresRepository;
     }
+    
+    public List<TasaInteresDTO> Listar() {
+        List<TasaInteresDTO> listDTO = new ArrayList<>();
+        for(TasaInteres tasaInteres : this.tasaInteresRepository.findAll()){
+            listDTO.add(TasaInteresBuilder.toDTO(tasaInteres));
+        }
+        log.info("Se obtuvo la lista de tasa de interes: ", listDTO);
+        return listDTO;
+    }
 
-    public TasaInteresDTO obtenerPorId(String codTasaInteres) {
+    public TasaInteresDTO ObtenerPorId(String codTasaInteres) {
         Optional<TasaInteres> tasaInteres = this.tasaInteresRepository.findById(codTasaInteres);
         if(tasaInteres.isPresent()){
             log.info("Se obtuvo la tasa de interes con el id {}", codTasaInteres);
@@ -38,16 +47,7 @@ public class TasaInteresService {
         }
     }
 
-    public List<TasaInteresDTO> listar() {
-        List<TasaInteresDTO> listDTO = new ArrayList<>();
-        for(TasaInteres tasaInteres : this.tasaInteresRepository.findAll()){
-            listDTO.add(TasaInteresBuilder.toDTO(tasaInteres));
-        }
-        log.info("Se obtuvo la lista de tasa de interes: ", listDTO);
-        return listDTO;
-    }
-
-    public List<TasaInteresDTO> listarEstado(String estado) {
+    public List<TasaInteresDTO> ListarPorEstado(String estado) {
         if ("ACT".equals(estado) || "INA".equals(estado)) {
             List<TasaInteresDTO> listDTO = new ArrayList<>();
             for(TasaInteres tasaInteres : this.tasaInteresRepository.findByEstadoOrderByFechaCreacion(estado)){
@@ -61,7 +61,7 @@ public class TasaInteresService {
     }
 
     @Transactional
-    public TasaInteresDTO crear(TasaInteresDTO dto) {
+    public TasaInteresDTO Crear(TasaInteresDTO dto) {
         try {
             TasaInteres tasaInteres = TasaInteresBuilder.toTasaInteres(dto);
             LocalDate fechaActualDate = LocalDate.now();
@@ -77,7 +77,7 @@ public class TasaInteresService {
     }
 
     @Transactional
-    public TasaInteresDTO cambiarEstado(String codTasaInteres, String estado) {
+    public TasaInteresDTO CambiarEstado(String codTasaInteres, String estado) {
         try {
             if("ACT".equals(estado) || "INA".equals(estado)){
                 Optional<TasaInteres> tasaInteres = this.tasaInteresRepository.findById(codTasaInteres);

@@ -26,7 +26,7 @@ public class CreditoIntervinienteService {
         this.creditoIntervinienteRepository = creditoIntervinienteRepository;
     }
 
-    public CreditoIntervinienteDTO obtenerPorId(Integer codCredito, String codCliente) {
+    public CreditoIntervinienteDTO ObtenerPorId(Integer codCredito, String codCliente) {
         CreditoIntervinientePK creditoIntervinientePK = new CreditoIntervinientePK(codCredito, codCliente);
         Optional<CreditoInterviniente> creditoInterviniente = this.creditoIntervinienteRepository
                 .findById(creditoIntervinientePK);
@@ -38,7 +38,7 @@ public class CreditoIntervinienteService {
                     "No se han encontrado el interviniente con el codigo" + codCliente + " en el credito " + codCredito);
         }
     }
-    public List<CreditoIntervinienteDTO> listarIntervinienteCredito(Integer codCredito) {
+    public List<CreditoIntervinienteDTO> ListarIntervinienteCredito(Integer codCredito) {
         List<CreditoIntervinienteDTO> listDTO = new ArrayList<>();
         for (CreditoInterviniente creditoInterviniente : this.creditoIntervinienteRepository.findByPKCodCredito(codCredito)) {
             listDTO.add(CreditoIntervinienteBuilder.toDTO(creditoInterviniente));
@@ -47,7 +47,7 @@ public class CreditoIntervinienteService {
     }
 
     @Transactional
-    public CreditoIntervinienteDTO crear(CreditoIntervinienteDTO dto) {
+    public CreditoIntervinienteDTO Crear(CreditoIntervinienteDTO dto) {
         try {
             CreditoInterviniente creditoInterviniente = CreditoIntervinienteBuilder.toCreditoInterviniente(dto);
             LocalDate fechaActualDate = LocalDate.now();
@@ -62,7 +62,7 @@ public class CreditoIntervinienteService {
     }
 
     @Transactional
-    public void eliminar(Integer codCredito, String codCliente) {
+    public void Eliminar(Integer codCredito, String codCliente) {
         try {
             CreditoIntervinientePK PK = new CreditoIntervinientePK(codCredito, codCliente);
             Optional<CreditoInterviniente> creditoInterviniente = this.creditoIntervinienteRepository.findById(PK);

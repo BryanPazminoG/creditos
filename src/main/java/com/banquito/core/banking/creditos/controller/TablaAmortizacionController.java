@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import com.banquito.core.banking.creditos.dto.CreditoDTO;
 import com.banquito.core.banking.creditos.dto.TablaAmortizacionDTO;
 import com.banquito.core.banking.creditos.service.TablaAmortizacionService;
 
+import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,65 +24,77 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("api/v1/pagos")
 public class TablaAmortizacionController {
 
-    private TablaAmortizacionService TablaAmortizacionService;
+    private TablaAmortizacionService tablaAmortizacionService;
 
-    public TablaAmortizacionController(TablaAmortizacionService TablaAmortizacionService) {
-        this.TablaAmortizacionService = TablaAmortizacionService;
+    public TablaAmortizacionController(TablaAmortizacionService tablaAmortizacionService) {
+        this.tablaAmortizacionService = tablaAmortizacionService;
     }
 
-    @GetMapping("{credito}/{cuota}")
-    public ResponseEntity<TablaAmortizacionDTO> BuscarCuota(@PathVariable("credito") Integer credito,
-            @PathVariable("cuota") Integer cuota) {
-
+    @GetMapping("{codCredito}")
+    public ResponseEntity<List<TablaAmortizacionDTO>> BuscarTablaAmortizacion(
+            @PathVariable("codCredito") Integer codCredito) {
         try {
-            log.info("Obteniendo la cuato {} del credito {}", cuota, credito);
-            TablaAmortizacionDTO TablaAmortizacion = TablaAmortizacionService.obtenerPorId(credito, cuota);
-            return ResponseEntity.ok(TablaAmortizacion);
-        } catch (Exception e) {
-            log.error("Error al obtener la cuato {} del credito {}", cuota, credito);
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("{credito}")
-    public ResponseEntity<List<TablaAmortizacionDTO>> getTablaAmortizacion(
-            @PathVariable("credito") Integer credito) {
-        try {
-            log.info("Obteniendo la tabla de amortizacion con el id: {}", credito);
-            return ResponseEntity.ok(TablaAmortizacionService.getTablaAmortizacion(credito));
+            log.info("Obteniendo la tabla de amortizacion con el id: {}", codCredito);
+            return ResponseEntity.ok(tablaAmortizacionService.BuscarTablaAmortizacion(codCredito));
         } catch (RuntimeException rte) {
             log.error("Error al obteniendo la tabla de amortizacion: ", rte);
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("/proximo/{credito}")
-    public ResponseEntity<TablaAmortizacionDTO> getProximoPago(@PathVariable("credito") Integer credito) {
+    @GetMapping("{codCredito}/{numeroCuota}")
+    public ResponseEntity<TablaAmortizacionDTO> BuscarPorCuota(@PathVariable("codCredito") Integer codCredito,
+            @PathVariable("numeroCuota") Integer numeroCuota) {
+
         try {
-            log.info("Obteniendo el proximo pago del credito con id: {}", credito);
-            return ResponseEntity.ok(TablaAmortizacionService.getProximoPago(credito).get());
+            log.info("Obteniendo la cuato {} del credito {}", codCredito, numeroCuota);
+            TablaAmortizacionDTO TablaAmortizacion = tablaAmortizacionService.ObtenerPorCuota(codCredito, numeroCuota);
+            return ResponseEntity.ok(TablaAmortizacion);
+        } catch (Exception e) {
+            log.error("Error al obtener la cuato {} del credito {}", codCredito, numeroCuota);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/proximoPago/{codCredito}")
+    public ResponseEntity<TablaAmortizacionDTO> ProximoPago(@PathVariable("codCredito") Integer codCredito) {
+        try {
+            log.info("Obteniendo el proximo pago del credito con id: {}", codCredito);
+            return ResponseEntity.ok(tablaAmortizacionService.ProximoPago(codCredito).get());
         } catch (RuntimeException rte) {
             log.error("Error al obteniendo el proximo pago: ", rte);
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("/realizados/{credito}")
-    public ResponseEntity<List<TablaAmortizacionDTO>> getPagosRealizados(@PathVariable("credito") Integer credito) {
+    @GetMapping("/pagosRealizados/{codCredito}")
+    public ResponseEntity<List<TablaAmortizacionDTO>> PagosRealizados(@PathVariable("codCredito") Integer codCredito) {
         try {
-            log.info("Obteniendo los pagos realizados del credito con id: {}", credito);
-            return ResponseEntity.ok(TablaAmortizacionService.getPagosRealizados(credito));
+            log.info("Obteniendo los pagos realizados del credito con id: {}", codCredito);
+            return ResponseEntity.ok(tablaAmortizacionService.PagosRealizados(codCredito));
         } catch (RuntimeException rte) {
             log.error("Error al obtener los pagos realizados: ", rte);
             return ResponseEntity.notFound().build();
         }
     }
 
+    @PatchMapping
+    public ResponseEntity<TablaAmortizacionDTO> CambiarEstado(@PathParam("codCredito") Integer codCredito,
+            @PathParam("numeroCuota") Integer numeroCuota, @PathParam("estado") String estado) {
+        try {
+            log.info("Actualizando estado de la cuota {} del credito {}: ", codCredito, numeroCuota);
+            return ResponseEntity.ok(tablaAmortizacionService.CambiarEstado(codCredito, numeroCuota, estado));
+        } catch (RuntimeException rte) {
+            log.error("Error al actualizar el estado de la tabla de amortizacion: ", rte);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PostMapping
-    public ResponseEntity<List<TablaAmortizacionDTO>> crear(@RequestBody CreditoDTO creditoDTO) {
+    public ResponseEntity<List<TablaAmortizacionDTO>> Crear(@RequestBody CreditoDTO creditoDTO) {
         try {
             log.info("Creando tabla amortizacion: {}");
-            return ResponseEntity.ok(TablaAmortizacionService.crear(creditoDTO));
+            return ResponseEntity.ok(tablaAmortizacionService.Crear(creditoDTO));
         } catch (RuntimeException rte) {
             log.error("Error al crear el nuevo registro: ", rte);
             return ResponseEntity.badRequest().build();
