@@ -55,6 +55,12 @@ public class Credito {
     @Column(name = "CUOTAS_PAGADAS", nullable = true)
     private Integer cuotasPagadas;
 
+    @Column(name = "CAPITAL_PENDIENTE", nullable = false, precision = 18, scale = 2)
+    private BigDecimal capitalPendiente;
+
+    @Column(name = "TASA_INTERES", nullable = false, precision = 5, scale = 2)
+    private BigDecimal tasaInteres;
+
     @Column(name = "CANAL_TRANSACCION", nullable = false, length = 3)
     private String canalTransaccion;
 
@@ -125,9 +131,11 @@ public class Credito {
         return "Credito [codCredito=" + codCredito + ", codTipoCredito=" + codTipoCredito + ", codTransaccion="
                 + codTransaccion + ", codCliente=" + codCliente + ", numeroOperacion=" + numeroOperacion
                 + ", numeroCuenta=" + numeroCuenta + ", monto=" + monto + ", plazo=" + plazo + ", numeroCuotas="
-                + numeroCuotas + ", cuotasPagadas=" + cuotasPagadas + ", canalTransaccion=" + canalTransaccion
-                + ", estado=" + estado + ", fechaCreacion=" + fechaCreacion + ", fechaAprobacion=" + fechaAprobacion
-                + ", fechaDesembolso=" + fechaDesembolso + ", fechaCierre=" + fechaCierre + ", fechaUltimoCambio="
-                + fechaUltimoCambio + ", tipoCredito=" + tipoCredito + ", version=" + version + "]";
+                + numeroCuotas + ", cuotasPagadas=" + cuotasPagadas + ", capitalPendiente=" + capitalPendiente
+                + ", tasaInteres=" + tasaInteres + ", canalTransaccion=" + canalTransaccion + ", estado=" + estado
+                + ", fechaCreacion=" + fechaCreacion + ", fechaAprobacion=" + fechaAprobacion + ", fechaDesembolso="
+                + fechaDesembolso + ", fechaCierre=" + fechaCierre + ", fechaUltimoCambio=" + fechaUltimoCambio
+                + ", tipoCredito=" + tipoCredito + ", version=" + version + "]";
     }
+
 }

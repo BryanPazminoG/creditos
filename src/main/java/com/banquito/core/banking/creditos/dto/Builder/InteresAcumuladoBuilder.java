@@ -10,7 +10,7 @@ public class InteresAcumuladoBuilder {
                 .codInteresAcumulado(interesAcumulado.getCodInteresAcumulado())
                 .codCredito(interesAcumulado.getCodCredito())
                 .tasaInteresVigente(interesAcumulado.getTasaInteresVigente())
-                .capitalPendiente(interesAcumulado.getCapitalPendiente())
+                .montoCredito(interesAcumulado.getMontoCredito())
                 .interesGenerado(interesAcumulado.getInteresGenerado())
                 .estado(interesAcumulado.getEstado()).build();
 
@@ -23,7 +23,7 @@ public class InteresAcumuladoBuilder {
         tasaAcumulado.setCodInteresAcumulado(dto.getCodInteresAcumulado());
         tasaAcumulado.setCodCredito(dto.getCodCredito());
         tasaAcumulado.setTasaInteresVigente(dto.getTasaInteresVigente());
-        tasaAcumulado.setCapitalPendiente(dto.getCapitalPendiente());
+        tasaAcumulado.setMontoCredito(dto.getMontoCredito());
         tasaAcumulado.setInteresGenerado(dto.getInteresGenerado());
         tasaAcumulado.setEstado(dto.getEstado());
     

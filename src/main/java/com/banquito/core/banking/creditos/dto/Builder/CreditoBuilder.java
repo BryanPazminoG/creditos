@@ -16,6 +16,8 @@ public class CreditoBuilder {
                 .plazo(credito.getPlazo())
                 .numeroCuotas(credito.getNumeroCuotas())
                 .cuotasPagadas(credito.getCuotasPagadas())
+                .capitalPendiente(credito.getCapitalPendiente())
+                .tasaInteres(credito.getTasaInteres())
                 .canalTransaccion(credito.getCanalTransaccion())
                 .estado(credito.getEstado())
                 .fechaAprobacion(credito.getFechaAprobacion())
@@ -36,6 +38,8 @@ public class CreditoBuilder {
         credito.setPlazo(dto.getPlazo());
         credito.setNumeroCuotas(dto.getNumeroCuotas());
         credito.setCuotasPagadas(dto.getCuotasPagadas());
+        credito.setCapitalPendiente(dto.getCapitalPendiente());
+        credito.setTasaInteres(dto.getTasaInteres());
         credito.setCanalTransaccion(dto.getCanalTransaccion());
         credito.setEstado(dto.getEstado());
         credito.setFechaAprobacion(dto.getFechaAprobacion());

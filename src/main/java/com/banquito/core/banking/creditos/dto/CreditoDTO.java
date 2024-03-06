@@ -19,6 +19,8 @@ public class CreditoDTO {
     private Integer plazo;
     private Integer numeroCuotas;
     private Integer cuotasPagadas;
+    private BigDecimal capitalPendiente;
+    private BigDecimal tasaInteres;
     private String canalTransaccion;
     private String estado;
     private Timestamp fechaAprobacion;
@@ -52,7 +54,11 @@ public class CreditoDTO {
 
     @Override
     public String toString() {
-        return "CreditoDTO [codTipoCredito=" + codTipoCredito + ", codTransaccion=" + codTransaccion + ", codCliente="
-                + codCliente + ", numeroCuenta=" + numeroCuenta + "]";
+        return "CreditoDTO [codCredito=" + codCredito + ", codTipoCredito=" + codTipoCredito + ", codTransaccion="
+                + codTransaccion + ", codCliente=" + codCliente + ", numeroCuenta=" + numeroCuenta + ", monto=" + monto
+                + ", plazo=" + plazo + ", numeroCuotas=" + numeroCuotas + ", cuotasPagadas=" + cuotasPagadas
+                + ", capitalPendiente=" + capitalPendiente + ", tasaInteres=" + tasaInteres + ", canalTransaccion="
+                + canalTransaccion + ", estado=" + estado + ", fechaAprobacion=" + fechaAprobacion
+                + ", fechaDesembolso=" + fechaDesembolso + ", fechaCierre=" + fechaCierre + "]";
     }
 }

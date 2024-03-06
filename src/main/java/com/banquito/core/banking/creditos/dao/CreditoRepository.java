@@ -13,4 +13,6 @@ public interface CreditoRepository extends CrudRepository<Credito, Integer> {
     public List<Credito> findByCodClienteOrderByFechaCreacion(String codCliente);
 
     public List<Credito> findByEstadoAndCodClienteOrderByFechaCreacion(String estado, String codCliente);
+
+    public List<Credito> findByEstadoOrderByFechaCreacion(String estado);
 }

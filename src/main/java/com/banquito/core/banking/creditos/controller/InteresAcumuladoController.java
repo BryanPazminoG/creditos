@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,17 +61,6 @@ public class InteresAcumuladoController {
         } catch (Exception e) {
             log.error("Error al obtener el interes acumulado por el estado {}", estado);
             return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<InteresAcumuladoDTO> Crear(@RequestBody InteresAcumuladoDTO interesAcumuladoDTO) {
-        try {
-            log.info("Creando el interes acumulado: {}", interesAcumuladoDTO);
-            return ResponseEntity.ok(interesAcumuladoService.Crear(interesAcumuladoDTO));
-        } catch (RuntimeException rte) {
-            log.error("Error al crear el interes acumulado: ", rte);
-            return ResponseEntity.badRequest().build();
         }
     }
 

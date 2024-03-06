@@ -12,7 +12,7 @@ public class InteresAcumuladoDTO {
     private Integer codInteresAcumulado;
     private Integer codCredito;
     private BigDecimal tasaInteresVigente;
-    private BigDecimal capitalPendiente;
+    private BigDecimal montoCredito;
     private BigDecimal interesGenerado;
     private String estado;
 

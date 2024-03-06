@@ -29,15 +29,15 @@ public class CreditoIntervinienteController {
         this.creditoIntervinienteService = creditoIntervinienteService;
     }
 
-    @GetMapping("{credito}/{cliente}")
-    public ResponseEntity<CreditoIntervinienteDTO> ObtenerPorId(@PathVariable("credito") Integer credito,
-            @PathVariable("cliente") String cliente) {
+    @GetMapping("{codCredito}/{codCliente}")
+    public ResponseEntity<CreditoIntervinienteDTO> ObtenerPorId(@PathVariable("codCredito") Integer codCredito,
+            @PathVariable("codCliente") String codCliente) {
         try {
-            log.info("Obteniendo interviniente con el credito {} y el cliente {}", credito, cliente);
-            CreditoIntervinienteDTO dto = creditoIntervinienteService.ObtenerPorId(credito, cliente);
+            log.info("Obteniendo interviniente con el credito {} y el cliente {}", codCredito, codCliente);
+            CreditoIntervinienteDTO dto = creditoIntervinienteService.ObtenerPorId(codCredito, codCliente);
             return ResponseEntity.ok(dto);
         } catch (Exception e) {
-            log.error("No se encontro el credito interviniente {} - {}: ", credito, cliente);
+            log.error("No se encontro el credito interviniente {} - {}: ", codCredito, codCliente);
             return ResponseEntity.notFound().build();
         }
     }
@@ -67,7 +67,7 @@ public class CreditoIntervinienteController {
         }
     }
 
-    @DeleteMapping("{credito}/{cliente}")
+    @DeleteMapping("{codCredito}/{codCliente}")
     public ResponseEntity<CreditoIntervinienteDTO> Eliminar(@PathVariable("codCredito") Integer codCredito,
             @PathVariable("codCliente") String codCliente) {
         try {

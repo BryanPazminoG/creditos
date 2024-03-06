@@ -50,14 +50,14 @@ public class TransaccionCreditoController {
         }
     }
 
-    @GetMapping("/credito/{codCredito}/{cuota}")
-    public ResponseEntity<TransaccionCreditoDTO> obtenerPorCreditoCuota(@PathVariable("codCredito") Integer codCredito, @PathVariable("cuota") Integer cuota) {
+    @GetMapping("/credito/{codCredito}/{numeroCuota}")
+    public ResponseEntity<TransaccionCreditoDTO> obtenerPorCreditoCuota(@PathVariable("codCredito") Integer codCredito, @PathVariable("numeroCuota") Integer numeroCuota) {
         try {
-            log.info("Obteniendo la transaccion credito por el ID credito  {} y cuota: {}", codCredito, cuota);
-            TransaccionCreditoDTO transaccionCreditoDTO = transaccionCreditoService.listarPorCreditoCuota(codCredito, cuota);
+            log.info("Obteniendo la transaccion credito por el ID credito  {} y cuota: {}", codCredito, numeroCuota);
+            TransaccionCreditoDTO transaccionCreditoDTO = transaccionCreditoService.listarPorCreditoCuota(codCredito, numeroCuota);
             return ResponseEntity.ok(transaccionCreditoDTO);
         } catch (Exception e) {
-            log.error("Error al obtener la transaccion credito por el ID credito  {} y cuota: {}", codCredito, cuota);
+            log.error("Error al obtener la transaccion credito por el ID credito  {} y cuota: {}", codCredito, numeroCuota);
             return ResponseEntity.notFound().build();
         }
     }
