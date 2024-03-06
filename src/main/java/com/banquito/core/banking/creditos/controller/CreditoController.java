@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.core.banking.creditos.dto.CreditoDTO;
@@ -31,7 +32,7 @@ public class CreditoController {
         this.creditoService = creditoService;
     }
 
-    @GetMapping("{codCredito}")
+    @GetMapping("/{codCredito}")
     public ResponseEntity<CreditoDTO> ObtenerPorId(@PathVariable("codCredito") Integer codCredito) {
         try {
             log.info("Obteniendo credito por el ID: {}", codCredito);
@@ -43,7 +44,7 @@ public class CreditoController {
         }
     }
 
-    @GetMapping("cliente/{codCliente}")
+    @GetMapping("/clientes/{codCliente}")
     public ResponseEntity<List<CreditoDTO>> BuscarPorCodigoCliente(@PathVariable("codCliente") String codCliente) {
         try {
             log.info("Buscando el credito por el codigo del cliente: {}", codCliente);
@@ -77,7 +78,7 @@ public class CreditoController {
     }
 
     @PatchMapping
-    public ResponseEntity<CreditoDTO> CambiarEstado(@PathParam("codCredito") Integer codCredito,
+    public ResponseEntity<CreditoDTO> CambiarEstado(@RequestParam("codCredito") Integer codCredito,
             @PathParam("estado") String estado) {
         try {
             log.info("Actualizando estado del credito");

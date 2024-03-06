@@ -26,11 +26,11 @@ public class TransaccionCreditoController {
         this.transaccionCreditoService = transaccionCreditoService;
     }
 
-    @GetMapping("{codTransaccionCredito}")
-    public ResponseEntity<TransaccionCreditoDTO> obtenerPorId(@PathVariable("codTransaccionCredito") Integer codTransaccionCredito) {
+    @GetMapping("/{codTransaccionCredito}")
+    public ResponseEntity<TransaccionCreditoDTO> ObtenerPorId(@PathVariable("codTransaccionCredito") Integer codTransaccionCredito) {
         try {
             log.info("Obteniendo la transaccion credito por el ID: {}", codTransaccionCredito);
-            TransaccionCreditoDTO transaccionCreditoDTO = transaccionCreditoService.obtenerPorId(codTransaccionCredito);
+            TransaccionCreditoDTO transaccionCreditoDTO = transaccionCreditoService.ObtenerPorId(codTransaccionCredito);
             return ResponseEntity.ok(transaccionCreditoDTO);
         } catch (Exception e) {
             log.error("Error al obtener la transaccion credito por el ID {}", codTransaccionCredito);
@@ -38,11 +38,11 @@ public class TransaccionCreditoController {
         }
     }
 
-    @GetMapping("/credito/{codCredito}")
-    public ResponseEntity<List<TransaccionCreditoDTO>> obtenerPorCredito(@PathVariable("codCredito") Integer codCredito) {
+    @GetMapping("/creditos/{codCredito}")
+    public ResponseEntity<List<TransaccionCreditoDTO>> ObtenerPorCredito(@PathVariable("codCredito") Integer codCredito) {
         try {
             log.info("Obteniendo la transaccion credito por el ID credito: {}", codCredito);
-            List<TransaccionCreditoDTO> listTransaccionCreditoDTO = transaccionCreditoService.listarPorCredito(codCredito);
+            List<TransaccionCreditoDTO> listTransaccionCreditoDTO = transaccionCreditoService.ListarPorCredito(codCredito);
             return ResponseEntity.ok(listTransaccionCreditoDTO);
         } catch (Exception e) {
             log.error("Error al obtener la transaccion credito por el ID credito {}", codCredito);
@@ -50,11 +50,11 @@ public class TransaccionCreditoController {
         }
     }
 
-    @GetMapping("/credito/{codCredito}/{numeroCuota}")
-    public ResponseEntity<TransaccionCreditoDTO> obtenerPorCreditoCuota(@PathVariable("codCredito") Integer codCredito, @PathVariable("numeroCuota") Integer numeroCuota) {
+    @GetMapping("/creditos/{codCredito}/{numeroCuota}")
+    public ResponseEntity<TransaccionCreditoDTO> ObtenerPorCreditoCuota(@PathVariable("codCredito") Integer codCredito, @PathVariable("numeroCuota") Integer numeroCuota) {
         try {
             log.info("Obteniendo la transaccion credito por el ID credito  {} y cuota: {}", codCredito, numeroCuota);
-            TransaccionCreditoDTO transaccionCreditoDTO = transaccionCreditoService.listarPorCreditoCuota(codCredito, numeroCuota);
+            TransaccionCreditoDTO transaccionCreditoDTO = transaccionCreditoService.ListarPorCreditoCuota(codCredito, numeroCuota);
             return ResponseEntity.ok(transaccionCreditoDTO);
         } catch (Exception e) {
             log.error("Error al obtener la transaccion credito por el ID credito  {} y cuota: {}", codCredito, numeroCuota);
@@ -62,10 +62,10 @@ public class TransaccionCreditoController {
         }
     }
     @PostMapping
-    public ResponseEntity<TransaccionCreditoDTO> crear(@RequestBody TransaccionCreditoDTO transaccionCreditoDTO) {
+    public ResponseEntity<TransaccionCreditoDTO> Crear(@RequestBody TransaccionCreditoDTO transaccionCreditoDTO) {
         try {
             log.info("Creando la transaccion credito: {}", transaccionCreditoDTO);
-            return ResponseEntity.ok(transaccionCreditoService.crear(transaccionCreditoDTO));
+            return ResponseEntity.ok(transaccionCreditoService.Crear(transaccionCreditoDTO));
         } catch (RuntimeException rte) {
             log.error("Error al crear la transaccion credito: ", rte);
             return ResponseEntity.badRequest().build();

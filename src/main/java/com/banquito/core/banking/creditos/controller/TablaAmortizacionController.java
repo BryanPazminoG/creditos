@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.core.banking.creditos.dto.CreditoDTO;
 import com.banquito.core.banking.creditos.dto.TablaAmortizacionDTO;
 import com.banquito.core.banking.creditos.service.TablaAmortizacionService;
 
-import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -30,7 +30,7 @@ public class TablaAmortizacionController {
         this.tablaAmortizacionService = tablaAmortizacionService;
     }
 
-    @GetMapping("{codCredito}")
+    @GetMapping("/{codCredito}")
     public ResponseEntity<List<TablaAmortizacionDTO>> BuscarTablaAmortizacion(
             @PathVariable("codCredito") Integer codCredito) {
         try {
@@ -42,7 +42,7 @@ public class TablaAmortizacionController {
         }
     }
 
-    @GetMapping("{codCredito}/{numeroCuota}")
+    @GetMapping("/{codCredito}/{numeroCuota}")
     public ResponseEntity<TablaAmortizacionDTO> BuscarPorCuota(@PathVariable("codCredito") Integer codCredito,
             @PathVariable("numeroCuota") Integer numeroCuota) {
 
@@ -56,31 +56,20 @@ public class TablaAmortizacionController {
         }
     }
 
-    @GetMapping("/proximoPago/{codCredito}")
-    public ResponseEntity<TablaAmortizacionDTO> ProximoPago(@PathVariable("codCredito") Integer codCredito) {
+    @GetMapping("/estados")
+    public ResponseEntity<List<TablaAmortizacionDTO>> ListarPorEstado(@RequestParam("codCredito") Integer codCredito ,@RequestParam("estado") String estado) {
         try {
-            log.info("Obteniendo el proximo pago del credito con id: {}", codCredito);
-            return ResponseEntity.ok(tablaAmortizacionService.ProximoPago(codCredito).get());
+            log.info("Obteniendo las cuotas del credito con id: {} con el estado {}", codCredito, estado);
+            return ResponseEntity.ok(tablaAmortizacionService.ListarPorEstado(codCredito, estado));
         } catch (RuntimeException rte) {
-            log.error("Error al obteniendo el proximo pago: ", rte);
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/pagosRealizados/{codCredito}")
-    public ResponseEntity<List<TablaAmortizacionDTO>> PagosRealizados(@PathVariable("codCredito") Integer codCredito) {
-        try {
-            log.info("Obteniendo los pagos realizados del credito con id: {}", codCredito);
-            return ResponseEntity.ok(tablaAmortizacionService.PagosRealizados(codCredito));
-        } catch (RuntimeException rte) {
-            log.error("Error al obtener los pagos realizados: ", rte);
+            log.error("Error al obteniendo las cuotas: ", rte);
             return ResponseEntity.notFound().build();
         }
     }
 
     @PatchMapping
-    public ResponseEntity<TablaAmortizacionDTO> CambiarEstado(@PathParam("codCredito") Integer codCredito,
-            @PathParam("numeroCuota") Integer numeroCuota, @PathParam("estado") String estado) {
+    public ResponseEntity<TablaAmortizacionDTO> CambiarEstado(@RequestParam("codCredito") Integer codCredito,
+            @RequestParam("numeroCuota") Integer numeroCuota, @RequestParam("estado") String estado) {
         try {
             log.info("Actualizando estado de la cuota {} del credito {}: ", codCredito, numeroCuota);
             return ResponseEntity.ok(tablaAmortizacionService.CambiarEstado(codCredito, numeroCuota, estado));

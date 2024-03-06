@@ -2,7 +2,7 @@ package com.banquito.core.banking.creditos.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import java.sql.Timestamp;
+import java.math.BigDecimal;
 
 @Builder
 @Data
@@ -11,12 +11,11 @@ public class TransaccionCreditoDTO {
     private Integer codTransaccionCredito;
     private Integer codCredito;
     private Integer codCuota;
-    private Integer codInteresAcumulado;
     private String codTransaccion;
+    private BigDecimal interesTotal;
     private String numeroCuenta;
-    private String estado;
     private String tipoPago;
-    private Timestamp fechaPago;
+    private String estado;
 
     @Override
     public boolean equals(Object obj) {

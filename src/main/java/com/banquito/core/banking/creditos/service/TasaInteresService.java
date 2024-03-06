@@ -68,9 +68,8 @@ public class TasaInteresService {
             LocalDateTime fechaActualTimestamp = LocalDateTime.now();
             tasaInteres.setFechaCreacion(Date.valueOf(fechaActualDate));
             tasaInteres.setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
-            this.tasaInteresRepository.save(tasaInteres);
-            log.info("Se ha creado la tasa de interes exitosamente: {}", dto);
-            return dto;
+            log.info("La tasa de interes esta en proceso de creacion: {}", dto);
+            return TasaInteresBuilder.toDTO(this.tasaInteresRepository.save(tasaInteres));
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al crear la tasaInteres: " + dto.toString(), e);
         }

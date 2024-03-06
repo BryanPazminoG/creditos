@@ -29,15 +29,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class TablaAmortizacionService {
-    private final TablaAmortizacionRepository TablaAmortizacionRepository;
+    private final TablaAmortizacionRepository tablaAmortizacionRepository;
 
-    public TablaAmortizacionService(TablaAmortizacionRepository TablaAmortizacionRepository) {
-        this.TablaAmortizacionRepository = TablaAmortizacionRepository;
+    public TablaAmortizacionService(TablaAmortizacionRepository tablaAmortizacionRepository) {
+        this.tablaAmortizacionRepository = tablaAmortizacionRepository;
     }
 
     public List<TablaAmortizacionDTO> BuscarTablaAmortizacion(Integer codCredito) {
         List<TablaAmortizacionDTO> listDTO = new ArrayList<>();
-        List<TablaAmortizacion> tablaAmortizacion = this.TablaAmortizacionRepository.findByPKCodCredito(codCredito);
+        List<TablaAmortizacion> tablaAmortizacion = this.tablaAmortizacionRepository.findByPKCodCredito(codCredito);
         Collections.sort(tablaAmortizacion,
                 Comparator.comparingInt(TablaAmortizacion -> TablaAmortizacion.getPK().getCodCuota()));
         for (TablaAmortizacion TablaAmortizacion : tablaAmortizacion) {
@@ -48,7 +48,7 @@ public class TablaAmortizacionService {
 
     public TablaAmortizacionDTO ObtenerPorCuota(Integer codCredito, Integer codCuota) {
         TablaAmortizacionPK PK = new TablaAmortizacionPK(codCredito, codCuota);
-        Optional<TablaAmortizacion> TablaAmortizacion = this.TablaAmortizacionRepository.findById(PK);
+        Optional<TablaAmortizacion> TablaAmortizacion = this.tablaAmortizacionRepository.findById(PK);
 
         if (TablaAmortizacion.isPresent()) {
             log.info("Se ha encontrado la cuota {} del credito {}", codCuota, codCredito);
@@ -59,33 +59,17 @@ public class TablaAmortizacionService {
         }
     }
 
-    public Optional<TablaAmortizacionDTO> ProximoPago(Integer codCredito) {
-        List<TablaAmortizacionDTO> listDTO = this.BuscarTablaAmortizacion(codCredito);
-        if (!listDTO.isEmpty()) {
-            log.info("Cuota proxima encontrada");
-            for (int i = 0; i < listDTO.size(); i++) {
-                String elemento = listDTO.get(i).getEstado();
-                if ("PEN".equals(elemento)) {
-                    return Optional.of(listDTO.get(i));
-                }
+    public List<TablaAmortizacionDTO> ListarPorEstado(Integer codCredito, String estado) {
+        if ("ACT".equals(estado) || "PEN".equals(estado) || "MOR".equals(estado) || "PRX".equals(estado)) {
+            List<TablaAmortizacionDTO> listDTO = new ArrayList<>();
+            for (TablaAmortizacion tablaAmortizacionDTO : this.tablaAmortizacionRepository.findByPKCodCreditoAndEstadoOrderByFechaPlanificadaPago(codCredito, estado)) {
+                listDTO.add(TablaAmortizacionBuilder.toDTO(tablaAmortizacionDTO));
             }
+            log.info("Se obtuvo la lista de cuotas con el estado: ", estado);
+            return listDTO;
+        } else {
+            throw new RuntimeException("Estado ingresado invalido: " + estado);
         }
-        return Optional.empty();
-    }
-
-    public List<TablaAmortizacionDTO> PagosRealizados(Integer codCredito) {
-        List<TablaAmortizacionDTO> listDTO = this.BuscarTablaAmortizacion(codCredito);
-        List<TablaAmortizacionDTO> listaPagos = new ArrayList<>();
-        if (!listDTO.isEmpty()) {
-            log.info("Pagos realizados encontrados");
-            for (int i = 0; i < listDTO.size(); i++) {
-                String elemento = listDTO.get(i).getEstado();
-                if ("PAG".equals(elemento)) {
-                    listaPagos.add(listDTO.get(i));
-                }
-            }
-        }
-        return listaPagos;
     }
 
     @Transactional
@@ -94,14 +78,14 @@ public class TablaAmortizacionService {
             if ("PEN".equals(estado) || "MOR".equals(estado) || "PAG".equals(estado)) {
 
                 TablaAmortizacionPK PK = new TablaAmortizacionPK(codCredito, codCuota);
-                Optional<TablaAmortizacion> TablaAmortizacion = this.TablaAmortizacionRepository.findById(PK);
+                Optional<TablaAmortizacion> TablaAmortizacion = this.tablaAmortizacionRepository.findById(PK);
 
                 if (TablaAmortizacion.isPresent()) {
                     log.info("Se obtuvo la tabla de amortizacion con el id {} - {}", codCredito, codCuota);
                     TablaAmortizacion.get().setEstado(estado);
                     LocalDateTime fechaActualTimestamp = LocalDateTime.now();
                     TablaAmortizacion.get().setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
-                    this.TablaAmortizacionRepository.save(TablaAmortizacion.get());
+                    this.tablaAmortizacionRepository.save(TablaAmortizacion.get());
                     log.info("El estado de la tabla amortizacion se ha actalizado correctamente a {}", estado);
                     return TablaAmortizacionBuilder.toDTO(TablaAmortizacion.get());
                 } else {
@@ -120,8 +104,6 @@ public class TablaAmortizacionService {
 
     @Transactional
     public List<TablaAmortizacionDTO> Crear(CreditoDTO dto) {
-
-        log.info("******************* EJECUTANDO LA CREACION DE LA TABLA DE AMORTIZACION *******************");
 
         BigDecimal tasaInteres = dto.getTasaInteres();
         BigDecimal montoPrestamo = dto.getMonto();
@@ -156,12 +138,12 @@ public class TablaAmortizacionService {
             tablaAmortizacion.setInteres(new BigDecimal(df.format(interes)));
             tablaAmortizacion.setMontoCuota(new BigDecimal(df.format(capitalAmortizado)));
             tablaAmortizacion.setCapitalRestante(new BigDecimal(df.format(capital)));
-            tablaAmortizacion.setEstado("PEN");
+            tablaAmortizacion.setEstado(numeroCuota == 1 ? "PRX": "PEN");
 
             LocalDateTime fechaActualTimestamp = LocalDateTime.now();
             tablaAmortizacion.setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
             TablaAmortizacionDTO.add(TablaAmortizacionBuilder.toDTO(tablaAmortizacion));
-            TablaAmortizacionRepository.save(tablaAmortizacion);
+            tablaAmortizacionRepository.save(tablaAmortizacion);
         }
 
         return TablaAmortizacionDTO;

@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.core.banking.creditos.dto.TasaInteresDTO;
 import com.banquito.core.banking.creditos.service.TasaInteresService;
 
-import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("api/v1/tasainteres")
+@RequestMapping("api/v1/tasaInteres")
 public class TasaInteresController {
 
     private TasaInteresService tasaInteresService;
@@ -40,7 +40,7 @@ public class TasaInteresController {
         }
     }
 
-    @GetMapping("{codTasaInteres}")
+    @GetMapping("/{codTasaInteres}")
     public ResponseEntity<TasaInteresDTO> ObtenerPorId(@PathVariable("codTasaInteres") String codTasaInteres) {
         log.info("Obteniendo la tasa de interes con el codTasaInteres: {}", codTasaInteres);
         try {
@@ -52,8 +52,8 @@ public class TasaInteresController {
         }
     }
 
-    @GetMapping("estado/{estado}")
-    public ResponseEntity<List<TasaInteresDTO>> ListarPorEstado(@PathVariable("estado") String estado) {
+    @GetMapping("/estados")
+    public ResponseEntity<List<TasaInteresDTO>> ListarPorEstado(@RequestParam("estado") String estado) {
         log.info("Obteniendo las tasas de interes por el estado: {}", estado);
         try {
             List<TasaInteresDTO> listTasaInteresDTO = tasaInteresService.ListarPorEstado(estado);
@@ -76,7 +76,7 @@ public class TasaInteresController {
     }
     
     @PatchMapping
-    public ResponseEntity<TasaInteresDTO> CambiarEstado(@PathParam("codTasaInteres") String codTasaInteres, @PathParam("estado") String estado) {
+    public ResponseEntity<TasaInteresDTO> CambiarEstado(@RequestParam("codTasaInteres") String codTasaInteres, @RequestParam("estado") String estado) {
         try {
             log.info("Actualizando estado de la tasa interes");
             return ResponseEntity.ok(tasaInteresService.CambiarEstado(codTasaInteres, estado));

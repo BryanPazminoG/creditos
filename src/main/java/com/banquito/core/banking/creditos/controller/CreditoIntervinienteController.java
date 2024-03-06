@@ -29,7 +29,7 @@ public class CreditoIntervinienteController {
         this.creditoIntervinienteService = creditoIntervinienteService;
     }
 
-    @GetMapping("{codCredito}/{codCliente}")
+    @GetMapping("/{codCredito}/{codCliente}")
     public ResponseEntity<CreditoIntervinienteDTO> ObtenerPorId(@PathVariable("codCredito") Integer codCredito,
             @PathVariable("codCliente") String codCliente) {
         try {
@@ -42,7 +42,7 @@ public class CreditoIntervinienteController {
         }
     }
 
-    @GetMapping("credito/{codCredito}")
+    @GetMapping("/creditos/{codCredito}")
     public ResponseEntity<List<CreditoIntervinienteDTO>> ListarPorCredito(
             @PathVariable("codCredito") Integer codCredito) {
         try {
@@ -67,7 +67,7 @@ public class CreditoIntervinienteController {
         }
     }
 
-    @DeleteMapping("{codCredito}/{codCliente}")
+    @DeleteMapping("/{codCredito}/{codCliente}")
     public ResponseEntity<CreditoIntervinienteDTO> Eliminar(@PathVariable("codCredito") Integer codCredito,
             @PathVariable("codCliente") String codCliente) {
         try {

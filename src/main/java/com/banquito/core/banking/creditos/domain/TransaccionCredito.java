@@ -1,7 +1,7 @@
 package com.banquito.core.banking.creditos.domain;
 
+import java.math.BigDecimal;
 import java.sql.Date;
-import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,24 +31,20 @@ public class TransaccionCredito {
     @Column(name = "COD_CUOTA", nullable = false)
     private Integer codCuota;
 
-    @Column(name = "COD_INTERES_ACUMULADO", nullable = false)
-    private Integer codInteresAcumulado;
-
     @Column(name = "COD_TRANSACCION", nullable = false, length = 64)
     private String codTransaccion;
+
+    @Column(name = "INTERES_TOTAL", nullable = false, precision = 18, scale = 2)
+    private BigDecimal interesTotal;
 
     @Column(name = "NUMERO_CUENTA", nullable = false, length = 10)
     private String numeroCuenta;
 
-    @Column(name = "ESTADO", nullable = false, length = 3)
-    private String estado;
-
     @Column(name = "TIPO_PAGO", nullable = true, length = 3)
     private String tipoPago;
 
-    @Column(name = "FECHA_PAGO", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp fechaPago;
+    @Column(name = "ESTADO", nullable = false, length = 3)
+    private String estado;
 
     @Column(name = "FECHA_CREACION", nullable = false)
     @Temporal(TemporalType.DATE)
@@ -92,9 +88,10 @@ public class TransaccionCredito {
     @Override
     public String toString() {
         return "TransaccionCredito [codTransaccionCredito=" + codTransaccionCredito + ", codCredito=" + codCredito
-                + ", codCuota=" + codCuota + ", codInteresAcumulado=" + codInteresAcumulado + ", codTransaccion="
-                + codTransaccion + ", numeroCuenta=" + numeroCuenta + ", estado=" + estado + ", tipoPago=" + tipoPago
-                + ", fechaPago=" + fechaPago + ", fechaCreacion=" + fechaCreacion + ", version=" + version + "]";
+                + ", codCuota=" + codCuota + ", codTransaccion=" + codTransaccion + ", interesTotal=" + interesTotal
+                + ", numeroCuenta=" + numeroCuenta + ", tipoPago=" + tipoPago + ", estado=" + estado
+                + ", fechaCreacion=" + fechaCreacion + ", version=" + version + "]";
     }
+
 
 }

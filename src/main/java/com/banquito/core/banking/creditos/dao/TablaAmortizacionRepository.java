@@ -15,5 +15,5 @@ public interface TablaAmortizacionRepository extends CrudRepository<TablaAmortiz
 
     public TablaAmortizacion findByFechaPlanificadaPagoAndPK(Date fechaPlanificadaPago, TablaAmortizacionPK PK);
 
-    public List<TablaAmortizacion> findByEstadoOrderByFechaPlanificadaPago(String estado);
+    public List<TablaAmortizacion> findByPKCodCreditoAndEstadoOrderByFechaPlanificadaPago(Integer codCredito, String estado);
 }

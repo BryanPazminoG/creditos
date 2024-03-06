@@ -29,11 +29,14 @@ public class InteresAcumulado {
     @Column(name = "COD_CREDITO", nullable = false)
     private Integer codCredito;
 
+    @Column(name = "NUMERO_CUOTA", nullable = false)
+    private Integer numeroCuota;
+
     @Column(name = "TASA_INTERES_VIGENTE", nullable = false, precision = 8, scale = 2)
     private BigDecimal tasaInteresVigente;
 
-    @Column(name = "MONTO_CREDITO", nullable = false, precision = 18, scale = 2)
-    private BigDecimal montoCredito;
+    @Column(name = "CAPITAL_PENDIENTE", nullable = false, precision = 18, scale = 2)
+    private BigDecimal capitalPendiente;
 
     @Column(name = "INTERES_GENERADO", nullable = false, precision = 18, scale = 2)
     private BigDecimal interesGenerado;
@@ -84,9 +87,11 @@ public class InteresAcumulado {
     @Override
     public String toString() {
         return "InteresAcumulado [codInteresAcumulado=" + codInteresAcumulado + ", codCredito=" + codCredito
-                + ", tasaInteresVigente=" + tasaInteresVigente + ", montoCredito=" + montoCredito + ", interesGenerado="
-                + interesGenerado + ", fechaCreacion=" + fechaCreacion + ", estado=" + estado + ", credito=" + credito
-                + "]";
+                + ", numeroCuota=" + numeroCuota + ", tasaInteresVigente=" + tasaInteresVigente + ", capitalPendiente="
+                + capitalPendiente + ", interesGenerado=" + interesGenerado + ", fechaCreacion=" + fechaCreacion
+                + ", estado=" + estado + ", credito=" + credito + "]";
     }
+
+
 
 }

@@ -52,9 +52,8 @@ public class CreditoIntervinienteService {
             CreditoInterviniente creditoInterviniente = CreditoIntervinienteBuilder.toCreditoInterviniente(dto);
             LocalDate fechaActualDate = LocalDate.now();
             creditoInterviniente.setFechaCreacion(Date.valueOf(fechaActualDate));
-            this.creditoIntervinienteRepository.save(creditoInterviniente);
-            log.info("El credito Interviniente : {} se ha creado ", dto);
-            return dto;
+            log.info("El credito Interviniente : {} esta en poceso de creacion ", dto);
+            return CreditoIntervinienteBuilder.toDTO(this.creditoIntervinienteRepository.save(creditoInterviniente));
         } catch (Exception e) {
             throw new CreateException(
                     "Ocurrio un error al crear el Credito Interviniente: " + dto.toString(), e);

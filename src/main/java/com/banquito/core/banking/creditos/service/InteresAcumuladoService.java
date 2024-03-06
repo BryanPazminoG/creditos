@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.banquito.core.banking.creditos.dao.CreditoRepository;
 import com.banquito.core.banking.creditos.dao.InteresAcumuladoRepository;
+import com.banquito.core.banking.creditos.dao.TablaAmortizacionRepository;
 import com.banquito.core.banking.creditos.domain.Credito;
 import com.banquito.core.banking.creditos.domain.InteresAcumulado;
+import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
 import com.banquito.core.banking.creditos.dto.CreditoDTO;
 import com.banquito.core.banking.creditos.dto.InteresAcumuladoDTO;
 import com.banquito.core.banking.creditos.dto.Builder.CreditoBuilder;
@@ -18,6 +22,7 @@ import com.banquito.core.banking.creditos.dto.Builder.InteresAcumuladoBuilder;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -25,15 +30,18 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@EnableAsync
 @Service
 public class InteresAcumuladoService {
     private final InteresAcumuladoRepository interesAcumuladoRepository;
     private final CreditoRepository creditoRepository;
+    private final TablaAmortizacionRepository tablaAmortizacionRepository;
 
-
-    public InteresAcumuladoService(InteresAcumuladoRepository interesAcumuladoRepository, CreditoRepository creditoRepository) {
+    public InteresAcumuladoService(InteresAcumuladoRepository interesAcumuladoRepository,
+            CreditoRepository creditoRepository, TablaAmortizacionRepository tablaAmortizacionRepository) {
         this.interesAcumuladoRepository = interesAcumuladoRepository;
         this.creditoRepository = creditoRepository;
+        this.tablaAmortizacionRepository = tablaAmortizacionRepository;
     }
 
     public InteresAcumuladoDTO ObtenerPorId(Integer codInteresAcumulado) {
@@ -51,7 +59,7 @@ public class InteresAcumuladoService {
     public List<InteresAcumuladoDTO> ListarPorCodigoCredito(Integer codCredito) {
         List<InteresAcumuladoDTO> listDTO = new ArrayList<>();
         for (InteresAcumulado interesAcumulado : this.interesAcumuladoRepository
-        .findByCodCreditoOrderByFechaCreacion(codCredito)) {
+                .findByCodCreditoOrderByFechaCreacion(codCredito)) {
             listDTO.add(InteresAcumuladoBuilder.toDTO(interesAcumulado));
         }
         return listDTO;
@@ -59,13 +67,14 @@ public class InteresAcumuladoService {
 
     public List<InteresAcumuladoDTO> ListarEstado(String estado) {
         try {
-            if("PAG".equals(estado) || "PEN".equals(estado)){
+            if ("PAG".equals(estado) || "PEN".equals(estado)) {
                 List<InteresAcumuladoDTO> listDTO = new ArrayList<>();
-                for(InteresAcumulado interesAcumulado : this.interesAcumuladoRepository.findByEstadoOrderByFechaCreacion(estado)){
+                for (InteresAcumulado interesAcumulado : this.interesAcumuladoRepository
+                        .findByEstadoOrderByFechaCreacion(estado)) {
                     listDTO.add(InteresAcumuladoBuilder.toDTO(interesAcumulado));
                 }
                 return listDTO;
-            }else{
+            } else {
                 log.info("El estado {} es invalido", estado);
                 throw new RuntimeException("Estado ingresado invalido: " + estado);
             }
@@ -77,55 +86,72 @@ public class InteresAcumuladoService {
     public List<CreditoDTO> ListarCreditosEstado(String estado) {
         List<CreditoDTO> listDTO = new ArrayList<>();
         for (Credito credito : this.creditoRepository
-        .findByEstadoOrderByFechaCreacion(estado)) {
+                .findByEstadoOrderByFechaCreacion(estado)) {
             listDTO.add(CreditoBuilder.toDTO(credito));
         }
         return listDTO;
     }
 
-    // @Scheduled(cron = "0 * * * * MON - SUN")
-    // public void GenerarInteres() {
-    //     for(CreditoDTO creditoDTO : this.ListarCreditosEstado("VIG")){
-    //         BigDecimal montoCredito = creditoDTO.getCapitalPendiente();
-    //         BigDecimal tasaInteresVigente = creditoDTO.getTasaInteres();
-    //         BigDecimal interesGenerado = montoCredito.multiply(tasaInteresVigente).divide(new BigDecimal(365));
+    public BigDecimal InteresAcumuladoCuota(Integer codCredito, Integer numeroCuota) {
+        List<InteresAcumulado> listInteresAcumulados = interesAcumuladoRepository
+                .findByCodCreditoAndNumeroCuotaOrderByFechaCreacion(codCredito, numeroCuota);
+        BigDecimal interesGenerado = new BigDecimal("0");
+        for (InteresAcumulado interesAcumulado : listInteresAcumulados) {
+            interesGenerado = interesGenerado.add(interesAcumulado.getInteresGenerado());
+        }
+        log.info("El interes acumulado de la cuota {} del credito {} es:  {}", numeroCuota, codCredito,
+                interesGenerado);
+        return interesGenerado;
+    }
 
-    //         LocalDate fechaActualDate = LocalDate.now();
+    @Async
+    @Scheduled(cron = "0 03 16 * * MON-SUN")
+    public void GenerarInteres() {
 
-    //         InteresAcumulado interesAcumulado = new InteresAcumulado();
-    //         interesAcumulado.setCodCredito(creditoDTO.getCodCredito());
-    //         interesAcumulado.setMontoCredito(montoCredito);
-    //         interesAcumulado.setTasaInteresVigente(tasaInteresVigente);
-    //         interesAcumulado.setInteresGenerado(interesGenerado);
-    //         interesAcumulado.setFechaCreacion(Date.valueOf(fechaActualDate));
-    //         interesAcumulado.setEstado("PEN");
+        for (CreditoDTO creditoDTO : this.ListarCreditosEstado("VIG")) {
+            BigDecimal montoCredito = creditoDTO.getCapitalPendiente();
+            BigDecimal tasaInteresVigente = creditoDTO.getTasaInteres();
+            BigDecimal interesGenerado = montoCredito.multiply(tasaInteresVigente.divide(new BigDecimal("36500"),MathContext.DECIMAL128));
+            LocalDate fechaActualDate = LocalDate.now();
+            TablaAmortizacion cuotaActiva = this.tablaAmortizacionRepository.findByPKCodCreditoAndEstadoOrderByFechaPlanificadaPago(creditoDTO.getCodCredito(), "PRX").get(0);
 
-    //         this.interesAcumuladoRepository.save(interesAcumulado);
+            InteresAcumulado interesAcumulado = new InteresAcumulado();
+            interesAcumulado.setCodCredito(creditoDTO.getCodCredito());
+            interesAcumulado.setNumeroCuota(cuotaActiva.getPK().getCodCuota());
+            interesAcumulado.setCapitalPendiente(montoCredito);
+            interesAcumulado.setTasaInteresVigente(tasaInteresVigente);
+            interesAcumulado.setInteresGenerado(interesGenerado);
+            interesAcumulado.setFechaCreacion(Date.valueOf(fechaActualDate));
+            interesAcumulado.setEstado("PEN");
 
-    //         log.info("Creado el interes acumulado : {} ", interesAcumulado);
-    //     }
-    // }
+            this.interesAcumuladoRepository.save(interesAcumulado);
+
+            log.info("Creado el interes acumulado : {} ", interesAcumulado);
+        }
+    }
 
     @Transactional
     public InteresAcumuladoDTO CambiarEstado(Integer codInteresAcumulado, String estado) {
         try {
-            if("PAG".equals(estado) || "PEN".equals(estado)){
-                Optional<InteresAcumulado> interesAcumulado = this.interesAcumuladoRepository.findById(codInteresAcumulado);
-                if(interesAcumulado.isPresent()){
+            if ("PAG".equals(estado) || "PEN".equals(estado)) {
+                Optional<InteresAcumulado> interesAcumulado = this.interesAcumuladoRepository
+                        .findById(codInteresAcumulado);
+                if (interesAcumulado.isPresent()) {
                     log.info("Se obtuvo el interes generado con el id {}", codInteresAcumulado);
                     interesAcumulado.get().setEstado(estado);
                     this.interesAcumuladoRepository.save(interesAcumulado.get());
                     log.info("El estado del interes acumulado se ha actalizado correctamente a {}", estado);
                     return InteresAcumuladoBuilder.toDTO(interesAcumulado.get());
-                }else{
+                } else {
                     throw new RuntimeException("El interes generado con id" + codInteresAcumulado + " no existe");
                 }
-            }else{
+            } else {
                 log.info("El estado {} es invalido", estado);
                 throw new RuntimeException("Estado ingresado invalido: " + estado);
             }
         } catch (Exception e) {
-            throw new CreateException("Ocurrio un error al actualizar el estado del interes generado, error: " + e.getMessage(), e);
+            throw new CreateException(
+                    "Ocurrio un error al actualizar el estado del interes generado, error: " + e.getMessage(), e);
         }
     }
 }

@@ -10,12 +10,11 @@ public class TransaccionCreditoBuilder {
                 .codTransaccionCredito(transaccionCredito.getCodTransaccionCredito())
                 .codCredito(transaccionCredito.getCodCredito())
                 .codCuota(transaccionCredito.getCodCuota())
-                .codInteresAcumulado(transaccionCredito.getCodInteresAcumulado())
                 .codTransaccion(transaccionCredito.getCodTransaccion())
+                .interesTotal(transaccionCredito.getInteresTotal())
                 .numeroCuenta(transaccionCredito.getNumeroCuenta())
                 .estado(transaccionCredito.getEstado())
-                .tipoPago(transaccionCredito.getTipoPago())
-                .fechaPago(transaccionCredito.getFechaPago()).build();
+                .tipoPago(transaccionCredito.getTipoPago()).build();
         return dto;
     }
 
@@ -25,12 +24,11 @@ public class TransaccionCreditoBuilder {
         transaccionCredito.setCodTransaccionCredito(dto.getCodTransaccionCredito());
         transaccionCredito.setCodCredito(dto.getCodCredito());
         transaccionCredito.setCodCuota(dto.getCodCuota());
-        transaccionCredito.setCodInteresAcumulado(dto.getCodInteresAcumulado());
         transaccionCredito.setCodTransaccion(dto.getCodTransaccion());
+        transaccionCredito.setInteresTotal(dto.getInteresTotal());
         transaccionCredito.setNumeroCuenta(dto.getNumeroCuenta());
         transaccionCredito.setEstado(dto.getEstado());
         transaccionCredito.setTipoPago(dto.getTipoPago());
-        transaccionCredito.setFechaPago(dto.getFechaPago());
 
         return transaccionCredito;
     }

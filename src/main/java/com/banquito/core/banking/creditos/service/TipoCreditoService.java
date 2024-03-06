@@ -69,9 +69,8 @@ public class TipoCreditoService {
             LocalDateTime fechaActualTimestamp = LocalDateTime.now();
             tipoCredito.setFechaCreacion(Date.valueOf(fechaActualDate));
             tipoCredito.setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
-            this.tipoCreditoRepository.save(tipoCredito);
-            log.info("El tipo credito se ha almacenado correctamente: {}", dto);
-            return dto;
+            log.info("El tipo credito esta en proceso de creacion correctamente: {}", dto);
+            return TipoCreditoBuilder.toDTO(this.tipoCreditoRepository.save(tipoCredito));
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al crear el Tipo Credito: " + dto.toString(), e);
         }
@@ -84,9 +83,8 @@ public class TipoCreditoService {
             if (tipoCredito != null) {
                 LocalDateTime fechaActualTimestamp = LocalDateTime.now();
                 tipoCredito.setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
-                this.tipoCreditoRepository.save(tipoCredito);
-                log.info("El tipo credito se ha actualizado correctamente: {}", dto);
-                return dto;
+                log.info("El tipo credito esta en proceso de actualizacion: {}", dto);
+                return TipoCreditoBuilder.toDTO(this.tipoCreditoRepository.save(tipoCredito)) ;
             } else {
                 throw new RuntimeException(
                         "El Tipo Credito con id" + dto.getCodTipoCredito() + " no existe");

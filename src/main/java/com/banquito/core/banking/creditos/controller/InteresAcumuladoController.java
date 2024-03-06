@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.core.banking.creditos.dto.InteresAcumuladoDTO;
 import com.banquito.core.banking.creditos.service.InteresAcumuladoService;
-
-import jakarta.websocket.server.PathParam;
+import java.math.BigDecimal;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -26,7 +26,7 @@ public class InteresAcumuladoController {
         this.interesAcumuladoService = interesAcumuladoService;
     }
 
-    @GetMapping("{codInteresAcumulado}")
+    @GetMapping("/{codInteresAcumulado}")
     public ResponseEntity<InteresAcumuladoDTO> ObtenerPorId(
             @PathVariable("codInteresAcumulado") Integer codInteresAcumulado) {
         try {
@@ -39,7 +39,7 @@ public class InteresAcumuladoController {
         }
     }
 
-    @GetMapping("{codCredito}/credito")
+    @GetMapping("/creditos/{codCredito}")
     public ResponseEntity<List<InteresAcumuladoDTO>> ObtenerPorCredito(@PathVariable("codCredito") Integer codCredito) {
         try {
             log.info("Obteniendo el interes acumulado por el ID credito: {}", codCredito);
@@ -52,8 +52,8 @@ public class InteresAcumuladoController {
         }
     }
 
-    @GetMapping("/estado/{estado}")
-    public ResponseEntity<List<InteresAcumuladoDTO>> ObtenerPorEstado(@PathVariable("estado") String estado) {
+    @GetMapping("/estados")
+    public ResponseEntity<List<InteresAcumuladoDTO>> ObtenerPorEstado(@RequestParam("estado") String estado) {
         try {
             log.info("Obteniendo el interes acumulado por el estado: {}", estado);
             List<InteresAcumuladoDTO> listInteresAcumuladoDTO = interesAcumuladoService.ListarEstado(estado);
@@ -64,9 +64,21 @@ public class InteresAcumuladoController {
         }
     }
 
+    @GetMapping("/interes/{codCredito}/{numeroCuota}")
+    public ResponseEntity<BigDecimal> ObtenerIntereAcumulado(@PathVariable("codCredito") Integer codCredito, @PathVariable("numeroCuota") Integer numeroCuota) {
+        try {
+            log.info("Obteniendo el interes acumulado de la cuota {} del credito {}", numeroCuota, codCredito);
+            BigDecimal interesGenerado = interesAcumuladoService.InteresAcumuladoCuota(codCredito, numeroCuota);
+            return ResponseEntity.ok(interesGenerado);
+        } catch (Exception e) {
+            log.error("Error al obtener el interes acumulado de la cuota {} del credito {}", numeroCuota, codCredito);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PatchMapping
-    public ResponseEntity<InteresAcumuladoDTO> CambiarEstado(@PathParam("codInteresAcumulado") Integer codInteresAcumulado,
-            @PathParam("estado") String estado) {
+    public ResponseEntity<InteresAcumuladoDTO> CambiarEstado(@RequestParam("codInteresAcumulado") Integer codInteresAcumulado,
+            @RequestParam("estado") String estado) {
         try {
             log.info("Actualizando estado del interes acumulado: {} ", estado);
             return ResponseEntity.ok(interesAcumuladoService.CambiarEstado(codInteresAcumulado, estado));

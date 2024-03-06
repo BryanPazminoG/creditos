@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.core.banking.creditos.dto.TipoCreditoDTO;
 import com.banquito.core.banking.creditos.service.TipoCreditoService;
 
-import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class TipoCreditoController {
         }
     }
 
-    @GetMapping("{codTipoCredito}")
+    @GetMapping("/{codTipoCredito}")
     public ResponseEntity<TipoCreditoDTO> ObtenerPorId(@PathVariable("codTipoCredito") Integer codTipoCredito) {
         try {
             log.info("Obteniendo el tipo credito con el codTipoCredito: {}", codTipoCredito);
@@ -53,8 +53,8 @@ public class TipoCreditoController {
         }
     }
 
-    @GetMapping("estado/{estado}")
-    public ResponseEntity<List<TipoCreditoDTO>> ListarPorEstado(@PathVariable("estado") String estado) {
+    @GetMapping("/estados")
+    public ResponseEntity<List<TipoCreditoDTO>> ListarPorEstado(@RequestParam("estado") String estado) {
         try {
             log.info("Obteniendo la lista de tipo credito");
             List<TipoCreditoDTO> listTipoCredito = tipoCreditoService.ListarPorEstado(estado);
@@ -88,7 +88,7 @@ public class TipoCreditoController {
     }
     
     @PatchMapping
-    public ResponseEntity<TipoCreditoDTO> CambiarEstado(@PathParam("codTipoCredito") Integer codTipoCredito, @PathParam("estado") String estado) {
+    public ResponseEntity<TipoCreditoDTO> CambiarEstado(@RequestParam("codTipoCredito") Integer codTipoCredito, @RequestParam("estado") String estado) {
         try {
             log.info("Actualizando estado deL tipo credito");
             return ResponseEntity.ok(tipoCreditoService.CambiarEstado(codTipoCredito, estado));
