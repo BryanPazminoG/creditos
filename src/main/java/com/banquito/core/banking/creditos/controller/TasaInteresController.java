@@ -40,20 +40,20 @@ public class TasaInteresController {
         }
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<TasaInteresDTO> ObtenerPorId(@PathVariable("id") String id) {
-        log.info("Obteniendo la tasa de interes con el id: {}", id);
+    @GetMapping("{codTasaInteres}")
+    public ResponseEntity<TasaInteresDTO> ObtenerPorId(@PathVariable("codTasaInteres") String codTasaInteres) {
+        log.info("Obteniendo la tasa de interes con el codTasaInteres: {}", codTasaInteres);
         try {
-            TasaInteresDTO tasaInteresDTO = tasaInteresService.ObtenerPorId(id);
+            TasaInteresDTO tasaInteresDTO = tasaInteresService.ObtenerPorId(codTasaInteres);
             return ResponseEntity.ok(tasaInteresDTO);
         } catch (Exception e) {
-            log.error("No se encontro la tasa de interes con el id: ", id);
+            log.error("No se encontro la tasa de interes con el codTasaInteres: ", codTasaInteres);
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<TasaInteresDTO>> ListarPorEstado(@PathParam("estado") String estado) {
+    @GetMapping("estado/{estado}")
+    public ResponseEntity<List<TasaInteresDTO>> ListarPorEstado(@PathVariable("estado") String estado) {
         log.info("Obteniendo las tasas de interes por el estado: {}", estado);
         try {
             List<TasaInteresDTO> listTasaInteresDTO = tasaInteresService.ListarPorEstado(estado);

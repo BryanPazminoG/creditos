@@ -83,28 +83,28 @@ public class InteresAcumuladoService {
         return listDTO;
     }
 
-    @Scheduled(cron = "0 * * * * MON - SUN")
-    public void GenerarInteres() {
-        for(CreditoDTO creditoDTO : this.ListarCreditosEstado("VIG")){
-            BigDecimal montoCredito = creditoDTO.getCapitalPendiente();
-            BigDecimal tasaInteresVigente = creditoDTO.getTasaInteres();
-            BigDecimal interesGenerado = montoCredito.multiply(tasaInteresVigente).divide(new BigDecimal(365));
+    // @Scheduled(cron = "0 * * * * MON - SUN")
+    // public void GenerarInteres() {
+    //     for(CreditoDTO creditoDTO : this.ListarCreditosEstado("VIG")){
+    //         BigDecimal montoCredito = creditoDTO.getCapitalPendiente();
+    //         BigDecimal tasaInteresVigente = creditoDTO.getTasaInteres();
+    //         BigDecimal interesGenerado = montoCredito.multiply(tasaInteresVigente).divide(new BigDecimal(365));
 
-            LocalDate fechaActualDate = LocalDate.now();
+    //         LocalDate fechaActualDate = LocalDate.now();
 
-            InteresAcumulado interesAcumulado = new InteresAcumulado();
-            interesAcumulado.setCodCredito(creditoDTO.getCodCredito());
-            interesAcumulado.setMontoCredito(montoCredito);
-            interesAcumulado.setTasaInteresVigente(tasaInteresVigente);
-            interesAcumulado.setInteresGenerado(interesGenerado);
-            interesAcumulado.setFechaCreacion(Date.valueOf(fechaActualDate));
-            interesAcumulado.setEstado("PEN");
+    //         InteresAcumulado interesAcumulado = new InteresAcumulado();
+    //         interesAcumulado.setCodCredito(creditoDTO.getCodCredito());
+    //         interesAcumulado.setMontoCredito(montoCredito);
+    //         interesAcumulado.setTasaInteresVigente(tasaInteresVigente);
+    //         interesAcumulado.setInteresGenerado(interesGenerado);
+    //         interesAcumulado.setFechaCreacion(Date.valueOf(fechaActualDate));
+    //         interesAcumulado.setEstado("PEN");
 
-            this.interesAcumuladoRepository.save(interesAcumulado);
+    //         this.interesAcumuladoRepository.save(interesAcumulado);
 
-            log.info("Creado el interes acumulado : {} ", interesAcumulado);
-        }
-    }
+    //         log.info("Creado el interes acumulado : {} ", interesAcumulado);
+    //     }
+    // }
 
     @Transactional
     public InteresAcumuladoDTO CambiarEstado(Integer codInteresAcumulado, String estado) {

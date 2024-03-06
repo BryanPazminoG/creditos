@@ -38,13 +38,13 @@ public class TipoCreditoService {
         return listDTO;
     }
 
-    public TipoCreditoDTO ObtenerPorId(Integer id) {
-        Optional<TipoCredito> tipoCredito = this.tipoCreditoRepository.findById(id);
+    public TipoCreditoDTO ObtenerPorId(Integer codTipoCredito) {
+        Optional<TipoCredito> tipoCredito = this.tipoCreditoRepository.findById(codTipoCredito);
         if (tipoCredito.isPresent()) {
-            log.info("El tipo credito con id {} se ha obtenido", id);
+            log.info("El tipo credito con codTipoCredito {} se ha obtenido", codTipoCredito);
             return TipoCreditoBuilder.toDTO(tipoCredito.get());
         } else {
-            throw new RuntimeException("El Tipo Credito con id" + id + " no existe");
+            throw new RuntimeException("El Tipo Credito con codTipoCredito" + codTipoCredito + " no existe");
         }
     }
 

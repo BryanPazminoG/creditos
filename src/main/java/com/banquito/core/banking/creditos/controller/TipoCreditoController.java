@@ -41,20 +41,20 @@ public class TipoCreditoController {
         }
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<TipoCreditoDTO> ObtenerPorId(@PathVariable("id") Integer id) {
+    @GetMapping("{codTipoCredito}")
+    public ResponseEntity<TipoCreditoDTO> ObtenerPorId(@PathVariable("codTipoCredito") Integer codTipoCredito) {
         try {
-            log.info("Obteniendo el tipo credito con el id: {}", id);
-            TipoCreditoDTO tipoCredito = tipoCreditoService.ObtenerPorId(id);
+            log.info("Obteniendo el tipo credito con el codTipoCredito: {}", codTipoCredito);
+            TipoCreditoDTO tipoCredito = tipoCreditoService.ObtenerPorId(codTipoCredito);
             return ResponseEntity.ok(tipoCredito);
         } catch (Exception e) {
-            log.error("No se encontro la tasa de interes con el id: ", id);
+            log.error("No se encontro la tasa de interes con el id: ", codTipoCredito);
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<TipoCreditoDTO>> ListarPorEstado(@PathParam("estado") String estado) {
+    @GetMapping("estado/{estado}")
+    public ResponseEntity<List<TipoCreditoDTO>> ListarPorEstado(@PathVariable("estado") String estado) {
         try {
             log.info("Obteniendo la lista de tipo credito");
             List<TipoCreditoDTO> listTipoCredito = tipoCreditoService.ListarPorEstado(estado);

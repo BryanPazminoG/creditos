@@ -2,19 +2,18 @@ package com.banquito.core.banking.creditos.service;
 
 import java.util.Optional;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
+import java.sql.Date;
 
 import org.springframework.stereotype.Service;
 
-import com.banquito.core.banking.creditos.dao.InteresAcumuladoRepository;
 import com.banquito.core.banking.creditos.dao.TablaAmortizacionRepository;
-import com.banquito.core.banking.creditos.domain.InteresAcumulado;
 import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
 import com.banquito.core.banking.creditos.domain.TablaAmortizacionPK;
 import com.banquito.core.banking.creditos.dto.CreditoDTO;
@@ -22,6 +21,7 @@ import com.banquito.core.banking.creditos.dto.TablaAmortizacionDTO;
 import com.banquito.core.banking.creditos.dto.Builder.TablaAmortizacionBuilder;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -30,12 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class TablaAmortizacionService {
     private final TablaAmortizacionRepository TablaAmortizacionRepository;
-    private final InteresAcumuladoRepository interesAcumuladoRepository;
 
-    public TablaAmortizacionService(TablaAmortizacionRepository TablaAmortizacionRepository,
-            InteresAcumuladoRepository interesAcumuladoRepository) {
+    public TablaAmortizacionService(TablaAmortizacionRepository TablaAmortizacionRepository) {
         this.TablaAmortizacionRepository = TablaAmortizacionRepository;
-        this.interesAcumuladoRepository = interesAcumuladoRepository;
     }
 
     public List<TablaAmortizacionDTO> BuscarTablaAmortizacion(Integer codCredito) {
@@ -121,42 +118,31 @@ public class TablaAmortizacionService {
         }
     }
 
-    public BigDecimal obtenerInteresVigente(Integer codCredito) {
-        List<InteresAcumulado> listInteres = this.interesAcumuladoRepository.findByCodCreditoOrderByFechaCreacion(codCredito);
-        if(!listInteres.isEmpty()){
-            log.info("Interes Acumulado encotrado");
-            return listInteres.get(0).getTasaInteresVigente();
-        }else{
-            throw new RuntimeException(
-                "No se han encontrado ningun interes aculumado con el codigo del credito" + codCredito);
-        }
-    }
-
     @Transactional
     public List<TablaAmortizacionDTO> Crear(CreditoDTO dto) {
 
-        BigDecimal tasaInteres = this.obtenerInteresVigente(dto.getCodCredito());
+        log.info("******************* EJECUTANDO LA CREACION DE LA TABLA DE AMORTIZACION *******************");
+
+        BigDecimal tasaInteres = dto.getTasaInteres();
         BigDecimal montoPrestamo = dto.getMonto();
         Integer numeroPagos = dto.getNumeroCuotas();
-
-        BigDecimal interesMensual = tasaInteres.divide(new BigDecimal(12))
-                .divide(new BigDecimal(100));
-
+        BigDecimal interesMensual = tasaInteres.divide(new BigDecimal("12"), MathContext.DECIMAL128)
+                .divide(new BigDecimal("100"), MathContext.DECIMAL128);
         BigDecimal numerador = interesMensual.multiply(montoPrestamo);
         BigDecimal denominador = new BigDecimal(1 - Math.pow(1 + interesMensual.doubleValue(), -numeroPagos));
-        BigDecimal cuotaPago = numerador.divide(denominador);
+        BigDecimal cuotaPago = numerador.divide(denominador, MathContext.DECIMAL128);
 
         DecimalFormat df = new DecimalFormat("#.##");
-
         List<TablaAmortizacionDTO> TablaAmortizacionDTO = new ArrayList<>();
-
         BigDecimal capital = montoPrestamo;
-        Date fechaPagos = new Date();
+        LocalDate fechaActualDate = LocalDate.now();
+        Date fechaPagos = Date.valueOf(fechaActualDate);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fechaPagos);
 
         for (Integer numeroCuota = 1; numeroCuota <= numeroPagos; numeroCuota++) {
             TablaAmortizacion tablaAmortizacion = new TablaAmortizacion();
+            TablaAmortizacionPK tablaAmortizacionPK = new TablaAmortizacionPK(dto.getCodCredito(), numeroCuota);
 
             calendar.add(Calendar.MONTH, 1);
 
@@ -164,8 +150,8 @@ public class TablaAmortizacionService {
             BigDecimal capitalAmortizado = cuotaPago.subtract(interes);
             capital = capital.subtract(capitalAmortizado);
 
-            tablaAmortizacion.getPK().setCodCuota(numeroCuota);
-            tablaAmortizacion.setFechaPlanificadaPago((java.sql.Date) calendar.getTime());
+            tablaAmortizacion.setPK(tablaAmortizacionPK);
+            tablaAmortizacion.setFechaPlanificadaPago(new Date((calendar.getTime()).getTime()));
             tablaAmortizacion.setCapital(new BigDecimal(df.format(cuotaPago)));
             tablaAmortizacion.setInteres(new BigDecimal(df.format(interes)));
             tablaAmortizacion.setMontoCuota(new BigDecimal(df.format(capitalAmortizado)));

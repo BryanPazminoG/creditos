@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("api/v1/pagos")
+@RequestMapping("api/v1/tablaAmortizacion")
 public class TablaAmortizacionController {
 
     private TablaAmortizacionService tablaAmortizacionService;
