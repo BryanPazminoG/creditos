@@ -9,7 +9,7 @@ import com.banquito.core.banking.creditos.dao.TransaccionCreditoRepository;
 import com.banquito.core.banking.creditos.domain.InteresAcumulado;
 import com.banquito.core.banking.creditos.domain.TransaccionCredito;
 import com.banquito.core.banking.creditos.dto.TransaccionCreditoDTO;
-import com.banquito.core.banking.creditos.dto.Builder.TransaccionCreditoBuilder;
+import com.banquito.core.banking.creditos.mappers.TransaccionCreditoMapper;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 
 import jakarta.transaction.Transactional;
@@ -37,7 +37,7 @@ public class TransaccionCreditoService {
         Optional<TransaccionCredito> transaccionCredito = this.transaccionCreditoRepository.findById(id);
         if (transaccionCredito.isPresent()) {
             log.info("La transaccion credito con id {} se ha obtenido", id);
-            return TransaccionCreditoBuilder.toDTO(transaccionCredito.get());
+            return TransaccionCreditoMapper.INSTANCE.DTOToEntity(transaccionCredito.get());
         } else {
             throw new RuntimeException("La transaccion credito con id" + id + " no existe");
         }
@@ -47,7 +47,7 @@ public class TransaccionCreditoService {
         List<TransaccionCreditoDTO> listDTO = new ArrayList<>();
         for (TransaccionCredito transaccionCredito : transaccionCreditoRepository
                 .findByCodCreditoOrderByFechaCreacion(codCredito)) {
-            listDTO.add(TransaccionCreditoBuilder.toDTO(transaccionCredito));
+            listDTO.add(TransaccionCreditoMapper.INSTANCE.DTOToEntity(transaccionCredito));
         }
         return listDTO;
     }
@@ -57,7 +57,7 @@ public class TransaccionCreditoService {
                 .findByCodCreditoAndCodCuota(codCredito, cuota);
         if (transaccionCredito.isPresent()) {
             log.info("La transaccion credito con codCredito {} y cuota {} se ha obtenido", codCredito, cuota);
-            return TransaccionCreditoBuilder.toDTO(transaccionCredito.get());
+            return TransaccionCreditoMapper.INSTANCE.DTOToEntity(transaccionCredito.get());
         } else {
             throw new RuntimeException(
                     "La transaccion credito  con codCredito" + codCredito + " y cuota " + cuota + " no existe");
@@ -67,7 +67,7 @@ public class TransaccionCreditoService {
     @Transactional
     public TransaccionCreditoDTO Crear(TransaccionCreditoDTO dto) {
         try {
-            TransaccionCredito transaccionCredito = TransaccionCreditoBuilder.toTransaccionCredito(dto);
+            TransaccionCredito transaccionCredito = TransaccionCreditoMapper.INSTANCE.entityToDTO(dto);
             LocalDate fechaActualDate = LocalDate.now();
 
             log.info("Calculado el interes generado en la cuota {} del prestamo {}", dto.getCodCredito(),
@@ -81,7 +81,7 @@ public class TransaccionCreditoService {
             log.info("El interes generado es de: ", interesGenerado);
             transaccionCredito.setInteresTotal(interesGenerado);
             transaccionCredito.setFechaCreacion(Date.valueOf(fechaActualDate));
-            return TransaccionCreditoBuilder.toDTO(this.transaccionCreditoRepository.save(transaccionCredito));
+            return TransaccionCreditoMapper.INSTANCE.DTOToEntity(this.transaccionCreditoRepository.save(transaccionCredito));
 
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al crear el Tipo Credito: " + dto.toString(), e);

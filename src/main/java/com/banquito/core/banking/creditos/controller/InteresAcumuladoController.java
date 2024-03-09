@@ -1,6 +1,8 @@
 package com.banquito.core.banking.creditos.controller;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("api/v1/interesAcumulado")
 public class InteresAcumuladoController {
+    
+    @Autowired
     private InteresAcumuladoService interesAcumuladoService;
-
-    public InteresAcumuladoController(InteresAcumuladoService interesAcumuladoService) {
-        this.interesAcumuladoService = interesAcumuladoService;
-    }
 
     @GetMapping("/{codInteresAcumulado}")
     public ResponseEntity<InteresAcumuladoDTO> ObtenerPorId(

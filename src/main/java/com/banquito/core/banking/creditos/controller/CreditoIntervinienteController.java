@@ -2,6 +2,7 @@ package com.banquito.core.banking.creditos.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,12 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("api/v1/intervinientes")
 public class CreditoIntervinienteController {
-
+    @Autowired
     private CreditoIntervinienteService creditoIntervinienteService;
-
-    public CreditoIntervinienteController(CreditoIntervinienteService creditoIntervinienteService) {
-        this.creditoIntervinienteService = creditoIntervinienteService;
-    }
 
     @GetMapping("/{codCredito}/{codCliente}")
     public ResponseEntity<CreditoIntervinienteDTO> ObtenerPorId(@PathVariable("codCredito") Integer codCredito,

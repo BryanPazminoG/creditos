@@ -1,5 +1,6 @@
 package com.banquito.core.banking.creditos.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +24,8 @@ import java.util.List;
 @RequestMapping("api/v1/tasaInteres")
 public class TasaInteresController {
 
+    @Autowired
     private TasaInteresService tasaInteresService;
-
-    public TasaInteresController(TasaInteresService tasaInteresService) {
-        this.tasaInteresService = tasaInteresService;
-    }
 
     @GetMapping
     public ResponseEntity<List<TasaInteresDTO>> Listar() {
@@ -74,9 +72,10 @@ public class TasaInteresController {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
     @PatchMapping
-    public ResponseEntity<TasaInteresDTO> CambiarEstado(@RequestParam("codTasaInteres") String codTasaInteres, @RequestParam("estado") String estado) {
+    public ResponseEntity<TasaInteresDTO> CambiarEstado(@RequestParam("codTasaInteres") String codTasaInteres,
+            @RequestParam("estado") String estado) {
         try {
             log.info("Actualizando estado de la tasa interes");
             return ResponseEntity.ok(tasaInteresService.CambiarEstado(codTasaInteres, estado));

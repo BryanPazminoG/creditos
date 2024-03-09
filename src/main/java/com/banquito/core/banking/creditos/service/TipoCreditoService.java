@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.banquito.core.banking.creditos.dao.TipoCreditoRepository;
 import com.banquito.core.banking.creditos.domain.TipoCredito;
 import com.banquito.core.banking.creditos.dto.TipoCreditoDTO;
-import com.banquito.core.banking.creditos.dto.Builder.TipoCreditoBuilder;
+import com.banquito.core.banking.creditos.mappers.TipoCreditoMapper;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 
 import jakarta.transaction.Transactional;
@@ -32,7 +32,7 @@ public class TipoCreditoService {
     public List<TipoCreditoDTO> Listar() {
         List<TipoCreditoDTO> listDTO = new ArrayList<>();
         for (TipoCredito tipoCredito : this.tipoCreditoRepository.findAll()) {
-            listDTO.add(TipoCreditoBuilder.toDTO(tipoCredito));
+            listDTO.add(TipoCreditoMapper.INSTANCE.DTOToEntity(tipoCredito));
         }
         log.info("Se obtuvo la lista de tipo credito: ", listDTO);
         return listDTO;
@@ -42,7 +42,7 @@ public class TipoCreditoService {
         Optional<TipoCredito> tipoCredito = this.tipoCreditoRepository.findById(codTipoCredito);
         if (tipoCredito.isPresent()) {
             log.info("El tipo credito con codTipoCredito {} se ha obtenido", codTipoCredito);
-            return TipoCreditoBuilder.toDTO(tipoCredito.get());
+            return TipoCreditoMapper.INSTANCE.DTOToEntity(tipoCredito.get());
         } else {
             throw new RuntimeException("El Tipo Credito con codTipoCredito" + codTipoCredito + " no existe");
         }
@@ -52,7 +52,7 @@ public class TipoCreditoService {
         if ("ACT".equals(estado) || "INA".equals(estado)) {
             List<TipoCreditoDTO> listDTO = new ArrayList<>();
             for (TipoCredito tipoCredito : this.tipoCreditoRepository.findByEstadoOrderByNombre(estado)) {
-                listDTO.add(TipoCreditoBuilder.toDTO(tipoCredito));
+                listDTO.add(TipoCreditoMapper.INSTANCE.DTOToEntity(tipoCredito));
             }
             log.info("Se obtuvo la lista de tipo credito activos: ", listDTO);
             return listDTO;
@@ -64,13 +64,13 @@ public class TipoCreditoService {
     @Transactional
     public TipoCreditoDTO Crear(TipoCreditoDTO dto) {
         try {
-            TipoCredito tipoCredito = TipoCreditoBuilder.toTipoCredito(dto);
+            TipoCredito tipoCredito = TipoCreditoMapper.INSTANCE.entityToDTO(dto);
             LocalDate fechaActualDate = LocalDate.now();
             LocalDateTime fechaActualTimestamp = LocalDateTime.now();
             tipoCredito.setFechaCreacion(Date.valueOf(fechaActualDate));
             tipoCredito.setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
             log.info("El tipo credito esta en proceso de creacion correctamente: {}", dto);
-            return TipoCreditoBuilder.toDTO(this.tipoCreditoRepository.save(tipoCredito));
+            return TipoCreditoMapper.INSTANCE.DTOToEntity(this.tipoCreditoRepository.save(tipoCredito));
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al crear el Tipo Credito: " + dto.toString(), e);
         }
@@ -79,12 +79,12 @@ public class TipoCreditoService {
     @Transactional
     public TipoCreditoDTO Actualizar(TipoCreditoDTO dto) {
         try {
-            TipoCredito tipoCredito = TipoCreditoBuilder.toTipoCredito(dto);
+            TipoCredito tipoCredito = TipoCreditoMapper.INSTANCE.entityToDTO(dto);
             if (tipoCredito != null) {
                 LocalDateTime fechaActualTimestamp = LocalDateTime.now();
                 tipoCredito.setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
                 log.info("El tipo credito esta en proceso de actualizacion: {}", dto);
-                return TipoCreditoBuilder.toDTO(this.tipoCreditoRepository.save(tipoCredito)) ;
+                return TipoCreditoMapper.INSTANCE.DTOToEntity(this.tipoCreditoRepository.save(tipoCredito)) ;
             } else {
                 throw new RuntimeException(
                         "El Tipo Credito con id" + dto.getCodTipoCredito() + " no existe");
@@ -106,7 +106,7 @@ public class TipoCreditoService {
                     tipoCredito.get().setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
                     this.tipoCreditoRepository.save(tipoCredito.get());
                     log.info("El estado de la tasa interes se ha actalizado correctamente a {}", estado);
-                    return TipoCreditoBuilder.toDTO(tipoCredito.get());
+                    return TipoCreditoMapper.INSTANCE.DTOToEntity(tipoCredito.get());
                 } else {
                     throw new RuntimeException("La tasa de interes con id" + codTipoCredito + " no existe");
                 }

@@ -18,7 +18,7 @@ import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
 import com.banquito.core.banking.creditos.domain.TablaAmortizacionPK;
 import com.banquito.core.banking.creditos.dto.CreditoDTO;
 import com.banquito.core.banking.creditos.dto.TablaAmortizacionDTO;
-import com.banquito.core.banking.creditos.dto.Builder.TablaAmortizacionBuilder;
+import com.banquito.core.banking.creditos.mappers.TablaAmortizacionMapper;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -41,7 +41,7 @@ public class TablaAmortizacionService {
         Collections.sort(tablaAmortizacion,
                 Comparator.comparingInt(TablaAmortizacion -> TablaAmortizacion.getPK().getCodCuota()));
         for (TablaAmortizacion TablaAmortizacion : tablaAmortizacion) {
-            listDTO.add(TablaAmortizacionBuilder.toDTO(TablaAmortizacion));
+            listDTO.add(TablaAmortizacionMapper.INSTANCE.DTOToEntity(TablaAmortizacion));
         }
         return listDTO;
     }
@@ -52,7 +52,7 @@ public class TablaAmortizacionService {
 
         if (TablaAmortizacion.isPresent()) {
             log.info("Se ha encontrado la cuota {} del credito {}", codCuota, codCredito);
-            return TablaAmortizacionBuilder.toDTO(TablaAmortizacion.get());
+            return TablaAmortizacionMapper.INSTANCE.DTOToEntity(TablaAmortizacion.get());
         } else {
             throw new RuntimeException(
                     "El credito tabla pagos con codCredito" + codCredito + " y  codCuota " + codCuota + " no existe");
@@ -63,7 +63,7 @@ public class TablaAmortizacionService {
         if ("ACT".equals(estado) || "PEN".equals(estado) || "MOR".equals(estado) || "PRX".equals(estado)) {
             List<TablaAmortizacionDTO> listDTO = new ArrayList<>();
             for (TablaAmortizacion tablaAmortizacionDTO : this.tablaAmortizacionRepository.findByPKCodCreditoAndEstadoOrderByFechaPlanificadaPago(codCredito, estado)) {
-                listDTO.add(TablaAmortizacionBuilder.toDTO(tablaAmortizacionDTO));
+                listDTO.add(TablaAmortizacionMapper.INSTANCE.DTOToEntity(tablaAmortizacionDTO));
             }
             log.info("Se obtuvo la lista de cuotas con el estado: ", estado);
             return listDTO;
@@ -87,7 +87,7 @@ public class TablaAmortizacionService {
                     TablaAmortizacion.get().setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
                     this.tablaAmortizacionRepository.save(TablaAmortizacion.get());
                     log.info("El estado de la tabla amortizacion se ha actalizado correctamente a {}", estado);
-                    return TablaAmortizacionBuilder.toDTO(TablaAmortizacion.get());
+                    return TablaAmortizacionMapper.INSTANCE.DTOToEntity(TablaAmortizacion.get());
                 } else {
                     throw new RuntimeException(
                             "La tabla de amortizacion con id" + codCredito + " - " + codCuota + "no existe");
@@ -142,7 +142,7 @@ public class TablaAmortizacionService {
 
             LocalDateTime fechaActualTimestamp = LocalDateTime.now();
             tablaAmortizacion.setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
-            TablaAmortizacionDTO.add(TablaAmortizacionBuilder.toDTO(tablaAmortizacion));
+            TablaAmortizacionDTO.add(TablaAmortizacionMapper.INSTANCE.DTOToEntity(tablaAmortizacion));
             tablaAmortizacionRepository.save(tablaAmortizacion);
         }
 

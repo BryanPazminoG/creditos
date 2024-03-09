@@ -1,6 +1,8 @@
 package com.banquito.core.banking.creditos.controller;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("api/v1/tablaAmortizacion")
 public class TablaAmortizacionController {
 
+    @Autowired
     private TablaAmortizacionService tablaAmortizacionService;
-
-    public TablaAmortizacionController(TablaAmortizacionService tablaAmortizacionService) {
-        this.tablaAmortizacionService = tablaAmortizacionService;
-    }
 
     @GetMapping("/{codCredito}")
     public ResponseEntity<List<TablaAmortizacionDTO>> BuscarTablaAmortizacion(
@@ -57,7 +56,8 @@ public class TablaAmortizacionController {
     }
 
     @GetMapping("/estados")
-    public ResponseEntity<List<TablaAmortizacionDTO>> ListarPorEstado(@RequestParam("codCredito") Integer codCredito ,@RequestParam("estado") String estado) {
+    public ResponseEntity<List<TablaAmortizacionDTO>> ListarPorEstado(@RequestParam("codCredito") Integer codCredito,
+            @RequestParam("estado") String estado) {
         try {
             log.info("Obteniendo las cuotas del credito con id: {} con el estado {}", codCredito, estado);
             return ResponseEntity.ok(tablaAmortizacionService.ListarPorEstado(codCredito, estado));

@@ -10,7 +10,7 @@ import com.banquito.core.banking.creditos.dao.CreditoIntervinienteRepository;
 import com.banquito.core.banking.creditos.domain.CreditoInterviniente;
 import com.banquito.core.banking.creditos.domain.CreditoIntervinientePK;
 import com.banquito.core.banking.creditos.dto.CreditoIntervinienteDTO;
-import com.banquito.core.banking.creditos.dto.Builder.CreditoIntervinienteBuilder;
+import com.banquito.core.banking.creditos.mappers.CreditoIntervinienteMapper;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 import java.time.LocalDate;
 import java.sql.Date;
@@ -32,7 +32,7 @@ public class CreditoIntervinienteService {
                 .findById(creditoIntervinientePK);
         if (creditoInterviniente.isPresent()) {
             log.info("Credito Interviniente encotrado");
-            return CreditoIntervinienteBuilder.toDTO(creditoInterviniente.get());
+            return CreditoIntervinienteMapper.INSTANCE.DTOToEntity(creditoInterviniente.get());
         } else {
             throw new RuntimeException(
                     "No se han encontrado el interviniente con el codigo" + codCliente + " en el credito " + codCredito);
@@ -41,7 +41,7 @@ public class CreditoIntervinienteService {
     public List<CreditoIntervinienteDTO> ListarIntervinienteCredito(Integer codCredito) {
         List<CreditoIntervinienteDTO> listDTO = new ArrayList<>();
         for (CreditoInterviniente creditoInterviniente : this.creditoIntervinienteRepository.findByPKCodCredito(codCredito)) {
-            listDTO.add(CreditoIntervinienteBuilder.toDTO(creditoInterviniente));
+            listDTO.add(CreditoIntervinienteMapper.INSTANCE.DTOToEntity(creditoInterviniente));
         }
         return listDTO;
     }
@@ -49,11 +49,11 @@ public class CreditoIntervinienteService {
     @Transactional
     public CreditoIntervinienteDTO Crear(CreditoIntervinienteDTO dto) {
         try {
-            CreditoInterviniente creditoInterviniente = CreditoIntervinienteBuilder.toCreditoInterviniente(dto);
+            CreditoInterviniente creditoInterviniente = CreditoIntervinienteMapper.INSTANCE.entityToDTO(dto);
             LocalDate fechaActualDate = LocalDate.now();
             creditoInterviniente.setFechaCreacion(Date.valueOf(fechaActualDate));
             log.info("El credito Interviniente : {} esta en poceso de creacion ", dto);
-            return CreditoIntervinienteBuilder.toDTO(this.creditoIntervinienteRepository.save(creditoInterviniente));
+            return CreditoIntervinienteMapper.INSTANCE.DTOToEntity(this.creditoIntervinienteRepository.save(creditoInterviniente));
         } catch (Exception e) {
             throw new CreateException(
                     "Ocurrio un error al crear el Credito Interviniente: " + dto.toString(), e);

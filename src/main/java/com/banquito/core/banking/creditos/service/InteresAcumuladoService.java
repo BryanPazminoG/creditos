@@ -17,8 +17,8 @@ import com.banquito.core.banking.creditos.domain.InteresAcumulado;
 import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
 import com.banquito.core.banking.creditos.dto.CreditoDTO;
 import com.banquito.core.banking.creditos.dto.InteresAcumuladoDTO;
-import com.banquito.core.banking.creditos.dto.Builder.CreditoBuilder;
-import com.banquito.core.banking.creditos.dto.Builder.InteresAcumuladoBuilder;
+import com.banquito.core.banking.creditos.mappers.CreditoMapper;
+import com.banquito.core.banking.creditos.mappers.InteresAcumuladoMapper;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 
 import java.math.BigDecimal;
@@ -49,7 +49,7 @@ public class InteresAcumuladoService {
                 .findById(codInteresAcumulado);
         if (interesAcumulado.isPresent()) {
             log.info("Interes Acumulado encotrado");
-            return InteresAcumuladoBuilder.toDTO(interesAcumulado.get());
+            return InteresAcumuladoMapper.INSTANCE.DTOToEntity(interesAcumulado.get());
         } else {
             throw new RuntimeException(
                     "No se han encontrado el interes acumulado con el codigo" + codInteresAcumulado);
@@ -60,7 +60,7 @@ public class InteresAcumuladoService {
         List<InteresAcumuladoDTO> listDTO = new ArrayList<>();
         for (InteresAcumulado interesAcumulado : this.interesAcumuladoRepository
                 .findByCodCreditoOrderByFechaCreacion(codCredito)) {
-            listDTO.add(InteresAcumuladoBuilder.toDTO(interesAcumulado));
+            listDTO.add(InteresAcumuladoMapper.INSTANCE.DTOToEntity(interesAcumulado));
         }
         return listDTO;
     }
@@ -71,7 +71,7 @@ public class InteresAcumuladoService {
                 List<InteresAcumuladoDTO> listDTO = new ArrayList<>();
                 for (InteresAcumulado interesAcumulado : this.interesAcumuladoRepository
                         .findByEstadoOrderByFechaCreacion(estado)) {
-                    listDTO.add(InteresAcumuladoBuilder.toDTO(interesAcumulado));
+                    listDTO.add(InteresAcumuladoMapper.INSTANCE.DTOToEntity(interesAcumulado));
                 }
                 return listDTO;
             } else {
@@ -87,7 +87,7 @@ public class InteresAcumuladoService {
         List<CreditoDTO> listDTO = new ArrayList<>();
         for (Credito credito : this.creditoRepository
                 .findByEstadoOrderByFechaCreacion(estado)) {
-            listDTO.add(CreditoBuilder.toDTO(credito));
+            listDTO.add(CreditoMapper.INSTANCE.DTOToEntity(credito));
         }
         return listDTO;
     }
@@ -141,7 +141,7 @@ public class InteresAcumuladoService {
                     interesAcumulado.get().setEstado(estado);
                     this.interesAcumuladoRepository.save(interesAcumulado.get());
                     log.info("El estado del interes acumulado se ha actalizado correctamente a {}", estado);
-                    return InteresAcumuladoBuilder.toDTO(interesAcumulado.get());
+                    return InteresAcumuladoMapper.INSTANCE.DTOToEntity(interesAcumulado.get());
                 } else {
                     throw new RuntimeException("El interes generado con id" + codInteresAcumulado + " no existe");
                 }

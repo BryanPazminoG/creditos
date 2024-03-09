@@ -1,5 +1,6 @@
 package com.banquito.core.banking.creditos.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +25,8 @@ import java.util.List;
 @RequestMapping("api/v1/tipoCreditos")
 public class TipoCreditoController {
 
+    @Autowired
     private TipoCreditoService tipoCreditoService;
-
-    public TipoCreditoController(TipoCreditoService tipoCreditoService) {
-        this.tipoCreditoService = tipoCreditoService;
-    }
 
     @GetMapping
     public ResponseEntity<List<TipoCreditoDTO>> Listar() {
@@ -86,9 +84,10 @@ public class TipoCreditoController {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
     @PatchMapping
-    public ResponseEntity<TipoCreditoDTO> CambiarEstado(@RequestParam("codTipoCredito") Integer codTipoCredito, @RequestParam("estado") String estado) {
+    public ResponseEntity<TipoCreditoDTO> CambiarEstado(@RequestParam("codTipoCredito") Integer codTipoCredito,
+            @RequestParam("estado") String estado) {
         try {
             log.info("Actualizando estado deL tipo credito");
             return ResponseEntity.ok(tipoCreditoService.CambiarEstado(codTipoCredito, estado));
