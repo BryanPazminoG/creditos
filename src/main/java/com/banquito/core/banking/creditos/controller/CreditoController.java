@@ -2,6 +2,7 @@ package com.banquito.core.banking.creditos.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/creditos")
 public class CreditoController {
 
+    @Autowired
     private CreditoService creditoService;
-
-    public CreditoController(CreditoService creditoService) {
-        this.creditoService = creditoService;
-    }
 
     @GetMapping("/{codCredito}")
     public ResponseEntity<CreditoDTO> ObtenerPorId(@PathVariable("codCredito") Integer codCredito) {

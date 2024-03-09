@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("api/v1/transaccionCredito")
 public class TransaccionCreditoController {
+    
     @Autowired
     private TransaccionCreditoService transaccionCreditoService;
 

@@ -31,7 +31,7 @@ public class TasaInteresService {
     public List<TasaInteresDTO> Listar() {
         List<TasaInteresDTO> listDTO = new ArrayList<>();
         for(TasaInteres tasaInteres : this.tasaInteresRepository.findAll()){
-            listDTO.add(tasaInteresMapper.DTOToEntity(tasaInteres));
+            listDTO.add(TasaInteresMapper.INSTANCE.DTOToEntity(tasaInteres));
         }
         log.info("Se obtuvo la lista de tasa de interes: ", listDTO);
         return listDTO;
@@ -41,7 +41,7 @@ public class TasaInteresService {
         Optional<TasaInteres> tasaInteres = this.tasaInteresRepository.findById(codTasaInteres);
         if(tasaInteres.isPresent()){
             log.info("Se obtuvo la tasa de interes con el id {}", codTasaInteres);
-            return tasaInteresMapper.DTOToEntity(tasaInteres.get());
+            return TasaInteresMapper.INSTANCE.DTOToEntity(tasaInteres.get());
         }else{
             throw new RuntimeException("La tasa de interes con id" + codTasaInteres + " no existe");
         }
@@ -51,7 +51,7 @@ public class TasaInteresService {
         if ("ACT".equals(estado) || "INA".equals(estado)) {
             List<TasaInteresDTO> listDTO = new ArrayList<>();
             for(TasaInteres tasaInteres : this.tasaInteresRepository.findByEstadoOrderByFechaCreacion(estado)){
-                listDTO.add(tasaInteresMapper.DTOToEntity(tasaInteres));
+                listDTO.add(TasaInteresMapper.INSTANCE.DTOToEntity(tasaInteres));
             }
             log.info("Se obtuvo la lista de tasa de interes con el estado: ", estado);
             return listDTO;
@@ -63,13 +63,13 @@ public class TasaInteresService {
     @Transactional
     public TasaInteresDTO Crear(TasaInteresDTO dto) {
         try {
-            TasaInteres tasaInteres = tasaInteresMapper.entityToDTO (dto);
+            TasaInteres tasaInteres = TasaInteresMapper.INSTANCE.entityToDTO (dto);
             LocalDate fechaActualDate = LocalDate.now();
             LocalDateTime fechaActualTimestamp = LocalDateTime.now();
             tasaInteres.setFechaCreacion(Date.valueOf(fechaActualDate));
             tasaInteres.setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
             log.info("La tasa de interes esta en proceso de creacion: {}", dto);
-            return tasaInteresMapper.DTOToEntity(this.tasaInteresRepository.save(tasaInteres));
+            return TasaInteresMapper.INSTANCE.DTOToEntity(this.tasaInteresRepository.save(tasaInteres));
         } catch (Exception e) {
             throw new CreateException("Ocurrio un error al crear la tasaInteres: " + dto.toString(), e);
         }
@@ -87,7 +87,7 @@ public class TasaInteresService {
                     tasaInteres.get().setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
                     this.tasaInteresRepository.save(tasaInteres.get());
                     log.info("El estado de la tasa interes se ha actalizado correctamente a {}", estado);
-                    return tasaInteresMapper.DTOToEntity(tasaInteres.get());
+                    return TasaInteresMapper.INSTANCE.DTOToEntity(tasaInteres.get());
                 }else{
                     throw new RuntimeException("La tasa de interes con id" + codTasaInteres + " no existe");
                 }

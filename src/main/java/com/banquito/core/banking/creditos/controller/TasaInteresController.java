@@ -26,7 +26,7 @@ public class TasaInteresController {
 
     @Autowired
     private TasaInteresService tasaInteresService;
-
+    
     @GetMapping
     public ResponseEntity<List<TasaInteresDTO>> Listar() {
         try {
@@ -72,10 +72,9 @@ public class TasaInteresController {
             return ResponseEntity.badRequest().build();
         }
     }
-
+    
     @PatchMapping
-    public ResponseEntity<TasaInteresDTO> CambiarEstado(@RequestParam("codTasaInteres") String codTasaInteres,
-            @RequestParam("estado") String estado) {
+    public ResponseEntity<TasaInteresDTO> CambiarEstado(@RequestParam("codTasaInteres") String codTasaInteres, @RequestParam("estado") String estado) {
         try {
             log.info("Actualizando estado de la tasa interes");
             return ResponseEntity.ok(tasaInteresService.CambiarEstado(codTasaInteres, estado));
