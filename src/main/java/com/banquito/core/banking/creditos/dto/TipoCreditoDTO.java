@@ -2,7 +2,6 @@ package com.banquito.core.banking.creditos.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import java.sql.Timestamp;
 import java.math.BigDecimal;
 
 @Builder
@@ -20,7 +19,6 @@ public class TipoCreditoDTO {
     private BigDecimal montoMinimo;
     private BigDecimal montoMaximo;
     private String estado;
-    private Timestamp fechaCreacion;
 
     @Override
     public boolean equals(Object obj) {

@@ -13,21 +13,17 @@ import lombok.Setter;
 public class CreditoIntervinientePK implements Serializable {
     @Column(name="COD_CREDITO", nullable = false)
     private Integer codCredito;
-    @Column(name="IDENTIFICACION_CLIENTE", nullable = false, length = 64)
-    private String identificacionCliente;
+    @Column(name="COD_CLIENTE", nullable = false)
+    private String codCliente;
 
     public CreditoIntervinientePK() {
     }
-
-    public CreditoIntervinientePK(Integer codCredito, String identificacionCliente) {
+    public CreditoIntervinientePK(Integer codCredito, String codCliente) {
         this.codCredito = codCredito;
-        this.identificacionCliente = identificacionCliente;
+        this.codCliente = codCliente;
     }
-
     @Override
     public String toString() {
-        return "CreditoIntervinientePK [codCredito=" + codCredito + ", identificacionCliente=" + identificacionCliente
-                + "]";
+        return "CreditoIntervinientePK [codCredito=" + codCredito + ", codCliente=" + codCliente + "]";
     }
-
 }

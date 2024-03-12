@@ -2,18 +2,23 @@ package com.banquito.core.banking.creditos.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banquito.core.banking.creditos.dto.CreditoDTO;
 import com.banquito.core.banking.creditos.service.CreditoService;
+
+import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,29 +27,26 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/creditos")
 public class CreditoController {
 
+    @Autowired
     private CreditoService creditoService;
 
-    public CreditoController(CreditoService creditoService) {
-        this.creditoService = creditoService;
-    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<CreditoDTO> obtenerPorId(@PathVariable("id") Integer id) {
+    @GetMapping("/{codCredito}")
+    public ResponseEntity<CreditoDTO> ObtenerPorId(@PathVariable("codCredito") Integer codCredito) {
         try {
-            log.info("Obteniendo credito por el ID: {}", id);
-            CreditoDTO credito = creditoService.obtenerPorId(id);
+            log.info("Obteniendo credito por el ID: {}", codCredito);
+            CreditoDTO credito = creditoService.ObtenerPorId(codCredito);
             return ResponseEntity.ok(credito);
         } catch (Exception e) {
-            log.error("Error al obtener el credito con el id: {}", id);
+            log.error("Error al obtener el credito con el id: {}", codCredito);
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("clientes/{identificacion}")
-    public ResponseEntity<List<CreditoDTO>> BuscarPorCodigoCliente(@PathVariable("identificacion") String identificacion) {
+    @GetMapping("/clientes/{codCliente}")
+    public ResponseEntity<List<CreditoDTO>> BuscarPorCodigoCliente(@PathVariable("codCliente") String codCliente) {
         try {
-            log.info("Buscando el credito por el numero de identificacion del cliente: {}", identificacion);
-            return ResponseEntity.ok(creditoService.BuscarPorCliente(identificacion));
+            log.info("Buscando el credito por el codigo del cliente: {}", codCliente);
+            return ResponseEntity.ok(creditoService.BuscarPorCliente(codCliente));
         } catch (RuntimeException rte) {
             log.error("Error al obtener el credito: {}", rte);
             return ResponseEntity.notFound().build();
@@ -52,10 +54,10 @@ public class CreditoController {
     }
 
     @PostMapping
-    public ResponseEntity<CreditoDTO> save(@RequestBody CreditoDTO credito) {
+    public ResponseEntity<Integer> Crear(@RequestBody CreditoDTO credito) {
         try {
             log.info("Guardando nuevo registro credito: {}", credito);
-            return ResponseEntity.ok(creditoService.crear(credito));
+            return ResponseEntity.ok(creditoService.Crear(credito));
         } catch (RuntimeException rte) {
             log.error("Error al crear el nuevo registro: {}", credito);
             return ResponseEntity.badRequest().build();
@@ -63,12 +65,24 @@ public class CreditoController {
     }
 
     @PutMapping
-    public ResponseEntity<CreditoDTO> actualizar(@RequestBody CreditoDTO credito) {
+    public ResponseEntity<CreditoDTO> Actualizar(@RequestBody CreditoDTO credito) {
         try {
             log.info("Actualizando el registro credito: {}", credito);
-            return ResponseEntity.ok(creditoService.actualizar(credito));
+            return ResponseEntity.ok(creditoService.Actualizar(credito));
         } catch (RuntimeException rte) {
             log.error("Error al actualizar el registro: ", rte);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PatchMapping
+    public ResponseEntity<CreditoDTO> CambiarEstado(@RequestParam("codCredito") Integer codCredito,
+            @PathParam("estado") String estado) {
+        try {
+            log.info("Actualizando estado del credito");
+            return ResponseEntity.ok(creditoService.CambiarEstado(codCredito, estado));
+        } catch (RuntimeException rte) {
+            log.error("Error al actualizar el estado del credito: ", rte);
             return ResponseEntity.badRequest().build();
         }
     }

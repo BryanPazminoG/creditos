@@ -12,18 +12,20 @@ public class CreditoDTO {
 
     private Integer codCredito;
     private Integer codTipoCredito;
-    private String identificacionCliente;
-    private String tipoCliente;
+    private String codTransaccion;
+    private String codCliente;
     private String numeroCuenta;
-    private String numeroOperacion;
-    private Timestamp fechaCreacion;
     private BigDecimal monto;
     private Integer plazo;
-    private BigDecimal tasaInteres;
-    private String estado;
-    private Timestamp fechaDesembolso;
-    private Date fechaUltimoPago;
+    private Integer numeroCuotas;
+    private Integer cuotasPagadas;
     private BigDecimal capitalPendiente;
+    private BigDecimal tasaInteres;
+    private String canalTransaccion;
+    private String estado;
+    private Timestamp fechaAprobacion;
+    private Timestamp fechaDesembolso;
+    private Date fechaCierre;
 
     @Override
     public boolean equals(Object obj) {
@@ -48,5 +50,15 @@ public class CreditoDTO {
         int result = 1;
         result = prime * result + ((codCredito == null) ? 0 : codCredito.hashCode());
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CreditoDTO [codCredito=" + codCredito + ", codTipoCredito=" + codTipoCredito + ", codTransaccion="
+                + codTransaccion + ", codCliente=" + codCliente + ", numeroCuenta=" + numeroCuenta + ", monto=" + monto
+                + ", plazo=" + plazo + ", numeroCuotas=" + numeroCuotas + ", cuotasPagadas=" + cuotasPagadas
+                + ", capitalPendiente=" + capitalPendiente + ", tasaInteres=" + tasaInteres + ", canalTransaccion="
+                + canalTransaccion + ", estado=" + estado + ", fechaAprobacion=" + fechaAprobacion
+                + ", fechaDesembolso=" + fechaDesembolso + ", fechaCierre=" + fechaCierre + "]";
     }
 }

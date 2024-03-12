@@ -3,8 +3,6 @@ package com.banquito.core.banking.creditos.dto.Builder;
 import com.banquito.core.banking.creditos.domain.CreditoInterviniente;
 import com.banquito.core.banking.creditos.domain.CreditoIntervinientePK;
 import com.banquito.core.banking.creditos.dto.CreditoIntervinienteDTO;
-import java.sql.Timestamp;
-import java.util.Date;
 
 public class CreditoIntervinienteBuilder {
 
@@ -12,7 +10,7 @@ public class CreditoIntervinienteBuilder {
 
         CreditoIntervinienteDTO dto = CreditoIntervinienteDTO.builder()
                 .codCredito(creditoInterviniente.getPK().getCodCredito())
-                .identificacionCliente(creditoInterviniente.getPK().getIdentificacionCliente())
+                .codCliente(creditoInterviniente.getPK().getCodCliente())
                 .tipo(creditoInterviniente.getTipo())
                 .build();
         return dto;
@@ -23,13 +21,9 @@ public class CreditoIntervinienteBuilder {
         CreditoInterviniente creditoInterviniente = new CreditoInterviniente();
         CreditoIntervinientePK PK = new CreditoIntervinientePK();
         PK.setCodCredito(dto.getCodCredito());
-        PK.setIdentificacionCliente(dto.getIdentificacionCliente());
+        PK.setCodCliente(dto.getCodCliente());
         creditoInterviniente.setPK(PK);
         creditoInterviniente.setTipo(dto.getTipo());
-
-        Date date = new Date();
-        Timestamp timestamp = new Timestamp(date.getTime());
-        creditoInterviniente.setFechaUltimoCambio(timestamp);
 
         return creditoInterviniente;
     }

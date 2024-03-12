@@ -1,15 +1,12 @@
 package com.banquito.core.banking.creditos.dto.Builder;
 
-import com.banquito.core.banking.creditos.domain.CreditoTablaPagos;
-import com.banquito.core.banking.creditos.domain.CreditoTablaPagosPK;
-import com.banquito.core.banking.creditos.dto.CreditoTablaPagosDTO;
+import com.banquito.core.banking.creditos.domain.TablaAmortizacion;
+import com.banquito.core.banking.creditos.domain.TablaAmortizacionPK;
+import com.banquito.core.banking.creditos.dto.TablaAmortizacionDTO;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
-public class CreditoTablaPagosBuilder {
-    public static CreditoTablaPagosDTO toDTO(CreditoTablaPagos creditoTablaPagos) {
-        CreditoTablaPagosDTO dto = CreditoTablaPagosDTO.builder()
+public class TablaAmortizacionBuilder {
+    public static TablaAmortizacionDTO toDTO(TablaAmortizacion creditoTablaPagos) {
+        TablaAmortizacionDTO dto = TablaAmortizacionDTO.builder()
                 .codCredito(creditoTablaPagos.getPK().getCodCredito())
                 .codCuota(creditoTablaPagos.getPK().getCodCuota())
                 .capital(creditoTablaPagos.getCapital())
@@ -18,16 +15,14 @@ public class CreditoTablaPagosBuilder {
                 .capitalRestante(creditoTablaPagos.getCapitalRestante())
                 .fechaPlanificadaPago(creditoTablaPagos.getFechaPlanificadaPago())
                 .estado(creditoTablaPagos.getEstado())
-                .fechaPagoEfectivo(creditoTablaPagos.getFechaPagoEfectivo())
-                .transaccionPago(creditoTablaPagos.getTransaccionPago())
                 .build();
         return dto;
     }
 
-    public static CreditoTablaPagos toCreditoTablaPagos(CreditoTablaPagosDTO dto) {
+    public static TablaAmortizacion toTablaAmortizacion(TablaAmortizacionDTO dto) {
 
-        CreditoTablaPagos creditoTablaPagos = new CreditoTablaPagos();
-        CreditoTablaPagosPK PK = new CreditoTablaPagosPK();
+        TablaAmortizacion creditoTablaPagos = new TablaAmortizacion();
+        TablaAmortizacionPK PK = new TablaAmortizacionPK();
         PK.setCodCredito(dto.getCodCredito());
         PK.setCodCuota(dto.getCodCuota());
         creditoTablaPagos.setPK(PK);
@@ -37,12 +32,6 @@ public class CreditoTablaPagosBuilder {
         creditoTablaPagos.setCapitalRestante(dto.getCapitalRestante());
         creditoTablaPagos.setFechaPlanificadaPago(dto.getFechaPlanificadaPago());
         creditoTablaPagos.setEstado(dto.getEstado());
-        creditoTablaPagos.setFechaPagoEfectivo(dto.getFechaPagoEfectivo());
-        creditoTablaPagos.setTransaccionPago(dto.getTransaccionPago());
-
-        Date date = new Date();
-        Timestamp timestamp = new Timestamp(date.getTime());
-        creditoTablaPagos.setFechaUltimoCambio(timestamp);
 
         return creditoTablaPagos;
     }
