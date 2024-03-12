@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.banquito.core.banking.creditos.dao.CreditoRepository;
 import com.banquito.core.banking.creditos.domain.Credito;
 import com.banquito.core.banking.creditos.dto.CreditoDTO;
-import com.banquito.core.banking.creditos.mappers.CreditoMapper;
+import com.banquito.core.banking.creditos.dto.Builder.CreditoBuilder;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -25,18 +25,16 @@ import java.util.Optional;
 public class CreditoService {
 
     private final CreditoRepository creditoRepository;
-    // private final CreditoMapper creditoMapper;
 
     public CreditoService(CreditoRepository creditoRepository) {
         this.creditoRepository = creditoRepository;
-        // this.creditoMapper = creditoMapper;
     }
 
     public CreditoDTO ObtenerPorId(Integer id) {
         Optional<Credito> credito = this.creditoRepository.findById(id);
         if (credito.isPresent()) {
             log.info("Se ha encontrado el credito con id: {}", id);
-            return CreditoMapper.INSTANCE.DTOToEntity(credito.get());
+            return CreditoBuilder.toDTO(credito.get());
         } else {
             throw new RuntimeException("La credito con id" + id + " no existe");
         }
@@ -45,7 +43,7 @@ public class CreditoService {
     @Transactional
     public Integer Crear(CreditoDTO dto) {
         try {
-            Credito credito = CreditoMapper.INSTANCE.entityToDTO(dto);
+            Credito credito = CreditoBuilder.toCredito(dto);
             LocalDate fechaActualDate = LocalDate.now();
             LocalDateTime fechaActualTimestamp = LocalDateTime.now();
             credito.setNumeroOperacion(new DigestUtils("MD2").digestAsHex(dto.toString()));
@@ -62,7 +60,7 @@ public class CreditoService {
     public List<CreditoDTO> BuscarPorCliente(String codCliente) {
         List<CreditoDTO> listDTO = new ArrayList<>();
         for (Credito credito : creditoRepository.findByCodClienteOrderByFechaCreacion(codCliente)) {
-            listDTO.add(CreditoMapper.INSTANCE.DTOToEntity(credito));
+            listDTO.add(CreditoBuilder.toDTO(credito));
         }
         return listDTO;
     }
@@ -70,7 +68,7 @@ public class CreditoService {
     @Transactional
     public CreditoDTO Actualizar(CreditoDTO dto) {
         try {
-            Credito credito = CreditoMapper.INSTANCE.entityToDTO(dto);
+            Credito credito = CreditoBuilder.toCredito(dto);
             if (credito != null) {
                 LocalDateTime fechaActualTimestamp = LocalDateTime.now();
                 credito.setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
@@ -98,7 +96,7 @@ public class CreditoService {
                     credito.get().setFechaUltimoCambio(Timestamp.valueOf(fechaActualTimestamp));
                     this.creditoRepository.save(credito.get());
                     log.info("El estado de credito se ha actalizado correctamente a {}", estado);
-                    return CreditoMapper.INSTANCE.DTOToEntity(credito.get());
+                    return CreditoBuilder.toDTO(credito.get());
                 } else {
                     throw new RuntimeException("La tasa de interes con id" + codCredito + " no existe");
                 }
