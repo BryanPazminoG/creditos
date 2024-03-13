@@ -21,7 +21,7 @@ import com.banquito.core.banking.creditos.service.TablaAmortizacionService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("api/v1/tablaAmortizacion")
 public class TablaAmortizacionController {
