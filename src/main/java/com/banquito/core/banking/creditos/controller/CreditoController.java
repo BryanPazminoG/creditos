@@ -40,7 +40,7 @@ public class CreditoController {
         }
     }
 
-    @GetMapping("cliente/{codCliente}")
+    @GetMapping("clientes/{codCliente}")
     public ResponseEntity<List<CreditoDTO>> BuscarPorCodigoCliente(@PathVariable("codCliente") String codCliente) {
         try {
             log.info("Buscando el credito por el codigo del cliente: {}", codCliente);
