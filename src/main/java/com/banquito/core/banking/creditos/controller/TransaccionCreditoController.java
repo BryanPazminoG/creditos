@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("api/v1/transaccionCredito")
+@RequestMapping("api/v1/transaccionCreditos")
 public class TransaccionCreditoController {
     private TransaccionCreditoService transaccionCreditoService;
 
@@ -38,7 +38,7 @@ public class TransaccionCreditoController {
         }
     }
 
-    @GetMapping("/credito/{codCredito}")
+    @GetMapping("/creditos/{codCredito}")
     public ResponseEntity<List<TransaccionCreditoDTO>> obtenerPorCredito(@PathVariable("codCredito") Integer codCredito) {
         try {
             log.info("Obteniendo la transaccion credito por el ID credito: {}", codCredito);
@@ -50,7 +50,7 @@ public class TransaccionCreditoController {
         }
     }
 
-    @GetMapping("/credito/{codCredito}/{cuota}")
+    @GetMapping("/creditos/{codCredito}/{cuota}")
     public ResponseEntity<TransaccionCreditoDTO> obtenerPorCreditoCuota(@PathVariable("codCredito") Integer codCredito, @PathVariable("cuota") Integer cuota) {
         try {
             log.info("Obteniendo la transaccion credito por el ID credito  {} y cuota: {}", codCredito, cuota);
