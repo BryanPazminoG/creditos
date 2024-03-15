@@ -54,7 +54,7 @@ public class TablaAmortizacionController {
         }
     }
 
-    @GetMapping("/proximo/{credito}")
+    @GetMapping("/proximos/{credito}")
     public ResponseEntity<TablaAmortizacionDTO> getProximoPago(@PathVariable("credito") Integer credito) {
         try {
             log.info("Obteniendo el proximo pago del credito con id: {}", credito);
