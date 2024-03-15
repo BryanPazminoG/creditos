@@ -39,7 +39,7 @@ public class InteresAcumuladoController {
         }
     }
 
-    @GetMapping("/credito/{codCredito}")
+    @GetMapping("/creditos/{codCredito}")
     public ResponseEntity<List<InteresAcumuladoDTO>> obtenerPorCredito(@PathVariable("codCredito") Integer codCredito) {
         try {
             log.info("Obteniendo el interes acumulado por el ID credito: {}", codCredito);
@@ -51,7 +51,7 @@ public class InteresAcumuladoController {
         }
     }
 
-    @GetMapping("/estado/{estado}")
+    @GetMapping("/estados/{estado}")
     public ResponseEntity<List<InteresAcumuladoDTO>> obtenerPorEstado(@PathVariable("estado") String estado) {
         try {
             log.info("Obteniendo el interes acumulado por el estado: {}", estado);
