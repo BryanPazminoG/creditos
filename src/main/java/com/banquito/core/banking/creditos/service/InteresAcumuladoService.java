@@ -104,7 +104,7 @@ public class InteresAcumuladoService {
     }
 
     @Async
-    @Scheduled(cron = "0 03 16 * * MON-SUN")
+    @Scheduled(cron = "0 30 20 * * MON-SUN")
     public void GenerarInteres() {
 
         for (CreditoDTO creditoDTO : this.ListarCreditosEstado("VIG")) {
