@@ -1,5 +1,9 @@
 package com.banquito.core.banking.creditos.service;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,15 +25,10 @@ import com.banquito.core.banking.creditos.dto.Builder.CreditoBuilder;
 import com.banquito.core.banking.creditos.dto.Builder.InteresAcumuladoBuilder;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.sql.Date;
-import java.time.LocalDate;
-
 import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @EnableAsync
 @Service
 public class InteresAcumuladoService {

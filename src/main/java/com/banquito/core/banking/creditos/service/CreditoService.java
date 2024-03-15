@@ -1,26 +1,27 @@
 package com.banquito.core.banking.creditos.service;
 
 
-import org.springframework.stereotype.Service;
-import org.apache.commons.codec.digest.DigestUtils;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.stereotype.Service;
 
 import com.banquito.core.banking.creditos.dao.CreditoRepository;
 import com.banquito.core.banking.creditos.domain.Credito;
 import com.banquito.core.banking.creditos.dto.CreditoDTO;
 import com.banquito.core.banking.creditos.dto.Builder.CreditoBuilder;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Optional;
 
-@Slf4j
+import jakarta.transaction.Transactional;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Service
 public class CreditoService {
 
