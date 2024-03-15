@@ -1,15 +1,18 @@
 package com.banquito.core.banking.creditos.service;
 
-import java.util.Optional;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
-import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -20,13 +23,11 @@ import com.banquito.core.banking.creditos.dto.CreditoDTO;
 import com.banquito.core.banking.creditos.dto.TablaAmortizacionDTO;
 import com.banquito.core.banking.creditos.dto.Builder.TablaAmortizacionBuilder;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+import jakarta.transaction.Transactional;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Service
 public class TablaAmortizacionService {
     private final TablaAmortizacionRepository tablaAmortizacionRepository;

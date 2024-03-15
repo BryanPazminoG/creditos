@@ -18,9 +18,9 @@ import com.banquito.core.banking.creditos.dto.CreditoDTO;
 import com.banquito.core.banking.creditos.dto.TablaAmortizacionDTO;
 import com.banquito.core.banking.creditos.service.TablaAmortizacionService;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("api/v1/tablaAmortizacion")

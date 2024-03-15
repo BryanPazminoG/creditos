@@ -1,5 +1,7 @@
 package com.banquito.core.banking.creditos.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,12 +14,11 @@ import com.banquito.core.banking.creditos.domain.CreditoIntervinientePK;
 import com.banquito.core.banking.creditos.dto.CreditoIntervinienteDTO;
 import com.banquito.core.banking.creditos.dto.Builder.CreditoIntervinienteBuilder;
 import com.banquito.core.banking.creditos.service.exeption.CreateException;
-import java.time.LocalDate;
-import java.sql.Date;
-import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+import jakarta.transaction.Transactional;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Service
 public class CreditoIntervinienteService {
     private final CreditoIntervinienteRepository creditoIntervinienteRepository;
